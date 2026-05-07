@@ -119,17 +119,14 @@
   .modal-error { font-family:'DM Mono',monospace; font-size:.72rem; color:var(--rust);
     text-align:center; margin-top:.75rem; min-height:1rem; }
 
-  /* form elements inside modals */
   .form-group { margin-bottom:.9rem; }
   .form-group label { display:block; font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--granite); margin-bottom:.35rem; }
-  .form-group input[type=text], .form-group input[type=password],
+  .form-group input[type=text], .form-group input[type=password], .form-group input[type=email],
   .form-group select, .form-group textarea {
     width:100%; padding:.7rem .9rem; border:1.5px solid rgba(100,80,60,.3); border-radius:4px;
     background:var(--parchment); font-family:'DM Mono',monospace; font-size:.88rem;
     color:var(--stone); outline:none; transition:border-color .2s; }
-  .form-group input[type=password] { letter-spacing:.2em; text-align:center; }
-  .form-group textarea { resize:vertical; min-height:60px; font-family:'DM Sans',sans-serif; }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--rust); }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
 
@@ -301,12 +298,34 @@
     <button class="modal-close" id="login-close">✕</button>
     <div class="modal-eyebrow">Restricted Access</div>
     <h2>Resource Archive</h2>
-    <p>Enter your access code to view course materials and past exams.</p>
-    <div class="form-group">
-      <label for="access-code">Access Code</label>
-      <input type="password" id="access-code" placeholder="••••••••" maxlength="30" autocomplete="off">
+    <p>Students: Enter access code. Admin: Enter credentials.</p>
+    
+    <div id="student-login-box">
+      <div class="form-group">
+        <label for="access-code">Student Access Code</label>
+        <input type="password" id="access-code" placeholder="••••••••" autocomplete="off">
+      </div>
+      <button class="modal-btn" id="login-student-btn">Unlock as Student</button>
+      <div style="text-align:center; margin-top:1rem;">
+        <a href="#" id="toggle-admin-ui" style="font-size:.7rem; color:var(--rust); font-family:'DM Mono'; text-decoration:none;">Admin Login →</a>
+      </div>
     </div>
-    <button class="modal-btn" id="login-btn">Unlock Archive</button>
+
+    <div id="admin-login-box" style="display:none">
+      <div class="form-group">
+        <label for="admin-email">Admin Email</label>
+        <input type="email" id="admin-email" placeholder="admin@example.com">
+      </div>
+      <div class="form-group">
+        <label for="admin-password">Password</label>
+        <input type="password" id="admin-password" placeholder="••••••••">
+      </div>
+      <button class="modal-btn" id="login-admin-btn">Admin Login</button>
+      <div style="text-align:center; margin-top:1rem;">
+        <a href="#" id="toggle-student-ui" style="font-size:.7rem; color:var(--slate); font-family:'DM Mono'; text-decoration:none;">← Student Access</a>
+      </div>
+    </div>
+
     <div class="modal-error" id="login-error"></div>
   </div>
 </div>
@@ -386,7 +405,10 @@
 
 <div id="archive-page">
   <div class="archive-header">
-    <button class="back-btn" id="back-btn">← Back to Site</button>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <button class="back-btn" id="back-btn">← Back to Site</button>
+      <button class="back-btn" id="logout-btn" style="display:none">Logout Admin ✕</button>
+    </div>
     <div class="archive-header-row">
       <div>
         <h1>Course Archive</h1>
@@ -414,19 +436,19 @@
 
 <script type="module">
 // ─────────────────────────────────────────────
-//  CODES  — change these!
+//  STUDENT CODE (Only for local view access)
 // ─────────────────────────────────────────────
 const STUDENT_CODE = 'geology42';
-const ADMIN_CODE   = 'rockAdmin99';
 
 // ─────────────────────────────────────────────
-//  DATA  (Firebase Firestore & Storage)
+//  DATA  (Firebase Firestore, Storage, & AUTH)
 // ─────────────────────────────────────────────
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
+// NEW: Import Auth
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 
-// PASTE YOUR FIREBASE CONFIG HERE
 const firebaseConfig = {
   apiKey: "AIzaSyCI51C3FjWCA_S9ngvIOfSsa9jFDjipEzw",
   authDomain: "rocks-2ee57.firebaseapp.com",
@@ -436,48 +458,107 @@ const firebaseConfig = {
   appId: "1:1052940422276:web:1e841b54ea852ece4406d1"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const firestoreDB = getFirestore(app);
-const storage = getStorage(app); // Storage Initialization added
+const storage = getStorage(app);
+const auth = getAuth(app); // NEW: Initialize Auth
 
-// Global variables
 let db = { cats: [], tests: [] };
 let isAdmin = false;
 let currentFilter = 'all';
 
-// Fetch data from Firestore
+// Professional Auth Listener: Automatically detects if you are logged in
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    isAdmin = true;
+    document.getElementById('logout-btn').style.display = 'block';
+  } else {
+    isAdmin = false;
+    document.getElementById('logout-btn').style.display = 'none';
+  }
+  renderAll(); 
+  // If we are currently on the archive page, update the UI
+  if (document.getElementById('archive-page').style.display === 'block') {
+    document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
+    document.getElementById('admin-badge').style.display = isAdmin ? 'inline-block' : 'none';
+  }
+});
+
 async function loadDB() {
   try {
     const docRef = doc(firestoreDB, "archive", "mainData");
     const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      db = docSnap.data();
-    } else {
-      // If the document doesn't exist yet, create it with empty arrays
-      await saveDB(); 
-    }
-  } catch (error) {
-    console.error("Error loading database:", error);
-  }
+    if (docSnap.exists()) { db = docSnap.data(); } 
+    else { await saveDB(); }
+  } catch (error) { console.error("Error loading database:", error); }
 }
 
-// Save data to Firestore
 async function saveDB() {
   try {
     const docRef = doc(firestoreDB, "archive", "mainData");
     await setDoc(docRef, db);
-  } catch (error) {
-    console.error("Error saving database:", error);
-  }
+  } catch (error) { console.error("Error saving database:", error); alert("Permission Denied: Only Admin can save changes."); }
 }
 
-// Call loadDB when the script runs
 loadDB();
 
 // ─────────────────────────────────────────────
-//  SECRET TRIGGER  (triple-click ©)
+//  LOGIN LOGIC (NEW: Real Auth Integration)
+// ─────────────────────────────────────────────
+const studentBtn = document.getElementById('login-student-btn');
+const adminBtn = document.getElementById('login-admin-btn');
+const studentBox = document.getElementById('student-login-box');
+const adminBox = document.getElementById('admin-login-box');
+
+// UI Toggles
+document.getElementById('toggle-admin-ui').onclick = (e) => { e.preventDefault(); studentBox.style.display='none'; adminBox.style.display='block'; };
+document.getElementById('toggle-student-ui').onclick = (e) => { e.preventDefault(); studentBox.style.display='block'; adminBox.style.display='none'; };
+
+// Student Access (View only)
+studentBtn.onclick = () => {
+  const v = document.getElementById('access-code').value.trim();
+  if (v === STUDENT_CODE) {
+    closeModal('login-overlay');
+    showArchive();
+  } else {
+    showLoginErr('Incorrect student code.');
+  }
+};
+
+// Admin Login (Real Firebase Auth)
+adminBtn.onclick = async () => {
+  const email = document.getElementById('admin-email').value.trim();
+  const pass  = document.getElementById('admin-password').value;
+  if(!email || !pass) return showLoginErr('Email and Password required.');
+
+  try {
+    adminBtn.textContent = 'Verifying...';
+    await signInWithEmailAndPassword(auth, email, pass);
+    closeModal('login-overlay');
+    showArchive();
+  } catch (err) {
+    showLoginErr('Invalid admin credentials.');
+  } finally {
+    adminBtn.textContent = 'Admin Login';
+  }
+};
+
+function showLoginErr(msg) {
+  const err = document.getElementById('login-error');
+  err.textContent = msg;
+  setTimeout(() => err.textContent='', 3000);
+}
+
+document.getElementById('logout-btn').onclick = () => {
+  signOut(auth).then(() => {
+    document.getElementById('archive-page').style.display='none';
+    document.getElementById('main-site').style.display='block';
+    window.location.reload(); 
+  });
+};
+
+// ─────────────────────────────────────────────
+//  UI HELPERS & MODALS
 // ─────────────────────────────────────────────
 let clicks = 0, clickTimer = null;
 document.getElementById('secret-trigger').addEventListener('click', e => {
@@ -487,17 +568,11 @@ document.getElementById('secret-trigger').addEventListener('click', e => {
   else { clickTimer = setTimeout(() => clicks = 0, 800); }
 });
 
-// ─────────────────────────────────────────────
-//  MODAL HELPERS
-// ─────────────────────────────────────────────
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-// close on backdrop click
 ['login-overlay','cat-overlay','test-overlay','del-overlay'].forEach(id => {
-  document.getElementById(id).addEventListener('click', e => {
-    if (e.target.id === id) closeModal(id);
-  });
+  document.getElementById(id).addEventListener('click', e => { if (e.target.id === id) closeModal(id); });
 });
 
 document.getElementById('login-close').onclick = () => closeModal('login-overlay');
@@ -505,28 +580,6 @@ document.getElementById('cat-close').onclick   = () => closeModal('cat-overlay')
 document.getElementById('test-close').onclick  = () => closeModal('test-overlay');
 document.getElementById('del-cancel').onclick  = () => closeModal('del-overlay');
 
-// ─────────────────────────────────────────────
-//  LOGIN
-// ─────────────────────────────────────────────
-document.getElementById('login-btn').onclick = tryLogin;
-document.getElementById('access-code').addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
-
-function tryLogin() {
-  const v = document.getElementById('access-code').value.trim();
-  const err = document.getElementById('login-error');
-  if (v === ADMIN_CODE)   { isAdmin=true;  closeModal('login-overlay'); showArchive(); }
-  else if (v === STUDENT_CODE) { isAdmin=false; closeModal('login-overlay'); showArchive(); }
-  else {
-    err.textContent = 'Incorrect access code.';
-    const inp = document.getElementById('access-code');
-    inp.value=''; inp.focus(); inp.style.borderColor='#b85c38';
-    setTimeout(()=>{ inp.style.borderColor=''; err.textContent=''; }, 2000);
-  }
-}
-
-// ─────────────────────────────────────────────
-//  ARCHIVE PAGE
-// ─────────────────────────────────────────────
 function showArchive() {
   document.getElementById('main-site').style.display='none';
   document.getElementById('archive-page').style.display='block';
@@ -542,7 +595,7 @@ document.getElementById('back-btn').onclick = () => {
 };
 
 // ─────────────────────────────────────────────
-//  RENDER
+//  RENDER FUNCTIONS
 // ─────────────────────────────────────────────
 function renderAll() { renderFilters(); renderCourses(); }
 
@@ -560,8 +613,6 @@ function renderFilters() {
   bar.innerHTML = html;
   bar.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
     currentFilter = btn.dataset.filter;
-    bar.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
     renderCourses();
   }));
 }
@@ -571,18 +622,7 @@ function renderCourses() {
   const visible = db.cats.filter(c => currentFilter==='all' || c.subject===currentFilter);
 
   if (db.cats.length === 0) {
-    cont.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">📚</div>
-      <h3>No courses yet</h3>
-      <p>${isAdmin?'Click "+ New Category" above to get started.':'Check back soon — materials will be posted here.'}</p>
-    </div>`; return;
-  }
-  if (visible.length === 0) {
-    cont.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">🔍</div>
-      <h3>No courses in this subject</h3>
-      <p>Try a different filter above.</p>
-    </div>`; return;
+    cont.innerHTML = `<div class="empty-state"><h3>No courses yet</h3><p>${isAdmin?'Click "+ New Category" above.':'Nothing here yet.'}</p></div>`; return;
   }
 
   cont.innerHTML = visible.map(cat => {
@@ -591,212 +631,112 @@ function renderCourses() {
       <button class="btn-sm" data-add-test="${cat.id}">+ Test</button>
       <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
     </div>` : '';
-    const testsHtml = tests.length === 0
-      ? `<div class="empty-state" style="padding:1.25rem">
-          <div class="empty-icon" style="font-size:1.5rem">📄</div>
-          <h3 style="font-size:.95rem">No tests yet</h3>
-          ${isAdmin?'<p>Click "+ Test" to upload one.</p>':'<p>Nothing here yet.</p>'}
-        </div>`
+    const testsHtml = tests.length === 0 ? `<p style="font-size:.8rem; opacity:.5; padding:1rem;">No tests uploaded.</p>`
       : tests.map(t => {
-          // LINK UPDATED TO OPEN IN A NEW TAB INSTEAD OF FORCING DOWNLOAD
           const dl = t.fileData ? `<a class="test-download" href="${t.fileData}" target="_blank" rel="noopener noreferrer">↓ Open/Download</a>` : '';
-          const del = isAdmin ? `<button class="test-delete" data-del-test="${t.id}" title="Delete">✕</button>` : '';
+          const del = isAdmin ? `<button class="test-delete" data-del-test="${t.id}">✕</button>` : '';
           return `<div class="test-item">
-            <div class="test-item-left">
-              <div class="test-item-name">${esc(t.name)}</div>
-              ${t.notes?`<div class="test-item-meta">${esc(t.notes)}</div>`:''}
-            </div>
-            <div class="test-item-right">
-              <span class="test-badge badge-${t.type}">${t.type.charAt(0).toUpperCase()+t.type.slice(1)}</span>
-              ${dl}${del}
-            </div>
+            <div class="test-item-left"><div class="test-item-name">${esc(t.name)}</div></div>
+            <div class="test-item-right"><span class="test-badge badge-${t.type}">${t.type}</span>${dl}${del}</div>
           </div>`;
         }).join('');
 
     return `<div class="course-section">
-      <div class="course-header">
-        <div class="course-header-left">
-          <div class="course-title">${esc(cat.name)}</div>
-          <div class="course-teacher">${esc(cat.teacher)}</div>
-        </div>
-        ${adminBtns}
-      </div>
+      <div class="course-header"><div class="course-header-left"><div class="course-title">${esc(cat.name)}</div><div class="course-teacher">${esc(cat.teacher)}</div></div>${adminBtns}</div>
       <div class="test-list">${testsHtml}</div>
     </div>`;
   }).join('');
 
-  // wire up dynamic buttons
-  cont.querySelectorAll('[data-add-test]').forEach(btn =>
-    btn.addEventListener('click', () => openAddTest(btn.dataset.addTest)));
-  cont.querySelectorAll('[data-del-cat]').forEach(btn =>
-    btn.addEventListener('click', () => confirmDelCat(btn.dataset.delCat)));
-  cont.querySelectorAll('[data-del-test]').forEach(btn =>
-    btn.addEventListener('click', () => confirmDelTest(btn.dataset.delTest)));
+  cont.querySelectorAll('[data-add-test]').forEach(btn => btn.onclick = () => openAddTest(btn.dataset.addTest));
+  cont.querySelectorAll('[data-del-cat]').forEach(btn => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
+  cont.querySelectorAll('[data-del-test]').forEach(btn => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
 }
 
-function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 // ─────────────────────────────────────────────
-//  CATEGORY MODAL
+//  ADMIN OPERATIONS
 // ─────────────────────────────────────────────
-document.getElementById('btn-new-cat').onclick = () => {
-  clearCatForm(); openModal('cat-overlay');
-  setTimeout(()=>document.getElementById('cat-name').focus(),200);
-};
+document.getElementById('btn-new-cat').onclick = () => { clearCatForm(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
 
-function clearCatForm() {
-  ['cat-name','cat-teacher'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('cat-subject').value='other';
-  document.getElementById('cat-error').textContent='';
-}
+function clearCatForm() { ['cat-name','cat-teacher'].forEach(id=>document.getElementById(id).value=''); document.getElementById('cat-error').textContent=''; }
+
 function saveCategory() {
-  const name    = document.getElementById('cat-name').value.trim();
+  const name = document.getElementById('cat-name').value.trim();
   const teacher = document.getElementById('cat-teacher').value.trim();
   const subject = document.getElementById('cat-subject').value;
-  const err     = document.getElementById('cat-error');
-  if (!name)    { err.textContent='Course name is required.'; return; }
-  if (!teacher) { err.textContent='Teacher name is required.'; return; }
+  if (!name || !teacher) return;
   db.cats.push({ id:uid(), name, teacher, subject });
-  saveDB(); closeModal('cat-overlay'); clearCatForm(); renderAll();
+  saveDB(); closeModal('cat-overlay'); renderAll();
 }
 
-// ─────────────────────────────────────────────
-//  TEST MODAL & FIREBASE STORAGE LOGIC
-// ─────────────────────────────────────────────
 let pendingFile = null;
-
-document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
+document.getElementById('btn-new-test').onclick = () => openAddTest(null);
 document.getElementById('test-save-btn').onclick = saveTest;
 
 function openAddTest(preselCatId) {
   clearTestForm();
-  // populate category dropdown
   const sel = document.getElementById('test-cat-select');
-  sel.innerHTML = db.cats.length === 0
-    ? '<option value="">No categories yet</option>'
-    : db.cats.map(c=>`<option value="${c.id}"${c.id===preselCatId?' selected':''}>${esc(c.name)} — ${esc(c.teacher)}</option>`).join('');
+  sel.innerHTML = db.cats.map(c=>`<option value="${c.id}"${c.id===preselCatId?' selected':''}>${esc(c.name)}</option>`).join('');
   openModal('test-overlay');
-  setTimeout(()=>document.getElementById('test-name').focus(),200);
-}
-function clearTestForm() {
-  ['test-name','test-notes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('test-type').value='quiz';
-  document.getElementById('test-error').textContent='';
-  document.getElementById('file-selected').textContent='';
-  pendingFile = null;
 }
 
-// file drop
-const dropZone = document.getElementById('file-drop');
+function clearTestForm() { ['test-name','test-notes'].forEach(id=>document.getElementById(id).value=''); pendingFile = null; document.getElementById('file-selected').textContent=''; }
+
 const fileInput = document.getElementById('test-file');
-dropZone.addEventListener('click', ()=>fileInput.click());
-dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
-dropZone.addEventListener('dragleave', ()=>dropZone.classList.remove('dragover'));
-dropZone.addEventListener('drop', e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); setFile(e.dataTransfer.files[0]); });
-fileInput.addEventListener('change', ()=>{ setFile(fileInput.files[0]); fileInput.value=''; });
+document.getElementById('file-drop').onclick = () => fileInput.click();
+fileInput.onchange = () => { pendingFile = fileInput.files[0]; document.getElementById('file-selected').textContent = '✓ ' + pendingFile.name; };
 
-function setFile(f) {
-  if (!f) return;
-  pendingFile = f;
-  document.getElementById('file-selected').textContent = '✓ ' + f.name;
-}
-
-// REWRITTEN FOR FIREBASE STORAGE
 async function saveTest() {
   const catId = document.getElementById('test-cat-select').value;
   const name  = document.getElementById('test-name').value.trim();
   const type  = document.getElementById('test-type').value;
-  const notes = document.getElementById('test-notes').value.trim();
-  const err   = document.getElementById('test-error');
   const btn   = document.getElementById('test-save-btn');
+  if (!catId || !name) return;
 
-  if (!catId) { err.textContent='Create a category first.'; return; }
-  if (!name)  { err.textContent='Test name is required.'; return; }
+  const entry = { id:uid(), catId, name, type, notes:'', fileData:null, fileName:null };
+  btn.textContent = 'Uploading...'; btn.disabled = true;
 
-  const entry = { id:uid(), catId, name, type, notes, fileData:null, fileName:null };
-
-  if (pendingFile) {
-    // UI Feedback: Show the user it's working
-    btn.textContent = 'Uploading...';
-    btn.disabled = true;
-
-    try {
-      // 1. Create a unique path/name for the file in Firebase Storage
+  try {
+    if (pendingFile) {
       const fileRef = ref(storage, `archive_files/${Date.now()}_${pendingFile.name}`);
-      
-      // 2. Upload the raw file
       await uploadBytes(fileRef, pendingFile);
-      
-      // 3. Get the public download URL
-      const downloadURL = await getDownloadURL(fileRef);
-      
-      // 4. Save the URL to your database entry instead of the Base64 string
-      entry.fileData = downloadURL; 
+      entry.fileData = await getDownloadURL(fileRef);
       entry.fileName = pendingFile.name;
-      
-      db.tests.push(entry); 
-      await saveDB(); 
-      
-      closeModal('test-overlay'); 
-      clearTestForm(); 
-      renderAll();
-    } catch (error) {
-      console.error("Upload error:", error);
-      err.textContent = 'Upload failed. Check console and Firebase rules.';
-    } finally {
-      // Reset the button state
-      btn.textContent = 'Add to Archive';
-      btn.disabled = false;
     }
-  } else {
-    // Save without a file
-    db.tests.push(entry); 
-    await saveDB(); 
-    closeModal('test-overlay'); 
-    clearTestForm(); 
-    renderAll();
-  }
+    db.tests.push(entry);
+    await saveDB();
+    closeModal('test-overlay'); renderAll();
+  } catch (err) { alert("Error uploading file. Check Firebase storage rules."); }
+  finally { btn.textContent = 'Add to Archive'; btn.disabled = false; }
 }
 
-// ─────────────────────────────────────────────
-//  DELETE
-// ─────────────────────────────────────────────
-function confirmDelCat(catId) {
-  const cat = db.cats.find(c=>c.id===catId);
-  const n   = db.tests.filter(t=>t.catId===catId).length;
-  document.getElementById('del-msg').textContent =
-    `Delete "${cat.name}" and its ${n} test(s)? This cannot be undone.`;
+function confirmDelCat(id) {
+  document.getElementById('del-msg').textContent = "Delete this course and all its tests?";
   document.getElementById('del-confirm').onclick = () => {
-    db.cats  = db.cats.filter(c=>c.id!==catId);
-    db.tests = db.tests.filter(t=>t.catId!==catId);
+    db.cats = db.cats.filter(c=>c.id!==id);
+    db.tests = db.tests.filter(t=>t.catId!==id);
     saveDB(); closeModal('del-overlay'); renderAll();
   };
   openModal('del-overlay');
 }
-function confirmDelTest(testId) {
-  const t = db.tests.find(t=>t.id===testId);
-  document.getElementById('del-msg').textContent = `Delete "${t.name}"? This cannot be undone.`;
+
+function confirmDelTest(id) {
+  document.getElementById('del-msg').textContent = "Delete this test?";
   document.getElementById('del-confirm').onclick = () => {
-    db.tests = db.tests.filter(x=>x.id!==testId);
+    db.tests = db.tests.filter(t=>t.id!==id);
     saveDB(); closeModal('del-overlay'); renderAll();
   };
   openModal('del-overlay');
 }
 
 document.getElementById('btn-clear-all').onclick = () => {
-  document.getElementById('del-msg').textContent = 'Delete ALL categories and tests? This cannot be undone.';
-  document.getElementById('del-confirm').onclick = () => {
-    db = {cats:[],tests:[]}; saveDB(); closeModal('del-overlay'); renderAll();
-  };
+  document.getElementById('del-msg').textContent = "Delete ALL data?";
+  document.getElementById('del-confirm').onclick = () => { db = {cats:[],tests:[]}; saveDB(); closeModal('del-overlay'); renderAll(); };
   openModal('del-overlay');
 };
 
-// ─────────────────────────────────────────────
-//  UTIL
-// ─────────────────────────────────────────────
 function uid() { return Math.random().toString(36).slice(2,9)+Date.now().toString(36); }
 </script>
 </body>
