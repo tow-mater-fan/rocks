@@ -26,8 +26,6 @@
   .nav-links a { font-family:'DM Mono',monospace; font-size:.78rem; color:var(--quartz); text-decoration:none;
     letter-spacing:.12em; text-transform:uppercase; transition:color .2s; }
   .nav-links a:hover { color:var(--sand); }
-
-  /* Mobile nav */
   .nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
   .nav-toggle span { display:block; width:22px; height:2px; background:var(--quartz); border-radius:2px; transition:all .25s; }
   .nav-toggle.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
@@ -119,7 +117,7 @@
   .modal-eyebrow { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.25em;
     text-transform:uppercase; color:var(--rust); margin-bottom:.5rem; }
   .modal h2  { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:.5rem; }
-  .modal > p { font-size:.85rem; color:var(--slate); margin-bottom:1.5rem; }
+  .modal > p, .modal .modal-desc { font-size:.85rem; color:var(--slate); margin-bottom:1.5rem; }
   .modal-btn { width:100%; padding:.85rem; background:var(--stone); color:var(--cream); border:none;
     border-radius:4px; font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.2em;
     text-transform:uppercase; cursor:pointer; transition:background .2s; margin-top:.5rem; }
@@ -140,26 +138,41 @@
   .form-group select,
   .form-group textarea {
     width:100%; padding:.7rem .9rem; border:1.5px solid rgba(100,80,60,.3); border-radius:4px;
-    background:var(--parchment); font-family:'DM Mono',monospace; font-size:.88rem;
-    color:var(--stone); outline:none; transition:border-color .2s;
-    /* Fix iOS zoom on focus */
+    background:var(--parchment); font-family:'DM Mono',monospace;
     font-size:max(.88rem, 16px);
+    color:var(--stone); outline:none; transition:border-color .2s;
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--rust); }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
 
-  .file-drop { border:2px dashed rgba(100,80,60,.3); border-radius:4px; padding:1.5rem;
+  /* ── FILE SLOTS ── */
+  .file-slots { display:flex; flex-direction:column; gap:.6rem; margin-bottom:.9rem; }
+  .file-slot { border:1.5px solid rgba(100,80,60,.2); border-radius:4px; background:var(--parchment); overflow:hidden; }
+  .file-slot-header { display:flex; align-items:center; justify-content:space-between; padding:.55rem .9rem;
+    cursor:pointer; user-select:none; transition:background .15s; }
+  .file-slot-header:hover { background:rgba(100,80,60,.08); }
+  .file-slot-label { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--granite); display:flex; align-items:center; gap:.5rem; }
+  .file-slot-label .slot-icon { font-size:.9rem; }
+  .file-slot-status { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.08em; }
+  .slot-status-none    { color:var(--slate); opacity:.6; }
+  .slot-status-ready   { color:var(--moss); }
+  .slot-status-has     { color:var(--moss); }
+  .file-slot-body { padding:.6rem .9rem .8rem; border-top:1px solid rgba(100,80,60,.15); display:none; }
+  .file-slot-body.open { display:block; }
+  .file-drop-mini { border:1.5px dashed rgba(100,80,60,.3); border-radius:3px; padding:.9rem;
     text-align:center; cursor:pointer; transition:all .2s; }
-  .file-drop:hover, .file-drop.dragover { border-color:var(--rust); background:rgba(184,92,56,.04); }
-  .file-drop p { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.06em; color:var(--slate); }
-  .file-drop strong { color:var(--rust); }
-  .file-selected { font-family:'DM Mono',monospace; font-size:.72rem; color:var(--moss);
-    margin-top:.4rem; text-align:center; letter-spacing:.04em; }
+  .file-drop-mini:hover, .file-drop-mini.dragover { border-color:var(--rust); background:rgba(184,92,56,.04); }
+  .file-drop-mini p { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.04em; color:var(--slate); }
+  .file-drop-mini strong { color:var(--rust); }
+  .file-slot-selected { font-family:'DM Mono',monospace; font-size:.68rem; color:var(--moss);
+    margin-top:.35rem; letter-spacing:.04em; }
+  .slot-clear-btn { font-family:'DM Mono',monospace; font-size:.63rem; color:var(--rust); background:none;
+    border:none; cursor:pointer; padding:.2rem 0; text-decoration:underline; letter-spacing:.04em; margin-top:.25rem; display:none; }
 
   /* ── ARCHIVE PAGE ── */
   #archive-page { display:none; min-height:100vh; flex-direction:column; background:var(--cream); }
   #archive-page.visible { display:flex; }
-
   .archive-header { background:var(--obsidian); padding:5rem 3rem 3rem; flex-shrink:0; }
   .archive-header-row { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
   .back-btn { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase;
@@ -172,10 +185,7 @@
   .admin-badge { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.15em; text-transform:uppercase;
     background:rgba(184,92,56,.25); color:var(--sand); padding:.35rem .8rem; border-radius:3px;
     border:1px solid rgba(184,92,56,.4); }
-
   .archive-body { padding:3rem; flex:1; }
-
-  /* Loading state */
   .loading-state { text-align:center; padding:4rem 2rem; }
   .loading-state p { font-family:'DM Mono',monospace; font-size:.8rem; color:var(--slate); letter-spacing:.1em;
     animation:pulse 1.5s ease-in-out infinite; }
@@ -201,39 +211,89 @@
     color:var(--granite); cursor:pointer; transition:all .2s; }
   .filter-btn:hover,.filter-btn.active { background:var(--stone); color:var(--cream); border-color:var(--stone); }
 
+  /* ── COURSE SECTIONS ── */
   .course-section { margin-bottom:2.5rem; }
   .course-header { display:flex; align-items:center; justify-content:space-between; gap:1rem;
     margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:2px solid var(--parchment); flex-wrap:wrap; }
   .course-header-left  { display:flex; align-items:baseline; gap:1rem; flex-wrap:wrap; }
+
+  /* Inline rename for course title */
+  .course-title-wrap { display:flex; align-items:baseline; gap:.5rem; }
   .course-title   { font-family:'Playfair Display',serif; font-size:1.4rem; }
   .course-teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
     color:var(--rust); text-transform:uppercase; }
+  .inline-edit-input { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone);
+    border:none; border-bottom:2px solid var(--rust); background:transparent; outline:none; min-width:160px; }
+  .inline-edit-input.teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
+    color:var(--rust); text-transform:uppercase; min-width:100px; }
+  .rename-hint { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--slate); letter-spacing:.06em;
+    opacity:.6; display:none; }
+  .course-header-left:hover .rename-hint { display:inline; }
+
   .course-actions { display:flex; gap:.5rem; }
   .btn-sm { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.08em; padding:.3rem .7rem;
     border-radius:3px; border:1.5px solid rgba(100,80,60,.2); background:transparent;
-    color:var(--slate); cursor:pointer; transition:all .2s; }
+    color:var(--slate); cursor:pointer; transition:all .2s; white-space:nowrap; }
   .btn-sm:hover       { border-color:var(--rust); color:var(--rust); }
   .btn-sm.danger:hover{ border-color:#c0392b; color:#c0392b; }
 
+  /* ── TEST ITEMS ── */
   .test-list { display:flex; flex-direction:column; gap:.6rem; }
+
+  /* Drag and drop */
   .test-item { background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:4px;
-    padding:.9rem 1.25rem; display:flex; align-items:center; justify-content:space-between;
-    gap:.75rem; transition:border-color .2s,transform .15s; flex-wrap:wrap; }
-  .test-item:hover { border-color:rgba(184,92,56,.35); transform:translateX(3px); }
+    transition:border-color .2s,transform .15s,box-shadow .2s; }
+  .test-item.drag-over-top    { border-top:2px solid var(--rust); }
+  .test-item.drag-over-bottom { border-bottom:2px solid var(--rust); }
+  .test-item.dragging { opacity:.4; box-shadow:0 8px 24px rgba(44,36,22,.2); }
+
+  .test-item-main { padding:.9rem 1.25rem; display:flex; align-items:center; justify-content:space-between;
+    gap:.75rem; flex-wrap:wrap; }
+  .drag-handle { cursor:grab; color:var(--slate); opacity:.4; font-size:1rem; padding:0 .3rem;
+    user-select:none; flex-shrink:0; transition:opacity .15s; }
+  .drag-handle:hover { opacity:.9; }
+  .drag-handle:active { cursor:grabbing; }
   .test-item-left  { display:flex; flex-direction:column; gap:.2rem; flex:1; min-width:0; }
+
+  /* Inline edit for test name */
+  .test-name-wrap { display:flex; align-items:center; gap:.4rem; }
   .test-item-name  { font-family:'Playfair Display',serif; font-size:1rem; }
+  .test-item-name.editable { cursor:text; border-bottom:1px dashed transparent; transition:border-color .15s; }
+  .test-item-name.editable:hover { border-color:var(--slate); }
+  .test-name-input { font-family:'Playfair Display',serif; font-size:1rem; color:var(--stone);
+    border:none; border-bottom:1.5px solid var(--rust); background:transparent; outline:none; width:100%; min-width:120px; }
   .test-item-meta  { font-family:'DM Mono',monospace; font-size:.67rem; color:var(--slate); letter-spacing:.04em; }
   .test-item-right { display:flex; align-items:center; gap:.6rem; flex-shrink:0; flex-wrap:wrap; }
-  .test-badge { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.1em;
-    text-transform:uppercase; padding:.22rem .65rem; border-radius:2px; white-space:nowrap; }
-  .badge-quiz    { background:rgba(90,110,74,.15);    color:var(--moss); }
-  .badge-test    { background:rgba(196,168,130,.3);   color:var(--granite); }
-  .badge-midterm { background:rgba(184,92,56,.12);    color:var(--rust); }
-  .badge-final   { background:rgba(44,36,22,.1);      color:var(--granite); }
-  .test-download { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.06em;
-    color:var(--moss); text-decoration:none; padding:.25rem .6rem;
-    border:1px solid rgba(90,110,74,.3); border-radius:3px; transition:all .2s; white-space:nowrap; }
-  .test-download:hover { background:rgba(90,110,74,.1); }
+
+  /* Inline type selector */
+  .test-type-select { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.1em;
+    text-transform:uppercase; padding:.2rem .5rem; border-radius:2px; border:1px solid transparent;
+    background:transparent; cursor:pointer; outline:none; transition:all .15s; -webkit-appearance:none; }
+  .test-type-select:focus, .test-type-select:hover { border-color:rgba(100,80,60,.3); background:var(--cream); }
+  .type-quiz    { color:var(--moss); }
+  .type-test    { color:var(--granite); }
+  .type-midterm { color:var(--rust); }
+  .type-final   { color:var(--stone); font-weight:600; }
+
+  /* File links row */
+  .test-files-row { padding:.0rem 1.25rem .75rem 1.25rem; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
+  .file-link-btn { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.06em; text-transform:uppercase;
+    padding:.22rem .65rem; border-radius:2px; border:1px solid rgba(100,80,60,.25); text-decoration:none;
+    display:inline-flex; align-items:center; gap:.3rem; transition:all .2s; cursor:pointer; background:transparent; }
+  .file-link-btn.pdf      { color:#b85c38; border-color:rgba(184,92,56,.3); }
+  .file-link-btn.pdf:hover{ background:rgba(184,92,56,.08); }
+  .file-link-btn.orig     { color:var(--moss); border-color:rgba(90,110,74,.3); }
+  .file-link-btn.orig:hover{ background:rgba(90,110,74,.08); }
+  .file-link-btn.key      { color:#7a4a9a; border-color:rgba(122,74,154,.3); }
+  .file-link-btn.key:hover{ background:rgba(122,74,154,.08); }
+  .file-link-btn.add      { color:var(--slate); border-style:dashed; opacity:.65; }
+  .file-link-btn.add:hover{ opacity:1; border-color:var(--rust); color:var(--rust); }
+
+  /* Edit files dropdown */
+  .test-edit-bar { padding:0 1.25rem .75rem 1.25rem; display:none; }
+  .test-edit-bar.open { display:block; }
+  .test-edit-divider { border-top:1px solid rgba(100,80,60,.12); margin-bottom:.65rem; }
+
   .test-delete { background:none; border:none; cursor:pointer; color:var(--slate); font-size:.85rem;
     padding:.2rem .4rem; border-radius:3px; transition:color .2s; }
   .test-delete:hover { color:#c0392b; }
@@ -251,22 +311,19 @@
     .nav-links.open { display:flex; }
     .nav-links li a  { display:block; padding:.85rem 1.5rem; border-bottom:1px solid rgba(255,255,255,.05); }
     .nav-toggle { display:flex; }
-
     .hero { padding:7rem 1.25rem 4rem; }
     .section { padding:4rem 1.25rem; }
     .form-row { grid-template-columns:1fr; }
     .articles-grid { grid-template-columns:1fr; }
     footer { padding:2rem 1.25rem; flex-direction:column; align-items:flex-start; }
-
     .archive-header { padding:4.5rem 1.25rem 2rem; }
     .archive-body { padding:1.5rem 1.25rem; }
     .admin-actions { flex-direction:column; }
     .admin-btn { width:100%; text-align:center; }
-    .test-item { flex-direction:column; align-items:flex-start; }
+    .test-item-main { flex-direction:column; align-items:flex-start; }
     .test-item-right { width:100%; justify-content:flex-start; }
     .modal { padding:1.75rem 1.25rem; }
   }
-
   @media(max-width:480px){
     .facts-strip { grid-template-columns:1fr 1fr; gap:2rem; }
     .hero h1 { font-size:2.2rem; }
@@ -350,7 +407,6 @@
     <div class="modal-eyebrow">Restricted Access</div>
     <h2>Resource Archive</h2>
     <p>Students: Enter access code. Admin: Enter credentials.</p>
-
     <div id="student-login-box">
       <div class="form-group">
         <label for="access-code">Student Access Code</label>
@@ -361,7 +417,6 @@
         <a href="#" id="toggle-admin-ui" style="font-size:.7rem; color:var(--rust); font-family:'DM Mono'; text-decoration:none;">Admin Login →</a>
       </div>
     </div>
-
     <div id="admin-login-box" style="display:none">
       <div class="form-group">
         <label for="admin-email">Admin Email</label>
@@ -376,7 +431,6 @@
         <a href="#" id="toggle-student-ui" style="font-size:.7rem; color:var(--slate); font-family:'DM Mono'; text-decoration:none;">← Student Access</a>
       </div>
     </div>
-
     <div class="modal-error" id="login-error"></div>
   </div>
 </div>
@@ -408,13 +462,14 @@
   </div>
 </div>
 
+<!-- Add/Edit Test Modal -->
 <div class="modal-overlay" id="test-overlay">
   <div class="modal modal-wide">
     <button class="modal-close" id="test-close">✕</button>
-    <div class="modal-eyebrow">Admin · Add Test</div>
-    <h2>Upload Test</h2>
-    <p>Add a past exam or assignment to a course category.</p>
-    <div class="form-group"><label>Category</label>
+    <div class="modal-eyebrow" id="test-modal-eyebrow">Admin · Add Test</div>
+    <h2 id="test-modal-title">Upload Test</h2>
+    <p class="modal-desc">Add a past exam or assignment to a course category.</p>
+    <div class="form-group" id="test-cat-group"><label>Category</label>
       <select id="test-cat-select"></select></div>
     <div class="form-row">
       <div class="form-group"><label>Test Name</label>
@@ -430,15 +485,12 @@
     </div>
     <div class="form-group"><label>Notes (optional)</label>
       <textarea id="test-notes" rows="2" placeholder="e.g. 40 questions, calculator allowed, Fall 2024"></textarea></div>
-    <div class="form-group">
-      <label>File (optional — PDF, DOC, JPG, PNG)</label>
-      <div class="file-drop" id="file-drop">
-        <p>Drop file here or <strong>click to browse</strong></p>
-        <p style="margin-top:.25rem;font-size:.65rem;opacity:.55">Files are saved to Firebase Storage.</p>
-        <input type="file" id="test-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none">
-      </div>
-      <div class="file-selected" id="file-selected"></div>
+
+    <!-- Three file slots -->
+    <div class="form-group"><label>Files</label>
+      <div class="file-slots" id="file-slots-container"></div>
     </div>
+
     <button class="modal-btn" id="test-save-btn">Add to Archive</button>
     <div class="modal-error" id="test-error"></div>
   </div>
@@ -488,7 +540,7 @@
   </div>
 </div>
 
-<!-- ═══════════════ MOBILE NAV SCRIPT ═══════════════ -->
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
   const navToggle = document.getElementById('nav-toggle');
   const navLinks  = document.getElementById('nav-links');
@@ -500,18 +552,14 @@
     navToggle.classList.remove('open');
     navLinks.classList.remove('open');
   }
-  // Close nav when clicking outside
   document.addEventListener('click', (e) => {
     if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) closeNav();
   });
 </script>
 
-<!-- ═══════════════ FIREBASE APP SCRIPT ═══════════════ -->
 <script type="module">
-// ─── STUDENT CODE ───────────────────────────────────────
 const STUDENT_CODE = 'geology42';
 
-// ─── FIREBASE IMPORTS ────────────────────────────────────
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc }
@@ -535,22 +583,28 @@ const firestoreDB = getFirestore(app);
 const storage     = getStorage(app);
 const auth        = getAuth(app);
 
-// ─── STATE ───────────────────────────────────────────────
+// ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
 let currentFilter = 'all';
-let dbLoaded      = false;   // FIX: track whether DB has been loaded
-let archiveOpen   = false;   // FIX: track whether archive is visible
+let dbLoaded      = false;
+let archiveOpen   = false;
 
-// ─── DATABASE ────────────────────────────────────────────
+// File slot state for modal
+// slots: { pdf: {file,url,name}, orig: {file,url,name}, key: {file,url,name} }
+let pendingSlots  = { pdf: null, orig: null, key: null };
+let editingTestId = null; // null = new test, string = editing existing
+
+// ── DATABASE ──
 async function loadDB() {
   try {
     const snap = await getDoc(doc(firestoreDB, "archive", "mainData"));
     if (snap.exists()) {
       db = snap.data();
-      // Ensure arrays exist even if Firestore doc is malformed
       if (!Array.isArray(db.cats))  db.cats  = [];
       if (!Array.isArray(db.tests)) db.tests = [];
+      // Migrate old tests: add order field if missing
+      db.tests.forEach((t, i) => { if (t.order === undefined) t.order = i; });
     } else {
       await saveDB();
     }
@@ -558,7 +612,6 @@ async function loadDB() {
     console.error("Error loading database:", err);
   } finally {
     dbLoaded = true;
-    // FIX: only render once DB is ready and archive is shown
     if (archiveOpen) renderAll();
   }
 }
@@ -569,26 +622,22 @@ async function saveDB() {
   } catch (err) {
     console.error("Error saving database:", err);
     alert("Save failed — you may not have write permission.");
-    throw err; // re-throw so callers can handle it
+    throw err;
   }
 }
 
-// ─── AUTH LISTENER ───────────────────────────────────────
-// FIX: only update UI; never trigger a render that could overwrite in-flight data
+// ── AUTH ──
 onAuthStateChanged(auth, (user) => {
   isAdmin = !!user;
-  document.getElementById('logout-btn').style.display  = isAdmin ? 'block'        : 'none';
-  document.getElementById('admin-panel').style.display = isAdmin ? 'block'        : 'none';
+  document.getElementById('logout-btn').style.display  = isAdmin ? 'block' : 'none';
+  document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('admin-badge').style.display = isAdmin ? 'inline-block' : 'none';
-
-  // Re-render only if archive is already showing and data is ready
   if (archiveOpen && dbLoaded) renderAll();
 });
 
-// Start loading data immediately (parallel with auth check)
 loadDB();
 
-// ─── MODALS ──────────────────────────────────────────────
+// ── MODALS ──
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
@@ -603,7 +652,7 @@ document.getElementById('cat-close').onclick    = () => closeModal('cat-overlay'
 document.getElementById('test-close').onclick   = () => closeModal('test-overlay');
 document.getElementById('del-cancel').onclick   = () => closeModal('del-overlay');
 
-// ─── SECRET TRIGGER ──────────────────────────────────────
+// ── SECRET TRIGGER ──
 let clicks = 0, clickTimer = null;
 document.getElementById('secret-trigger').addEventListener('click', e => {
   e.stopPropagation(); clicks++;
@@ -612,7 +661,7 @@ document.getElementById('secret-trigger').addEventListener('click', e => {
   else { clickTimer = setTimeout(() => clicks = 0, 800); }
 });
 
-// ─── LOGIN ───────────────────────────────────────────────
+// ── LOGIN ──
 const studentBox = document.getElementById('student-login-box');
 const adminBox   = document.getElementById('admin-login-box');
 
@@ -621,12 +670,8 @@ document.getElementById('toggle-student-ui').onclick = e => { e.preventDefault()
 
 document.getElementById('login-student-btn').onclick = () => {
   const v = document.getElementById('access-code').value.trim();
-  if (v === STUDENT_CODE) {
-    closeModal('login-overlay');
-    showArchive();
-  } else {
-    showLoginErr('Incorrect student code.');
-  }
+  if (v === STUDENT_CODE) { closeModal('login-overlay'); showArchive(); }
+  else showLoginErr('Incorrect student code.');
 };
 
 document.getElementById('login-admin-btn').onclick = async () => {
@@ -639,11 +684,8 @@ document.getElementById('login-admin-btn').onclick = async () => {
     await signInWithEmailAndPassword(auth, email, pass);
     closeModal('login-overlay');
     showArchive();
-  } catch {
-    showLoginErr('Invalid admin credentials.');
-  } finally {
-    btn.textContent = 'Admin Login'; btn.disabled = false;
-  }
+  } catch { showLoginErr('Invalid admin credentials.'); }
+  finally { btn.textContent = 'Admin Login'; btn.disabled = false; }
 };
 
 function showLoginErr(msg) {
@@ -652,7 +694,6 @@ function showLoginErr(msg) {
   setTimeout(() => el.textContent = '', 3000);
 }
 
-// Press Enter to submit in login fields
 document.getElementById('access-code').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('login-student-btn').click(); });
 document.getElementById('admin-password').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('login-admin-btn').click(); });
 
@@ -664,7 +705,7 @@ document.getElementById('logout-btn').onclick = async () => {
   window.scrollTo(0, 0);
 };
 
-// ─── SHOW / HIDE ARCHIVE ─────────────────────────────────
+// ── SHOW / HIDE ARCHIVE ──
 function showArchive() {
   archiveOpen = true;
   document.getElementById('main-site').style.display = 'none';
@@ -672,11 +713,7 @@ function showArchive() {
   document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('admin-badge').style.display = isAdmin ? 'inline-block' : 'none';
   window.scrollTo(0, 0);
-
-  if (dbLoaded) {
-    renderAll();
-  }
-  // If DB not ready yet, loadDB()'s finally block will call renderAll()
+  if (dbLoaded) renderAll();
 }
 
 document.getElementById('back-btn').onclick = () => {
@@ -686,11 +723,8 @@ document.getElementById('back-btn').onclick = () => {
   window.scrollTo(0, 0);
 };
 
-// ─── RENDER ──────────────────────────────────────────────
-function renderAll() {
-  renderFilters();
-  renderCourses();
-}
+// ── RENDER ──
+function renderAll() { renderFilters(); renderCourses(); }
 
 const SUBJ_LABELS = {
   all:'All Courses', math:'Mathematics', sci:'Science', eng:'English',
@@ -706,12 +740,8 @@ function renderFilters() {
     html += `<button class="filter-btn ${currentFilter===s?'active':''}" data-filter="${s}">${SUBJ_LABELS[s]||s}</button>`;
   });
   bar.innerHTML = html;
-  // FIX: re-attach listeners after innerHTML replacement
   bar.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      currentFilter = btn.dataset.filter;
-      renderAll(); // re-render both filters and courses to sync active state
-    });
+    btn.addEventListener('click', () => { currentFilter = btn.dataset.filter; renderAll(); });
   });
 }
 
@@ -720,75 +750,515 @@ function renderCourses() {
   const visible = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
 
   if (db.cats.length === 0) {
-    cont.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">🗂</div>
-      <h3>No courses yet</h3>
-      <p>${isAdmin ? 'Click "+ New Category" above to get started.' : 'Nothing here yet — check back soon.'}</p>
-    </div>`;
+    cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂</div><h3>No courses yet</h3>
+      <p>${isAdmin ? 'Click "+ New Category" above to get started.' : 'Nothing here yet — check back soon.'}</p></div>`;
     return;
   }
-
   if (visible.length === 0) {
-    cont.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">🔍</div>
-      <h3>No courses in this category</h3>
-      <p>Try selecting a different filter above.</p>
-    </div>`;
+    cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No courses in this category</h3>
+      <p>Try selecting a different filter above.</p></div>`;
     return;
   }
 
   cont.innerHTML = visible.map(cat => {
-    const tests      = db.tests.filter(t => t.catId === cat.id);
-    const adminBtns  = isAdmin ? `<div class="course-actions">
-      <button class="btn-sm"        data-add-test="${cat.id}">+ Test</button>
-      <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
-    </div>` : '';
+    const tests = [...db.tests.filter(t => t.catId === cat.id)]
+      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+    const adminBtns = isAdmin ? `
+      <div class="course-actions">
+        <button class="btn-sm" data-add-test="${cat.id}">+ Test</button>
+        <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
+      </div>` : '';
+
+    const titleBlock = isAdmin
+      ? `<div class="course-title-wrap">
+           <span class="course-title editable-cat-name" data-cat-id="${cat.id}">${esc(cat.name)}</span>
+           <span class="rename-hint">click to rename</span>
+         </div>
+         <span class="course-teacher editable-cat-teacher" data-cat-id="${cat.id}">${esc(cat.teacher)}</span>`
+      : `<span class="course-title">${esc(cat.name)}</span>
+         <span class="course-teacher">${esc(cat.teacher)}</span>`;
 
     const testsHtml = tests.length === 0
       ? `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests uploaded yet.</p>`
-      : tests.map(t => {
-          // FIX: only render download link if fileData is a non-empty string
-          const dl  = (t.fileData && typeof t.fileData === 'string')
-            ? `<a class="test-download" href="${esc(t.fileData)}" target="_blank" rel="noopener noreferrer">↓ Open/Download</a>`
-            : '';
-          const del = isAdmin
-            ? `<button class="test-delete" data-del-test="${t.id}" title="Delete">✕</button>`
-            : '';
-          return `<div class="test-item">
-            <div class="test-item-left">
-              <div class="test-item-name">${esc(t.name)}</div>
-              ${t.notes ? `<div class="test-item-meta">${esc(t.notes)}</div>` : ''}
-            </div>
-            <div class="test-item-right">
-              <span class="test-badge badge-${esc(t.type)}">${esc(t.type)}</span>
-              ${dl}${del}
-            </div>
-          </div>`;
-        }).join('');
+      : tests.map(t => buildTestItem(t)).join('');
 
-    return `<div class="course-section">
+    return `<div class="course-section" data-cat-id="${cat.id}">
       <div class="course-header">
-        <div class="course-header-left">
-          <div class="course-title">${esc(cat.name)}</div>
-          <div class="course-teacher">${esc(cat.teacher)}</div>
-        </div>
+        <div class="course-header-left">${titleBlock}</div>
         ${adminBtns}
       </div>
-      <div class="test-list">${testsHtml}</div>
+      <div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>
     </div>`;
   }).join('');
 
-  // Attach event listeners after rendering
-  cont.querySelectorAll('[data-add-test]').forEach(btn => btn.onclick = () => openAddTest(btn.dataset.addTest));
-  cont.querySelectorAll('[data-del-cat]').forEach(btn  => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
-  cont.querySelectorAll('[data-del-test]').forEach(btn => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
+  // Attach events
+  cont.querySelectorAll('[data-add-test]').forEach(btn  => btn.onclick = () => openAddTest(btn.dataset.addTest));
+  cont.querySelectorAll('[data-del-cat]').forEach(btn   => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
+  cont.querySelectorAll('[data-del-test]').forEach(btn  => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
+  cont.querySelectorAll('[data-edit-test]').forEach(btn => btn.onclick = () => openEditTest(btn.dataset.editTest));
+
+  // Inline category rename
+  if (isAdmin) {
+    cont.querySelectorAll('.editable-cat-name').forEach(el => {
+      el.style.cursor = 'text';
+      el.addEventListener('click', () => startCatRename(el, 'name'));
+    });
+    cont.querySelectorAll('.editable-cat-teacher').forEach(el => {
+      el.style.cursor = 'text';
+      el.addEventListener('click', () => startCatRename(el, 'teacher'));
+    });
+    // Inline test name rename
+    cont.querySelectorAll('.editable-test-name').forEach(el => {
+      el.addEventListener('click', () => startTestNameEdit(el));
+    });
+    // Inline type change
+    cont.querySelectorAll('.inline-type-select').forEach(sel => {
+      sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
+    });
+    // Drag-and-drop
+    setupDragDrop();
+    // File slot toggles (add/remove file links)
+    setupFileSlotToggles();
+  } else {
+    // Students: file slot toggles for viewing only
+    setupFileSlotToggles();
+  }
 }
 
-function esc(s) {
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function buildTestItem(t) {
+  // File links section
+  const slots = t.files || {};
+  let fileLinksHtml = '';
+
+  const hasAnyFile = slots.pdf || slots.orig || slots.key;
+  const hasAllFiles = slots.pdf && slots.orig && slots.key;
+
+  if (isAdmin || hasAnyFile) {
+    let links = '';
+    if (slots.pdf?.url) {
+      links += `<a class="file-link-btn pdf" href="${esc(slots.pdf.url)}" target="_blank" rel="noopener">📄 PDF Version</a>`;
+    } else if (isAdmin) {
+      links += `<button class="file-link-btn add" data-slot-add="pdf" data-test-id="${t.id}">+ PDF Version</button>`;
+    }
+    if (slots.orig?.url) {
+      links += `<a class="file-link-btn orig" href="${esc(slots.orig.url)}" target="_blank" rel="noopener">📁 Original</a>`;
+    } else if (isAdmin) {
+      links += `<button class="file-link-btn add" data-slot-add="orig" data-test-id="${t.id}">+ Original</button>`;
+    }
+    if (slots.key?.url) {
+      links += `<a class="file-link-btn key" href="${esc(slots.key.url)}" target="_blank" rel="noopener">🔑 Answer Key</a>`;
+    } else if (isAdmin) {
+      links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
+    }
+    if (links) fileLinksHtml = `<div class="test-files-row" data-files-row="${t.id}">${links}</div>`;
+  }
+
+  const dragHandle = isAdmin ? `<div class="drag-handle" draggable="false" title="Drag to reorder">⠿</div>` : '';
+  const editBtn    = isAdmin ? `<button class="btn-sm" data-edit-test="${t.id}">Edit</button>` : '';
+  const delBtn     = isAdmin ? `<button class="test-delete" data-del-test="${t.id}" title="Delete">✕</button>` : '';
+
+  const typeClass = `type-${esc(t.type)}`;
+  const typeSelectOrBadge = isAdmin
+    ? `<select class="test-type-select ${typeClass} inline-type-select" data-test-id="${t.id}">
+         <option value="quiz"    ${t.type==='quiz'    ?'selected':''}>quiz</option>
+         <option value="test"    ${t.type==='test'    ?'selected':''}>test</option>
+         <option value="midterm" ${t.type==='midterm' ?'selected':''}>midterm</option>
+         <option value="final"   ${t.type==='final'   ?'selected':''}>final</option>
+       </select>`
+    : `<span class="test-badge badge-${esc(t.type)}">${esc(t.type)}</span>`;
+
+  const nameEl = isAdmin
+    ? `<span class="test-item-name editable-test-name" data-test-id="${t.id}" title="Click to rename">${esc(t.name)}</span>`
+    : `<span class="test-item-name">${esc(t.name)}</span>`;
+
+  return `<div class="test-item" data-test-id="${t.id}" data-cat-id="${t.catId}">
+    <div class="test-item-main">
+      ${dragHandle}
+      <div class="test-item-left">
+        <div class="test-name-wrap">${nameEl}</div>
+        ${t.notes ? `<div class="test-item-meta">${esc(t.notes)}</div>` : ''}
+      </div>
+      <div class="test-item-right">
+        ${typeSelectOrBadge}
+        ${editBtn}
+        ${delBtn}
+      </div>
+    </div>
+    ${fileLinksHtml}
+  </div>`;
 }
 
-// ─── ADMIN — CATEGORIES ──────────────────────────────────
+// ── INLINE CAT RENAME ──
+function startCatRename(el, field) {
+  const catId = el.dataset.catId;
+  const cat   = db.cats.find(c => c.id === catId);
+  if (!cat) return;
+  const current = field === 'name' ? cat.name : cat.teacher;
+  const isTeacher = field === 'teacher';
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = current;
+  input.className = 'inline-edit-input' + (isTeacher ? ' teacher' : '');
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+
+  async function commit() {
+    const val = input.value.trim();
+    if (val && val !== current) {
+      cat[field] = val;
+      try { await saveDB(); } catch { cat[field] = current; }
+    }
+    renderAll();
+  }
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { input.blur(); }
+    if (e.key === 'Escape') { input.value = current; input.blur(); }
+  });
+}
+
+// ── INLINE TEST NAME EDIT ──
+function startTestNameEdit(el) {
+  const testId = el.dataset.testId;
+  const test   = db.tests.find(t => t.id === testId);
+  if (!test) return;
+  const current = test.name;
+  const input   = document.createElement('input');
+  input.type    = 'text';
+  input.value   = current;
+  input.className = 'test-name-input';
+  el.replaceWith(input);
+  input.focus();
+  input.select();
+
+  async function commit() {
+    const val = input.value.trim();
+    if (val && val !== current) {
+      test.name = val;
+      try { await saveDB(); } catch { test.name = current; }
+    }
+    renderAll();
+  }
+  input.addEventListener('blur', commit);
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') input.blur();
+    if (e.key === 'Escape') { input.value = current; input.blur(); }
+  });
+}
+
+// ── INLINE TYPE CHANGE ──
+async function changeTestType(testId, newType) {
+  const test = db.tests.find(t => t.id === testId);
+  if (!test) return;
+  const prev = test.type;
+  test.type = newType;
+  try { await saveDB(); renderAll(); }
+  catch { test.type = prev; renderAll(); }
+}
+
+// ── DRAG AND DROP ──
+let dragSrcId  = null;
+let dragSrcCat = null;
+
+function setupDragDrop() {
+  const lists = document.querySelectorAll('.test-list');
+  lists.forEach(list => {
+    list.querySelectorAll('.test-item').forEach(item => {
+      // Make the handle the drag trigger
+      const handle = item.querySelector('.drag-handle');
+      if (!handle) return;
+
+      handle.setAttribute('draggable', 'true');
+      handle.addEventListener('dragstart', e => {
+        dragSrcId  = item.dataset.testId;
+        dragSrcCat = item.dataset.catId;
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', dragSrcId);
+      });
+      handle.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        document.querySelectorAll('.drag-over-top,.drag-over-bottom').forEach(el => {
+          el.classList.remove('drag-over-top','drag-over-bottom');
+        });
+      });
+
+      item.addEventListener('dragover', e => {
+        e.preventDefault();
+        if (item.dataset.testId === dragSrcId) return;
+        // Only allow drops within the same category
+        if (item.dataset.catId !== dragSrcCat) return;
+        e.dataTransfer.dropEffect = 'move';
+        const rect = item.getBoundingClientRect();
+        const midY = rect.top + rect.height / 2;
+        item.classList.remove('drag-over-top','drag-over-bottom');
+        item.classList.add(e.clientY < midY ? 'drag-over-top' : 'drag-over-bottom');
+      });
+
+      item.addEventListener('dragleave', () => {
+        item.classList.remove('drag-over-top','drag-over-bottom');
+      });
+
+      item.addEventListener('drop', async e => {
+        e.preventDefault();
+        if (item.dataset.testId === dragSrcId) return;
+        if (item.dataset.catId !== dragSrcCat) return;
+        item.classList.remove('drag-over-top','drag-over-bottom');
+
+        const rect   = item.getBoundingClientRect();
+        const after  = e.clientY >= rect.top + rect.height / 2;
+        const catId  = dragSrcCat;
+
+        // Get sorted tests for this cat
+        let catTests = db.tests
+          .filter(t => t.catId === catId)
+          .sort((a,b) => (a.order??0) - (b.order??0));
+
+        const srcIdx  = catTests.findIndex(t => t.id === dragSrcId);
+        const tgtIdx  = catTests.findIndex(t => t.id === item.dataset.testId);
+        if (srcIdx < 0 || tgtIdx < 0) return;
+
+        const [moved] = catTests.splice(srcIdx, 1);
+        const insertAt = after ? tgtIdx + (srcIdx < tgtIdx ? 0 : 1) : tgtIdx - (srcIdx < tgtIdx ? 1 : 0);
+        catTests.splice(Math.max(0, insertAt), 0, moved);
+
+        // Re-assign order
+        catTests.forEach((t, i) => { t.order = i; });
+
+        try { await saveDB(); renderAll(); }
+        catch { renderAll(); }
+      });
+    });
+  });
+}
+
+// ── FILE SLOT QUICK-ADD (inline + buttons in render) ──
+function setupFileSlotToggles() {
+  document.querySelectorAll('[data-slot-add]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openEditTestFiles(btn.dataset.testId, btn.dataset.slotAdd);
+    });
+  });
+}
+
+// Open Edit Test modal focused on a specific slot
+function openEditTestFiles(testId, focusSlot) {
+  openEditTest(testId, focusSlot);
+}
+
+// ── FILE SLOTS UI BUILDER ──
+const SLOT_CONFIG = {
+  pdf:  { label: 'PDF Version',  icon: '📄', accept: '.pdf,.PDF' },
+  orig: { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+  key:  { label: 'Answer Key',   icon: '🔑', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+};
+
+function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
+  const container = document.getElementById('file-slots-container');
+  container.innerHTML = '';
+  pendingSlots = { pdf: null, orig: null, key: null };
+
+  Object.entries(SLOT_CONFIG).forEach(([slotKey, cfg]) => {
+    const existing = existingFiles[slotKey];
+    const slotEl   = document.createElement('div');
+    slotEl.className = 'file-slot';
+    slotEl.innerHTML = `
+      <div class="file-slot-header" data-slot-key="${slotKey}">
+        <div class="file-slot-label">
+          <span class="slot-icon">${cfg.icon}</span>
+          ${cfg.label}
+        </div>
+        <div class="file-slot-status ${existing ? 'slot-status-has' : 'slot-status-none'}">
+          ${existing ? '✓ ' + esc(existing.name || 'File attached') : 'No file'}
+        </div>
+      </div>
+      <div class="file-slot-body ${focusSlot === slotKey ? 'open' : ''}">
+        ${existing ? `<div style="margin-bottom:.5rem;">
+          <a class="file-link-btn ${slotKey}" href="${esc(existing.url)}" target="_blank" rel="noopener" style="display:inline-flex;">
+            ↗ View current file: ${esc(existing.name || 'file')}
+          </a>
+        </div>` : ''}
+        <div class="file-drop-mini" data-drop-zone="${slotKey}">
+          <p>Drop file here or <strong>click to browse</strong></p>
+          <input type="file" accept="${cfg.accept}" style="display:none" data-file-input="${slotKey}">
+        </div>
+        <div class="file-slot-selected" data-slot-selected="${slotKey}"></div>
+        ${existing ? `<button class="slot-clear-btn" data-slot-clear="${slotKey}" style="display:block;">Remove this file</button>` : ''}
+      </div>`;
+    container.appendChild(slotEl);
+
+    // Toggle body
+    slotEl.querySelector('.file-slot-header').addEventListener('click', () => {
+      const body = slotEl.querySelector('.file-slot-body');
+      body.classList.toggle('open');
+    });
+
+    // File input
+    const dropZone  = slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
+    const fileInput = slotEl.querySelector(`[data-file-input="${slotKey}"]`);
+    const selLabel  = slotEl.querySelector(`[data-slot-selected="${slotKey}"]`);
+    const statusEl  = slotEl.querySelector('.file-slot-status');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      const f = fileInput.files[0];
+      if (f) {
+        pendingSlots[slotKey] = { file: f };
+        selLabel.textContent  = '✓ ' + f.name;
+        statusEl.textContent  = '✓ Ready to upload';
+        statusEl.className    = 'file-slot-status slot-status-ready';
+      }
+    });
+    dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault(); dropZone.classList.remove('dragover');
+      const f = e.dataTransfer.files[0];
+      if (f) {
+        pendingSlots[slotKey] = { file: f };
+        selLabel.textContent  = '✓ ' + f.name;
+        statusEl.textContent  = '✓ Ready to upload';
+        statusEl.className    = 'file-slot-status slot-status-ready';
+      }
+    });
+
+    // Clear button
+    const clearBtn = slotEl.querySelector(`[data-slot-clear="${slotKey}"]`);
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        pendingSlots[slotKey] = { clear: true };
+        selLabel.textContent  = '(will be removed on save)';
+        statusEl.textContent  = '✗ Marked for removal';
+        statusEl.className    = 'file-slot-status slot-status-none';
+        clearBtn.style.display = 'none';
+      });
+    }
+  });
+}
+
+// ── ADD TEST MODAL ──
+document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
+document.getElementById('test-save-btn').onclick = saveTest;
+
+function openAddTest(preselCatId) {
+  editingTestId = null;
+  clearTestForm(preselCatId);
+  document.getElementById('test-modal-eyebrow').textContent = 'Admin · Add Test';
+  document.getElementById('test-modal-title').textContent   = 'Upload Test';
+  document.getElementById('test-save-btn').textContent      = 'Add to Archive';
+  document.getElementById('test-cat-group').style.display   = 'block';
+
+  const sel = document.getElementById('test-cat-select');
+  sel.innerHTML = db.cats.map(c =>
+    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}</option>`
+  ).join('');
+  if (!sel.innerHTML) {
+    document.getElementById('test-error').textContent = 'Create a category first.';
+    return;
+  }
+  buildFileSlotsUI({});
+  openModal('test-overlay');
+}
+
+// ── EDIT TEST MODAL ──
+function openEditTest(testId, focusSlot = null) {
+  const test = db.tests.find(t => t.id === testId);
+  if (!test) return;
+  editingTestId = testId;
+
+  document.getElementById('test-modal-eyebrow').textContent = 'Admin · Edit Test';
+  document.getElementById('test-modal-title').textContent   = 'Edit Test';
+  document.getElementById('test-save-btn').textContent      = 'Save Changes';
+  document.getElementById('test-cat-group').style.display   = 'none';
+
+  document.getElementById('test-name').value  = test.name;
+  document.getElementById('test-type').value  = test.type;
+  document.getElementById('test-notes').value = test.notes || '';
+  document.getElementById('test-error').textContent = '';
+
+  buildFileSlotsUI(test.files || {}, focusSlot);
+  openModal('test-overlay');
+}
+
+function clearTestForm(preselCatId) {
+  ['test-name','test-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('test-error').textContent = '';
+  document.getElementById('test-type').value = 'quiz';
+  pendingSlots = { pdf: null, orig: null, key: null };
+}
+
+async function saveTest() {
+  const isEdit = !!editingTestId;
+  const name   = document.getElementById('test-name').value.trim();
+  const type   = document.getElementById('test-type').value;
+  const notes  = document.getElementById('test-notes').value.trim();
+  const errEl  = document.getElementById('test-error');
+  const btn    = document.getElementById('test-save-btn');
+
+  if (!name) { errEl.textContent = 'Test name is required.'; return; }
+
+  let catId;
+  if (!isEdit) {
+    catId = document.getElementById('test-cat-select').value;
+    if (!catId) { errEl.textContent = 'Category is required.'; return; }
+  }
+
+  btn.textContent = 'Saving…'; btn.disabled = true; errEl.textContent = '';
+
+  try {
+    if (isEdit) {
+      const test = db.tests.find(t => t.id === editingTestId);
+      if (!test) throw new Error('Test not found');
+      test.name  = name;
+      test.type  = type;
+      test.notes = notes;
+      if (!test.files) test.files = {};
+
+      // Handle file slots
+      for (const [slotKey, pending] of Object.entries(pendingSlots)) {
+        if (!pending) continue;
+        if (pending.clear) {
+          delete test.files[slotKey];
+        } else if (pending.file) {
+          btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
+          const fileRef  = ref(storage, `archive_files/${Date.now()}_${pending.file.name}`);
+          const snapshot = await uploadBytes(fileRef, pending.file);
+          const url      = await getDownloadURL(snapshot.ref);
+          test.files[slotKey] = { url, name: pending.file.name };
+        }
+      }
+    } else {
+      const entry = { id: uid(), catId, name, type, notes, files: {},
+        order: db.tests.filter(t => t.catId === catId).length };
+
+      for (const [slotKey, pending] of Object.entries(pendingSlots)) {
+        if (!pending || !pending.file) continue;
+        btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
+        const fileRef  = ref(storage, `archive_files/${Date.now()}_${pending.file.name}`);
+        const snapshot = await uploadBytes(fileRef, pending.file);
+        const url      = await getDownloadURL(snapshot.ref);
+        entry.files[slotKey] = { url, name: pending.file.name };
+      }
+
+      db.tests.push(entry);
+    }
+
+    await saveDB();
+    closeModal('test-overlay');
+    renderAll();
+  } catch (err) {
+    console.error(err);
+    errEl.textContent = 'Save failed. Check storage rules and try again.';
+    if (!isEdit) db.tests.pop();
+  } finally {
+    btn.textContent = isEdit ? 'Save Changes' : 'Add to Archive';
+    btn.disabled = false;
+  }
+}
+
+// ── ADMIN CATEGORIES ──
 document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
 
@@ -802,10 +1272,7 @@ async function saveCategory() {
   const name    = document.getElementById('cat-name').value.trim();
   const teacher = document.getElementById('cat-teacher').value.trim();
   const subject = document.getElementById('cat-subject').value;
-  if (!name || !teacher) {
-    document.getElementById('cat-error').textContent = 'Course name and teacher are required.';
-    return;
-  }
+  if (!name || !teacher) { document.getElementById('cat-error').textContent = 'Course name and teacher are required.'; return; }
   const btn = document.getElementById('cat-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
@@ -813,113 +1280,19 @@ async function saveCategory() {
     await saveDB();
     closeModal('cat-overlay');
     renderAll();
-  } catch {
-    // saveDB already alerts
-    db.cats.pop(); // rollback optimistic push
-  } finally {
-    btn.textContent = 'Create Category'; btn.disabled = false;
-  }
+  } catch { db.cats.pop(); }
+  finally { btn.textContent = 'Create Category'; btn.disabled = false; }
 }
 
-// ─── ADMIN — TESTS ───────────────────────────────────────
-let pendingFile = null;
-
-document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
-document.getElementById('test-save-btn').onclick = saveTest;
-
-function openAddTest(preselCatId) {
-  clearTestForm();
-  const sel = document.getElementById('test-cat-select');
-  sel.innerHTML = db.cats.map(c =>
-    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}</option>`
-  ).join('');
-  if (!sel.innerHTML) {
-    document.getElementById('test-error').textContent = 'Create a category first.';
-    return;
-  }
-  openModal('test-overlay');
-}
-
-function clearTestForm() {
-  ['test-name','test-notes'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('test-error').textContent = '';
-  pendingFile = null;
-  document.getElementById('file-selected').textContent = '';
-  document.getElementById('test-file').value = '';
-}
-
-// File drop
-const fileInput = document.getElementById('test-file');
-const fileDrop  = document.getElementById('file-drop');
-
-fileDrop.onclick = () => fileInput.click();
-fileInput.onchange = () => {
-  if (fileInput.files[0]) {
-    pendingFile = fileInput.files[0];
-    document.getElementById('file-selected').textContent = '✓ ' + pendingFile.name;
-  }
-};
-
-// Drag-and-drop support
-fileDrop.addEventListener('dragover',  e => { e.preventDefault(); fileDrop.classList.add('dragover'); });
-fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
-fileDrop.addEventListener('drop', e => {
-  e.preventDefault(); fileDrop.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file) { pendingFile = file; document.getElementById('file-selected').textContent = '✓ ' + file.name; }
-});
-
-async function saveTest() {
-  const catId = document.getElementById('test-cat-select').value;
-  const name  = document.getElementById('test-name').value.trim();
-  const type  = document.getElementById('test-type').value;
-  const notes = document.getElementById('test-notes').value.trim();
-  const errEl = document.getElementById('test-error');
-  const btn   = document.getElementById('test-save-btn');
-
-  if (!catId || !name) { errEl.textContent = 'Category and test name are required.'; return; }
-
-  btn.textContent = 'Uploading…'; btn.disabled = true; errEl.textContent = '';
-
-  // FIX: build entry first, then upload — don't mutate db until upload succeeds
-  const entry = { id: uid(), catId, name, type, notes, fileData: null, fileName: null };
-
-  try {
-    if (pendingFile) {
-      const fileRef    = ref(storage, `archive_files/${Date.now()}_${pendingFile.name}`);
-      const snapshot   = await uploadBytes(fileRef, pendingFile);
-      entry.fileData   = await getDownloadURL(snapshot.ref);
-      entry.fileName   = pendingFile.name;
-    }
-    // Only push to db after successful upload
-    db.tests.push(entry);
-    await saveDB();
-    closeModal('test-overlay');
-    renderAll();
-  } catch (err) {
-    console.error(err);
-    errEl.textContent = 'Upload failed. Check storage rules and try again.';
-    // Don't push to db if save failed
-  } finally {
-    btn.textContent = 'Add to Archive'; btn.disabled = false;
-  }
-}
-
-// ─── ADMIN — DELETE ──────────────────────────────────────
+// ── DELETE ──
 function confirmDelCat(id) {
   document.getElementById('del-msg').textContent = 'Delete this course and all its tests? This cannot be undone.';
   document.getElementById('del-confirm').onclick = async () => {
-    const prevCats  = db.cats;
-    const prevTests = db.tests;
+    const prev = { cats: [...db.cats], tests: [...db.tests] };
     db.cats  = db.cats.filter(c => c.id !== id);
     db.tests = db.tests.filter(t => t.catId !== id);
-    try {
-      await saveDB();
-      closeModal('del-overlay');
-      renderAll();
-    } catch {
-      db.cats = prevCats; db.tests = prevTests; // rollback
-    }
+    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
+    catch { db.cats = prev.cats; db.tests = prev.tests; }
   };
   openModal('del-overlay');
 }
@@ -927,15 +1300,10 @@ function confirmDelCat(id) {
 function confirmDelTest(id) {
   document.getElementById('del-msg').textContent = 'Delete this test? This cannot be undone.';
   document.getElementById('del-confirm').onclick = async () => {
-    const prev = db.tests;
+    const prev = [...db.tests];
     db.tests = db.tests.filter(t => t.id !== id);
-    try {
-      await saveDB();
-      closeModal('del-overlay');
-      renderAll();
-    } catch {
-      db.tests = prev; // rollback
-    }
+    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
+    catch { db.tests = prev; }
   };
   openModal('del-overlay');
 }
@@ -945,19 +1313,17 @@ document.getElementById('btn-clear-all').onclick = () => {
   document.getElementById('del-confirm').onclick = async () => {
     const prev = { ...db };
     db = { cats: [], tests: [] };
-    try {
-      await saveDB();
-      closeModal('del-overlay');
-      renderAll();
-    } catch {
-      db = prev; // rollback
-    }
+    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
+    catch { db = prev; }
   };
   openModal('del-overlay');
 };
 
-// ─── UTILITY ─────────────────────────────────────────────
+// ── UTILITY ──
 function uid() { return Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 </script>
 </body>
 </html>
