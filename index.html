@@ -203,13 +203,21 @@
   .admin-btn.primary { background:var(--rust); border-color:var(--rust); color:var(--cream); }
   .admin-btn.primary:hover { background:#a04e30; border-color:#a04e30; }
 
-  .filter-bar { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:2.5rem; align-items:center; }
+  /* ── FILTER BARS ── */
+  .filter-bar { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1rem; align-items:center; }
   .filter-label { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--slate); }
   .filter-btn { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; padding:.35rem .9rem;
     border-radius:3px; border:1.5px solid rgba(100,80,60,.25); background:transparent;
     color:var(--granite); cursor:pointer; transition:all .2s; }
   .filter-btn:hover,.filter-btn.active { background:var(--stone); color:var(--cream); border-color:var(--stone); }
+
+  /* Unit filter bar — slightly different tint so the two rows are visually distinct */
+  .unit-filter-bar { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:2rem; align-items:center; }
+  .unit-filter-bar .filter-label { color:var(--slate); opacity:.8; }
+  .unit-filter-bar .filter-btn { border-color:rgba(90,110,74,.25); color:var(--moss); }
+  .unit-filter-bar .filter-btn:hover,
+  .unit-filter-bar .filter-btn.active { background:var(--moss); color:var(--cream); border-color:var(--moss); }
 
   /* ── COURSE SECTIONS ── */
   .course-section { margin-bottom:2.5rem; }
@@ -237,6 +245,16 @@
   .btn-sm:hover       { border-color:var(--rust); color:var(--rust); }
   .btn-sm.danger:hover{ border-color:#c0392b; color:#c0392b; }
 
+  /* ── UNIT GROUP HEADERS (within a course) ── */
+  .unit-group { margin-bottom:1.5rem; }
+  .unit-group-header {
+    font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--moss); padding:.3rem 0 .5rem; border-bottom:1px dashed rgba(90,110,74,.3);
+    margin-bottom:.6rem; display:flex; align-items:center; gap:.5rem;
+  }
+  .unit-group-header::before { content:''; display:inline-block; width:8px; height:8px;
+    border-radius:50%; background:var(--moss); opacity:.6; }
+
   /* ── TEST ITEMS ── */
   .test-list { display:flex; flex-direction:column; gap:.6rem; }
 
@@ -263,6 +281,14 @@
   .test-name-input { font-family:'Playfair Display',serif; font-size:1rem; color:var(--stone);
     border:none; border-bottom:1.5px solid var(--rust); background:transparent; outline:none; width:100%; min-width:120px; }
   .test-item-meta  { font-family:'DM Mono',monospace; font-size:.67rem; color:var(--slate); letter-spacing:.04em; }
+
+  /* Unit badge on test item */
+  .test-unit-badge {
+    font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.1em; text-transform:uppercase;
+    padding:.15rem .5rem; border-radius:2px; background:rgba(90,110,74,.12); color:var(--moss);
+    border:1px solid rgba(90,110,74,.2); white-space:nowrap;
+  }
+
   .test-item-right { display:flex; align-items:center; gap:.6rem; flex-shrink:0; flex-wrap:wrap; }
 
   /* Inline type selector */
@@ -485,6 +511,12 @@
         </select>
       </div>
     </div>
+    <!-- NEW: Unit field -->
+    <div class="form-group">
+      <label>Unit <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. Unit 1, Chapter 3, Semester 2)</span></label>
+      <input type="text" id="test-unit" placeholder="e.g. Unit 1" list="unit-suggestions">
+      <datalist id="unit-suggestions"></datalist>
+    </div>
     <div class="form-group"><label>Notes (optional)</label>
       <textarea id="test-notes" rows="2" placeholder="e.g. 40 questions, calculator allowed, Fall 2024"></textarea></div>
 
@@ -532,9 +564,14 @@
         <button class="admin-btn" id="btn-clear-all">🗑 Clear All Data</button>
       </div>
     </div>
+    <!-- Subject filter bar -->
     <div class="filter-bar" id="filter-bar">
-      <span class="filter-label">Filter:</span>
+      <span class="filter-label">Subject:</span>
       <button class="filter-btn active" data-filter="all">All Courses</button>
+    </div>
+    <!-- Unit filter bar (hidden when no units exist) -->
+    <div class="unit-filter-bar" id="unit-filter-bar" style="display:none">
+      <span class="filter-label">Unit:</span>
     </div>
     <div id="courses-container">
       <div class="loading-state"><p>Loading archive…</p></div>
@@ -588,14 +625,14 @@ const auth        = getAuth(app);
 // ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
-let currentFilter = 'all';
+let currentFilter = 'all';   // subject filter
+let currentUnit   = 'all';   // unit filter
 let dbLoaded      = false;
 let archiveOpen   = false;
 
 // File slot state for modal
-// slots: { pdf: {file,url,name}, orig: {file,url,name}, key: {file,url,name} }
 let pendingSlots  = { pdf: null, orig: null, key: null };
-let editingTestId = null; // null = new test, string = editing existing
+let editingTestId = null;
 
 // ── DATABASE ──
 async function loadDB() {
@@ -605,8 +642,11 @@ async function loadDB() {
       db = snap.data();
       if (!Array.isArray(db.cats))  db.cats  = [];
       if (!Array.isArray(db.tests)) db.tests = [];
-      // Migrate old tests: add order field if missing
-      db.tests.forEach((t, i) => { if (t.order === undefined) t.order = i; });
+      // Migrate: add order / unit fields if missing
+      db.tests.forEach((t, i) => {
+        if (t.order === undefined) t.order = i;
+        if (t.unit  === undefined) t.unit  = '';
+      });
     } else {
       await saveDB();
     }
@@ -725,6 +765,24 @@ document.getElementById('back-btn').onclick = () => {
   window.scrollTo(0, 0);
 };
 
+// ── UNIT HELPERS ──
+// Returns a sorted, deduplicated list of non-empty unit strings from visible tests
+function getVisibleUnits(visibleCatIds) {
+  const units = new Set();
+  db.tests.forEach(t => {
+    if (visibleCatIds.includes(t.catId) && t.unit && t.unit.trim()) {
+      units.add(t.unit.trim());
+    }
+  });
+  // Sort naturally: "Unit 1" < "Unit 2" < "Unit 10"
+  return [...units].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+}
+
+// Natural-sort key for unit: puts '' (no unit) last
+function unitSortKey(unit) {
+  return unit ? unit.trim() : '\uffff'; // high codepoint → sorts last
+}
+
 // ── RENDER ──
 function renderAll() { renderFilters(); renderCourses(); }
 
@@ -734,17 +792,45 @@ const SUBJ_LABELS = {
 };
 
 function renderFilters() {
+  // ── Subject filter ──
   const bar      = document.getElementById('filter-bar');
   const subjects = [...new Set(db.cats.map(c => c.subject).filter(s => s && s !== 'other'))];
-  let html = `<span class="filter-label">Filter:</span>
+  let html = `<span class="filter-label">Subject:</span>
     <button class="filter-btn ${currentFilter==='all'?'active':''}" data-filter="all">All Courses</button>`;
   subjects.forEach(s => {
     html += `<button class="filter-btn ${currentFilter===s?'active':''}" data-filter="${s}">${SUBJ_LABELS[s]||s}</button>`;
   });
   bar.innerHTML = html;
   bar.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => { currentFilter = btn.dataset.filter; renderAll(); });
+    btn.addEventListener('click', () => {
+      currentFilter = btn.dataset.filter;
+      currentUnit   = 'all'; // reset unit filter when subject changes
+      renderAll();
+    });
   });
+
+  // ── Unit filter ──
+  const visibleCatIds = db.cats
+    .filter(c => currentFilter === 'all' || c.subject === currentFilter)
+    .map(c => c.id);
+  const units    = getVisibleUnits(visibleCatIds);
+  const unitBar  = document.getElementById('unit-filter-bar');
+
+  if (units.length === 0) {
+    unitBar.style.display = 'none';
+    currentUnit = 'all';
+  } else {
+    unitBar.style.display = 'flex';
+    let uHtml = `<span class="filter-label">Unit:</span>
+      <button class="filter-btn ${currentUnit==='all'?'active':''}" data-unit="all">All Units</button>`;
+    units.forEach(u => {
+      uHtml += `<button class="filter-btn ${currentUnit===u?'active':''}" data-unit="${esc(u)}">${esc(u)}</button>`;
+    });
+    unitBar.innerHTML = uHtml;
+    unitBar.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => { currentUnit = btn.dataset.unit; renderAll(); });
+    });
+  }
 }
 
 function renderCourses() {
@@ -763,8 +849,18 @@ function renderCourses() {
   }
 
   cont.innerHTML = visible.map(cat => {
-    const tests = [...db.tests.filter(t => t.catId === cat.id)]
-      .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    // All tests for this course sorted by unit (natural), then by manual order within each unit
+    let tests = [...db.tests.filter(t => t.catId === cat.id)]
+      .sort((a, b) => {
+        const ua = unitSortKey(a.unit), ub = unitSortKey(b.unit);
+        if (ua !== ub) return ua.localeCompare(ub, undefined, { numeric: true, sensitivity: 'base' });
+        return (a.order ?? 0) - (b.order ?? 0);
+      });
+
+    // Apply unit filter
+    if (currentUnit !== 'all') {
+      tests = tests.filter(t => (t.unit || '').trim() === currentUnit);
+    }
 
     const adminBtns = isAdmin ? `
       <div class="course-actions">
@@ -781,16 +877,41 @@ function renderCourses() {
       : `<span class="course-title">${esc(cat.name)}</span>
          <span class="course-teacher">${esc(cat.teacher)}</span>`;
 
-    const testsHtml = tests.length === 0
-      ? `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests uploaded yet.</p>`
-      : tests.map(t => buildTestItem(t)).join('');
+    let testsHtml = '';
+    if (tests.length === 0) {
+      testsHtml = `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests${currentUnit !== 'all' ? ' in this unit' : ''} uploaded yet.</p>`;
+    } else if (currentUnit !== 'all') {
+      // Unit is already filtered — just render flat list
+      testsHtml = tests.map(t => buildTestItem(t)).join('');
+    } else {
+      // Group by unit when showing all units
+      const groups = groupByUnit(tests);
+      if (groups.length === 1 && !groups[0].unit) {
+        // No units assigned anywhere — render flat (legacy behaviour)
+        testsHtml = groups[0].items.map(t => buildTestItem(t)).join('');
+      } else {
+        testsHtml = groups.map(g => {
+          const header = g.unit
+            ? `<div class="unit-group-header">${esc(g.unit)}</div>`
+            : `<div class="unit-group-header" style="color:var(--slate);opacity:.5;">Unassigned</div>`;
+          return `<div class="unit-group">${header}<div class="test-list" data-list-cat="${cat.id}">${g.items.map(t => buildTestItem(t)).join('')}</div></div>`;
+        }).join('');
+        // Wrap in a dummy outer list so drag-drop still works per-cat
+        testsHtml = `<div>${testsHtml}</div>`;
+      }
+    }
+
+    // When grouping, the test-list is nested; top-level wrapper differs
+    const listWrapper = (currentUnit !== 'all' || !hasAnyUnits(tests))
+      ? `<div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>`
+      : testsHtml;
 
     return `<div class="course-section" data-cat-id="${cat.id}">
       <div class="course-header">
         <div class="course-header-left">${titleBlock}</div>
         ${adminBtns}
       </div>
-      <div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>
+      ${listWrapper}
     </div>`;
   }).join('');
 
@@ -810,31 +931,46 @@ function renderCourses() {
       el.style.cursor = 'text';
       el.addEventListener('click', () => startCatRename(el, 'teacher'));
     });
-    // Inline test name rename
     cont.querySelectorAll('.editable-test-name').forEach(el => {
       el.addEventListener('click', () => startTestNameEdit(el));
     });
-    // Inline type change
     cont.querySelectorAll('.inline-type-select').forEach(sel => {
       sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
     });
-    // Drag-and-drop
     setupDragDrop();
-    // File slot toggles (add/remove file links)
     setupFileSlotToggles();
   } else {
-    // Students: file slot toggles for viewing only
     setupFileSlotToggles();
   }
 }
 
+// ── GROUP BY UNIT ──
+function groupByUnit(tests) {
+  const map = new Map();
+  tests.forEach(t => {
+    const key = (t.unit || '').trim();
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push(t);
+  });
+  // Sort groups: named units naturally, then '' (unassigned) last
+  return [...map.entries()]
+    .sort(([a], [b]) => {
+      if (!a && b) return 1;
+      if (a && !b) return -1;
+      return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+    })
+    .map(([unit, items]) => ({ unit, items }));
+}
+
+function hasAnyUnits(tests) {
+  return tests.some(t => t.unit && t.unit.trim());
+}
+
 function buildTestItem(t) {
-  // File links section
   const slots = t.files || {};
   let fileLinksHtml = '';
 
   const hasAnyFile = slots.pdf || slots.orig || slots.key;
-  const hasAllFiles = slots.pdf && slots.orig && slots.key;
 
   if (isAdmin || hasAnyFile) {
     let links = '';
@@ -874,11 +1010,20 @@ function buildTestItem(t) {
     ? `<span class="test-item-name editable-test-name" data-test-id="${t.id}" title="Click to rename">${esc(t.name)}</span>`
     : `<span class="test-item-name">${esc(t.name)}</span>`;
 
+  // Show unit badge on the item only when in "all units" view (so it's still visible in grouped headers)
+  const unitBadge = (t.unit && t.unit.trim() && currentUnit === 'all' && hasAnyUnits([t]))
+    ? '' // hidden when grouped — header already shows it
+    : '';
+  // Actually: always hide badge since group header already shows it.
+  // Only show if unit filter is active (then there's no header).
+  const showBadge = currentUnit !== 'all' && t.unit && t.unit.trim();
+  const unitBadgeHtml = showBadge ? `<span class="test-unit-badge">${esc(t.unit.trim())}</span>` : '';
+
   return `<div class="test-item" data-test-id="${t.id}" data-cat-id="${t.catId}">
     <div class="test-item-main">
       ${dragHandle}
       <div class="test-item-left">
-        <div class="test-name-wrap">${nameEl}</div>
+        <div class="test-name-wrap">${nameEl}${unitBadgeHtml}</div>
         ${t.notes ? `<div class="test-item-meta">${esc(t.notes)}</div>` : ''}
       </div>
       <div class="test-item-right">
@@ -896,11 +1041,11 @@ function startCatRename(el, field) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
   if (!cat) return;
-  const current = field === 'name' ? cat.name : cat.teacher;
+  const current   = field === 'name' ? cat.name : cat.teacher;
   const isTeacher = field === 'teacher';
-  const input = document.createElement('input');
-  input.type = 'text';
-  input.value = current;
+  const input     = document.createElement('input');
+  input.type      = 'text';
+  input.value     = current;
   input.className = 'inline-edit-input' + (isTeacher ? ' teacher' : '');
   el.replaceWith(input);
   input.focus();
@@ -955,7 +1100,7 @@ async function changeTestType(testId, newType) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
   const prev = test.type;
-  test.type = newType;
+  test.type  = newType;
   try { await saveDB(); renderAll(); }
   catch { test.type = prev; renderAll(); }
 }
@@ -968,7 +1113,6 @@ function setupDragDrop() {
   const lists = document.querySelectorAll('.test-list');
   lists.forEach(list => {
     list.querySelectorAll('.test-item').forEach(item => {
-      // Make the handle the drag trigger
       const handle = item.querySelector('.drag-handle');
       if (!handle) return;
 
@@ -990,7 +1134,6 @@ function setupDragDrop() {
       item.addEventListener('dragover', e => {
         e.preventDefault();
         if (item.dataset.testId === dragSrcId) return;
-        // Only allow drops within the same category
         if (item.dataset.catId !== dragSrcCat) return;
         e.dataTransfer.dropEffect = 'move';
         const rect = item.getBoundingClientRect();
@@ -1013,20 +1156,25 @@ function setupDragDrop() {
         const after  = e.clientY >= rect.top + rect.height / 2;
         const catId  = dragSrcCat;
 
-        // Get sorted tests for this cat
+        // Reorder within the same unit group
+        const srcTest = db.tests.find(t => t.id === dragSrcId);
+        const tgtTest = db.tests.find(t => t.id === item.dataset.testId);
+        if (!srcTest || !tgtTest) return;
+
+        // Only allow reorder within same unit
+        if (srcTest.unit !== tgtTest.unit) return;
+
         let catTests = db.tests
-          .filter(t => t.catId === catId)
+          .filter(t => t.catId === catId && (t.unit || '') === (srcTest.unit || ''))
           .sort((a,b) => (a.order??0) - (b.order??0));
 
-        const srcIdx  = catTests.findIndex(t => t.id === dragSrcId);
-        const tgtIdx  = catTests.findIndex(t => t.id === item.dataset.testId);
+        const srcIdx = catTests.findIndex(t => t.id === dragSrcId);
+        const tgtIdx = catTests.findIndex(t => t.id === item.dataset.testId);
         if (srcIdx < 0 || tgtIdx < 0) return;
 
-        const [moved] = catTests.splice(srcIdx, 1);
+        const [moved]  = catTests.splice(srcIdx, 1);
         const insertAt = after ? tgtIdx + (srcIdx < tgtIdx ? 0 : 1) : tgtIdx - (srcIdx < tgtIdx ? 1 : 0);
         catTests.splice(Math.max(0, insertAt), 0, moved);
-
-        // Re-assign order
         catTests.forEach((t, i) => { t.order = i; });
 
         try { await saveDB(); renderAll(); }
@@ -1036,7 +1184,7 @@ function setupDragDrop() {
   });
 }
 
-// ── FILE SLOT QUICK-ADD (inline + buttons in render) ──
+// ── FILE SLOT QUICK-ADD ──
 function setupFileSlotToggles() {
   document.querySelectorAll('[data-slot-add]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1045,7 +1193,6 @@ function setupFileSlotToggles() {
   });
 }
 
-// Open Edit Test modal focused on a specific slot
 function openEditTestFiles(testId, focusSlot) {
   openEditTest(testId, focusSlot);
 }
@@ -1091,13 +1238,11 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
       </div>`;
     container.appendChild(slotEl);
 
-    // Toggle body
     slotEl.querySelector('.file-slot-header').addEventListener('click', () => {
       const body = slotEl.querySelector('.file-slot-body');
       body.classList.toggle('open');
     });
 
-    // File input
     const dropZone  = slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
     const fileInput = slotEl.querySelector(`[data-file-input="${slotKey}"]`);
     const selLabel  = slotEl.querySelector(`[data-slot-selected="${slotKey}"]`);
@@ -1126,7 +1271,6 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
       }
     });
 
-    // Clear button
     const clearBtn = slotEl.querySelector(`[data-slot-clear="${slotKey}"]`);
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
@@ -1138,6 +1282,14 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
       });
     }
   });
+}
+
+// ── UNIT DATALIST (autocomplete from existing units) ──
+function populateUnitSuggestions() {
+  const dl    = document.getElementById('unit-suggestions');
+  const units = [...new Set(db.tests.map(t => (t.unit || '').trim()).filter(Boolean))]
+    .sort((a,b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+  dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
 }
 
 // ── ADD TEST MODAL ──
@@ -1161,6 +1313,7 @@ function openAddTest(preselCatId) {
     return;
   }
   buildFileSlotsUI({});
+  populateUnitSuggestions();
   openModal('test-overlay');
 }
 
@@ -1177,15 +1330,17 @@ function openEditTest(testId, focusSlot = null) {
 
   document.getElementById('test-name').value  = test.name;
   document.getElementById('test-type').value  = test.type;
+  document.getElementById('test-unit').value  = test.unit || '';
   document.getElementById('test-notes').value = test.notes || '';
   document.getElementById('test-error').textContent = '';
 
   buildFileSlotsUI(test.files || {}, focusSlot);
+  populateUnitSuggestions();
   openModal('test-overlay');
 }
 
 function clearTestForm(preselCatId) {
-  ['test-name','test-notes'].forEach(id => document.getElementById(id).value = '');
+  ['test-name','test-notes','test-unit'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('test-error').textContent = '';
   document.getElementById('test-type').value = 'quiz';
   pendingSlots = { pdf: null, orig: null, key: null };
@@ -1195,6 +1350,7 @@ async function saveTest() {
   const isEdit = !!editingTestId;
   const name   = document.getElementById('test-name').value.trim();
   const type   = document.getElementById('test-type').value;
+  const unit   = document.getElementById('test-unit').value.trim();
   const notes  = document.getElementById('test-notes').value.trim();
   const errEl  = document.getElementById('test-error');
   const btn    = document.getElementById('test-save-btn');
@@ -1215,10 +1371,10 @@ async function saveTest() {
       if (!test) throw new Error('Test not found');
       test.name  = name;
       test.type  = type;
+      test.unit  = unit;
       test.notes = notes;
       if (!test.files) test.files = {};
 
-      // Handle file slots
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending) continue;
         if (pending.clear) {
@@ -1232,8 +1388,10 @@ async function saveTest() {
         }
       }
     } else {
-      const entry = { id: uid(), catId, name, type, notes, files: {},
-        order: db.tests.filter(t => t.catId === catId).length };
+      const entry = {
+        id: uid(), catId, name, type, unit, notes, files: {},
+        order: db.tests.filter(t => t.catId === catId && (t.unit||'') === unit).length
+      };
 
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending || !pending.file) continue;
