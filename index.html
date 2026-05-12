@@ -10,6 +10,7 @@
     --stone: #2c2416; --granite: #4a3f35; --slate: #6b6058;
     --sand: #c4a882; --cream: #f5efe6; --parchment: #ede3d4;
     --rust: #b85c38; --moss: #5a6e4a; --obsidian: #1a1510; --quartz: #e8ddd0;
+    --deep: #0e0c09; --amber: #d4872a;
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--stone); overflow-x:hidden; }
@@ -18,7 +19,7 @@
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100; background:var(--obsidian);
     display:flex; align-items:center; justify-content:space-between;
-    padding:0 3rem; height:64px; border-bottom:2px solid var(--granite);
+    padding:0 3rem; height:64px; border-bottom:1px solid rgba(196,168,130,.15);
   }
   .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--sand); letter-spacing:.05em; flex-shrink:0; }
   .nav-logo span { color:var(--rust); font-style:italic; }
@@ -33,80 +34,190 @@
   .nav-toggle.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
 
   /* ── HERO ── */
-  .hero { min-height:100vh; background:var(--obsidian); display:flex; flex-direction:column;
-    justify-content:center; padding:8rem 3rem 4rem; position:relative; overflow:hidden; }
+  .hero {
+    min-height:100vh; background:var(--deep); display:flex; flex-direction:column;
+    justify-content:center; padding:8rem 3rem 4rem; position:relative; overflow:hidden;
+  }
+  .hero-bg-text {
+    position:absolute; right:-2rem; top:50%; transform:translateY(-50%);
+    font-family:'Playfair Display',serif; font-size:clamp(8rem,20vw,18rem);
+    font-weight:700; color:rgba(196,168,130,.04); line-height:1; pointer-events:none;
+    user-select:none; white-space:nowrap;
+  }
+  .hero-line {
+    position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(to bottom, transparent, var(--rust), transparent);
+    opacity:.4;
+  }
   .hero::before { content:''; position:absolute; inset:0; background:
-    radial-gradient(ellipse 60% 40% at 80% 60%,rgba(184,92,56,.12) 0%,transparent 60%),
-    radial-gradient(ellipse 40% 60% at 20% 30%,rgba(90,110,74,.1) 0%,transparent 50%); }
-  .hero-eyebrow { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.25em;
-    text-transform:uppercase; color:var(--rust); margin-bottom:1.5rem; position:relative; }
-  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.6rem,7vw,6rem);
-    color:var(--cream); line-height:1.1; max-width:700px; position:relative; }
-  .hero h1 em { color:var(--sand); }
-  .hero-sub { font-size:1.1rem; color:var(--slate); max-width:500px; margin-top:1.5rem;
-    line-height:1.7; position:relative; }
-  .hero-scroll { position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+    radial-gradient(ellipse 50% 50% at 85% 55%, rgba(184,92,56,.07) 0%, transparent 60%),
+    radial-gradient(ellipse 30% 40% at 15% 25%, rgba(90,110,74,.06) 0%, transparent 50%); }
+  .hero-eyebrow {
+    font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.3em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:1.5rem; position:relative;
+    display:flex; align-items:center; gap:1rem;
+  }
+  .hero-eyebrow::before { content:''; display:block; width:40px; height:1px; background:var(--rust); }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,7vw,6.5rem);
+    color:var(--cream); line-height:1.05; max-width:750px; position:relative; }
+  .hero h1 em { color:var(--sand); font-style:italic; }
+  .hero h1 .strike { position:relative; display:inline-block; }
+  .hero-sub { font-size:1.05rem; color:rgba(232,221,208,.55); max-width:520px; margin-top:1.75rem;
+    line-height:1.8; position:relative; font-weight:300; }
+  .hero-cta-row { display:flex; gap:1rem; margin-top:2.5rem; flex-wrap:wrap; position:relative; }
+  .cta-btn {
+    font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.18em; text-transform:uppercase;
+    padding:.85rem 1.8rem; border-radius:2px; cursor:pointer; transition:all .2s; text-decoration:none;
+    display:inline-block;
+  }
+  .cta-btn.primary { background:var(--rust); color:var(--cream); border:1px solid var(--rust); }
+  .cta-btn.primary:hover { background:#a04e30; }
+  .cta-btn.ghost { background:transparent; color:var(--sand); border:1px solid rgba(196,168,130,.3); }
+  .cta-btn.ghost:hover { border-color:var(--sand); background:rgba(196,168,130,.06); }
+  .hero-scroll {
+    position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
     display:flex; flex-direction:column; align-items:center; gap:.5rem;
-    font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--slate); }
+    font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--slate);
+  }
   .hero-scroll::after { content:''; width:1px; height:40px;
     background:linear-gradient(to bottom,var(--slate),transparent); animation:scrollLine 1.5s ease-in-out infinite; }
   @keyframes scrollLine { 0%,100%{opacity:.3} 50%{opacity:1} }
 
+  /* ── INTRO STRIP ── */
+  .intro-strip {
+    background:var(--obsidian); padding:4rem 3rem;
+    display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
+    border-bottom:1px solid rgba(196,168,130,.1);
+  }
+  .intro-strip-left { }
+  .intro-strip-left h2 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.4rem);
+    color:var(--cream); line-height:1.3; margin-bottom:1.25rem; }
+  .intro-strip-left p { color:rgba(232,221,208,.5); font-size:.95rem; line-height:1.8; font-weight:300; }
+  .intro-pills { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.5rem; }
+  .pill { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase;
+    padding:.3rem .75rem; border:1px solid rgba(196,168,130,.2); border-radius:100px; color:var(--sand); }
+  .intro-strip-right { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(196,168,130,.1); border:1px solid rgba(196,168,130,.1); }
+  .mini-stat { background:var(--obsidian); padding:1.5rem; }
+  .mini-stat-num { font-family:'Playfair Display',serif; font-size:2rem; color:var(--sand); }
+  .mini-stat-label { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--slate); margin-top:.35rem; }
+
   /* ── SECTIONS ── */
   .section { padding:6rem 3rem; }
   .section-label { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.25em;
-    text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; }
+    text-transform:uppercase; color:var(--rust); margin-bottom:.75rem;
+    display:flex; align-items:center; gap:.75rem; }
+  .section-label::after { content:''; flex:1; max-width:60px; height:1px; background:var(--rust); opacity:.4; }
   .section h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem);
     line-height:1.2; margin-bottom:3rem; color:var(--stone); }
 
-  .rock-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.5rem; }
-  .rock-card { background:var(--parchment); border:1px solid rgba(100,80,60,.2); border-radius:4px;
-    overflow:hidden; transition:transform .25s,box-shadow .25s; cursor:default; }
-  .rock-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(44,36,22,.15); }
-  .rock-card-img { height:160px; display:flex; align-items:center; justify-content:center; font-size:4rem; }
-  .rock-card-img.igneous    { background:linear-gradient(135deg,#2a1a0e,#5c3520,#8b4513); }
-  .rock-card-img.sedimentary{ background:linear-gradient(135deg,#c4a882,#a08060,#7a6040); }
-  .rock-card-img.metamorphic{ background:linear-gradient(135deg,#1a2a3a,#2d4a5a,#4a6a7a); }
-  .rock-card-img.mineral    { background:linear-gradient(135deg,#2a1a3a,#4a2a6a,#7a4a9a); }
-  .rock-card-img.volcanic   { background:linear-gradient(135deg,#1a0a0a,#3a1010,#6a2020); }
-  .rock-card-img.coastal    { background:linear-gradient(135deg,#0a2a3a,#1a4a6a,#2a6a8a); }
-  .rock-card-body { padding:1.25rem 1.5rem; }
-  .rock-card-body h3 { font-family:'Playfair Display',serif; font-size:1.2rem; margin-bottom:.5rem; }
-  .rock-card-body p { font-size:.875rem; color:var(--slate); line-height:1.6; }
-  .rock-tag { display:inline-block; font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.1em;
-    text-transform:uppercase; padding:.2rem .6rem; border-radius:2px; margin-top:.75rem; }
+  /* ── ROCK GRID ── */
+  .rock-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
+  .rock-card { background:var(--parchment); border:1px solid rgba(100,80,60,.2); border-radius:3px;
+    overflow:hidden; transition:transform .3s,box-shadow .3s; cursor:default; }
+  .rock-card:hover { transform:translateY(-5px); box-shadow:0 20px 50px rgba(44,36,22,.18); }
+  .rock-card-img { height:180px; display:flex; align-items:flex-end; justify-content:flex-start;
+    padding:1.25rem; position:relative; overflow:hidden; }
+  .rock-card-img::after { content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(0,0,0,.4) 0%, transparent 60%); }
+  .rock-card-img .card-icon { position:relative; z-index:1; font-size:2.5rem; }
+  .rock-card-img.igneous    { background:linear-gradient(135deg,#1a0a05,#4a2010,#8b3a13); }
+  .rock-card-img.sedimentary{ background:linear-gradient(135deg,#8a7050,#a08060,#c4a882); }
+  .rock-card-img.metamorphic{ background:linear-gradient(135deg,#0e1a25,#1d3045,#2d4a5a); }
+  .rock-card-img.mineral    { background:linear-gradient(135deg,#1a0a2a,#3a1a5a,#6a3a8a); }
+  .rock-card-img.volcanic   { background:linear-gradient(135deg,#0a0505,#2a0808,#5a1510); }
+  .rock-card-img.coastal    { background:linear-gradient(135deg,#050f18,#0a2030,#1a3a55); }
+  .rock-card-body { padding:1.5rem; }
+  .rock-card-body h3 { font-family:'Playfair Display',serif; font-size:1.15rem; margin-bottom:.6rem; }
+  .rock-card-body p { font-size:.875rem; color:var(--slate); line-height:1.7; }
+  .rock-card-meta { display:flex; align-items:center; justify-content:space-between; margin-top:1rem; }
+  .rock-tag { display:inline-block; font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.1em;
+    text-transform:uppercase; padding:.2rem .6rem; border-radius:2px; }
   .tag-igneous    { background:rgba(184,92,56,.15); color:var(--rust); }
   .tag-sedimentary{ background:rgba(196,168,130,.3); color:var(--granite); }
   .tag-metamorphic{ background:rgba(74,110,74,.15);  color:var(--moss); }
+  .rock-hardness { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--slate); opacity:.6; }
 
-  .facts-strip { background:var(--granite); padding:4rem 3rem;
+  /* ── PROCESS SECTION ── */
+  .process-section { background:var(--stone); padding:6rem 3rem; }
+  .process-section .section-label { color:var(--sand); }
+  .process-section .section-label::after { background:var(--sand); }
+  .process-section h2 { color:var(--cream); }
+  .process-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:3rem; }
+  .process-step { background:rgba(255,255,255,.04); padding:2.5rem 2rem; border:1px solid rgba(196,168,130,.08); position:relative; }
+  .process-num { font-family:'Playfair Display',serif; font-size:4rem; color:rgba(196,168,130,.12); line-height:1;
+    position:absolute; top:1.5rem; right:1.5rem; }
+  .process-step h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--cream); margin-bottom:.75rem; }
+  .process-step p { font-size:.875rem; color:rgba(232,221,208,.5); line-height:1.7; }
+  .process-step .step-tag { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; display:block; }
+
+  /* ── FACTS STRIP ── */
+  .facts-strip { background:var(--rust); padding:4rem 3rem;
     display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:3rem; }
   .fact { text-align:center; }
-  .fact-num   { font-family:'Playfair Display',serif; font-size:3rem; color:var(--sand); }
-  .fact-label { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.2em;
-    text-transform:uppercase; color:var(--quartz); margin-top:.5rem; }
+  .fact-num   { font-family:'Playfair Display',serif; font-size:3.2rem; color:var(--cream); }
+  .fact-label { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.2em;
+    text-transform:uppercase; color:rgba(245,239,230,.65); margin-top:.5rem; }
 
+  /* ── TIMELINE SECTION ── */
+  .timeline-section { padding:6rem 3rem; background:var(--parchment); }
+  .timeline { max-width:800px; margin:0 auto; }
+  .timeline-entry { display:grid; grid-template-columns:120px 1px 1fr; gap:0 2rem; margin-bottom:3rem; align-items:start; }
+  .timeline-era { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase;
+    color:var(--rust); text-align:right; padding-top:.2rem; }
+  .timeline-line { background:rgba(100,80,60,.2); position:relative; }
+  .timeline-line::before { content:''; position:absolute; top:.4rem; left:50%; transform:translateX(-50%);
+    width:8px; height:8px; border-radius:50%; background:var(--rust); }
+  .timeline-content { padding-left:1rem; }
+  .timeline-content h4 { font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:.4rem; }
+  .timeline-content p { font-size:.875rem; color:var(--slate); line-height:1.7; }
+
+  /* ── ARTICLES ── */
   .articles-grid { display:grid; grid-template-columns:2fr 1fr; gap:3rem; align-items:start; }
   .article-main h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1rem; line-height:1.3; }
+  .article-main .article-tag { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; display:block; }
   .article-main p  { color:var(--slate); line-height:1.8; margin-bottom:1rem; font-size:.95rem; }
-  .sidebar-item { border-top:1px solid rgba(100,80,60,.2); padding:1rem 0; }
+  .read-more { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--rust); text-decoration:none; border-bottom:1px solid rgba(184,92,56,.3);
+    padding-bottom:.1rem; transition:border-color .2s; }
+  .read-more:hover { border-color:var(--rust); }
+  .sidebar-item { border-top:1px solid rgba(100,80,60,.2); padding:1.1rem 0; }
+  .sidebar-item:first-child { border-top:none; }
   .sidebar-item h4 { font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:.35rem; }
-  .sidebar-item p  { font-size:.8rem; color:var(--slate); }
-  .sidebar-num { font-family:'DM Mono',monospace; font-size:.65rem; color:var(--rust); letter-spacing:.1em; margin-bottom:.35rem; }
+  .sidebar-item p  { font-size:.8rem; color:var(--slate); line-height:1.6; }
+  .sidebar-num { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--rust); letter-spacing:.1em; margin-bottom:.35rem; }
 
-  footer { background:var(--obsidian); padding:3rem; display:flex; justify-content:space-between;
-    align-items:center; flex-wrap:wrap; gap:1rem; border-top:1px solid var(--granite); }
-  .footer-logo { font-family:'Playfair Display',serif; color:var(--sand); font-size:1.1rem; }
-  .footer-copy { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--slate); letter-spacing:.1em; }
+  /* ── QUOTE SECTION ── */
+  .quote-section { background:var(--obsidian); padding:5rem 3rem; text-align:center; }
+  .big-quote { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3vw,2.2rem);
+    color:var(--cream); line-height:1.5; max-width:800px; margin:0 auto; font-style:italic; opacity:.85; }
+  .quote-attr { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--rust); margin-top:1.5rem; }
+
+  /* ── FOOTER ── */
+  footer { background:var(--deep); padding:4rem 3rem 2rem; border-top:1px solid rgba(196,168,130,.08); }
+  .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
+  .footer-brand .nav-logo { font-size:1.6rem; display:block; margin-bottom:1rem; }
+  .footer-brand p { font-size:.875rem; color:var(--slate); line-height:1.7; max-width:300px; }
+  .footer-col h5 { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--sand); margin-bottom:1rem; }
+  .footer-col ul { list-style:none; }
+  .footer-col ul li { margin-bottom:.5rem; }
+  .footer-col ul li a { font-size:.85rem; color:var(--slate); text-decoration:none; transition:color .2s; }
+  .footer-col ul li a:hover { color:var(--sand); }
+  .footer-bottom { border-top:1px solid rgba(196,168,130,.08); padding-top:1.5rem;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.75rem; }
+  .footer-copy { font-family:'DM Mono',monospace; font-size:.68rem; color:var(--slate); letter-spacing:.08em; }
   #secret-trigger { cursor:default; user-select:none; padding:4px 6px; border-radius:3px; transition:background .15s; }
   #secret-trigger.activating { background:rgba(184,92,56,.2); }
 
   /* ── MODALS ── */
-  .modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(20,14,8,.92);
+  .modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(14,12,9,.93);
     backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center;
     opacity:0; pointer-events:none; transition:opacity .3s; padding:1rem; }
   .modal-overlay.open { opacity:1; pointer-events:all; }
-  .modal { background:var(--cream); border:1px solid var(--sand); border-radius:6px; width:100%;
+  .modal { background:var(--cream); border:1px solid var(--sand); border-radius:4px; width:100%;
     max-width:440px; padding:2.5rem; transform:translateY(20px); transition:transform .3s;
     position:relative; max-height:90vh; overflow-y:auto; -webkit-overflow-scrolling:touch; }
   .modal-overlay.open .modal { transform:translateY(0); }
@@ -173,7 +284,8 @@
   /* ── ARCHIVE PAGE ── */
   #archive-page { display:none; min-height:100vh; flex-direction:column; background:var(--cream); }
   #archive-page.visible { display:flex; }
-  .archive-header { background:var(--obsidian); padding:5rem 3rem 3rem; flex-shrink:0; }
+  .archive-header { background:var(--obsidian); padding:5rem 3rem 3rem; flex-shrink:0;
+    border-bottom:1px solid rgba(196,168,130,.1); }
   .archive-header-row { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
   .back-btn { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.15em; text-transform:uppercase;
     color:var(--slate); background:none; border:none; cursor:pointer; margin-bottom:1.5rem;
@@ -203,33 +315,40 @@
   .admin-btn.primary { background:var(--rust); border-color:var(--rust); color:var(--cream); }
   .admin-btn.primary:hover { background:#a04e30; border-color:#a04e30; }
 
-  /* ── FILTER BARS ── */
-  .filter-bar { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:1rem; align-items:center; }
-  .filter-label { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.15em;
-    text-transform:uppercase; color:var(--slate); }
-  .filter-btn { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.1em; padding:.35rem .9rem;
-    border-radius:3px; border:1.5px solid rgba(100,80,60,.25); background:transparent;
-    color:var(--granite); cursor:pointer; transition:all .2s; }
-  .filter-btn:hover,.filter-btn.active { background:var(--stone); color:var(--cream); border-color:var(--stone); }
-
-  /* Unit filter bar — slightly different tint so the two rows are visually distinct */
-  .unit-filter-bar { display:flex; gap:.75rem; flex-wrap:wrap; margin-bottom:2rem; align-items:center; }
-  .unit-filter-bar .filter-label { color:var(--slate); opacity:.8; }
-  .unit-filter-bar .filter-btn { border-color:rgba(90,110,74,.25); color:var(--moss); }
-  .unit-filter-bar .filter-btn:hover,
-  .unit-filter-bar .filter-btn.active { background:var(--moss); color:var(--cream); border-color:var(--moss); }
+  /* ── FILTER SECTION ── */
+  .filter-section { margin-bottom:2rem; background:var(--parchment); border:1px solid rgba(100,80,60,.15);
+    border-radius:6px; padding:1.25rem 1.5rem; }
+  .filter-row { display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; margin-bottom:.6rem; }
+  .filter-row:last-child { margin-bottom:0; }
+  .filter-label { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--slate); min-width:80px; flex-shrink:0; }
+  .filter-btn { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.08em; padding:.3rem .8rem;
+    border-radius:100px; border:1.5px solid rgba(100,80,60,.2); background:transparent;
+    color:var(--granite); cursor:pointer; transition:all .2s; white-space:nowrap; }
+  .filter-btn:hover { border-color:var(--stone); color:var(--stone); }
+  .filter-btn.active { background:var(--stone); color:var(--cream); border-color:var(--stone); }
+  /* Semester row */
+  .filter-row.sem .filter-btn.active { background:var(--rust); border-color:var(--rust); }
+  .filter-row.sem .filter-btn:hover:not(.active) { border-color:var(--rust); color:var(--rust); }
+  /* Teacher row */
+  .filter-row.teacher .filter-btn.active { background:var(--moss); border-color:var(--moss); }
+  .filter-row.teacher .filter-btn:hover:not(.active) { border-color:var(--moss); color:var(--moss); }
+  /* Unit row */
+  .filter-row.unit .filter-btn.active { background:#6a5a8a; border-color:#6a5a8a; }
+  .filter-row.unit .filter-btn:hover:not(.active) { border-color:#6a5a8a; color:#6a5a8a; }
 
   /* ── COURSE SECTIONS ── */
   .course-section { margin-bottom:2.5rem; }
   .course-header { display:flex; align-items:center; justify-content:space-between; gap:1rem;
     margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:2px solid var(--parchment); flex-wrap:wrap; }
   .course-header-left  { display:flex; align-items:baseline; gap:1rem; flex-wrap:wrap; }
-
-  /* Inline rename for course title */
   .course-title-wrap { display:flex; align-items:baseline; gap:.5rem; }
   .course-title   { font-family:'Playfair Display',serif; font-size:1.4rem; }
   .course-teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
     color:var(--rust); text-transform:uppercase; }
+  .course-semester-badge { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.1em;
+    text-transform:uppercase; padding:.2rem .65rem; border-radius:100px;
+    background:rgba(90,110,74,.12); color:var(--moss); border:1px solid rgba(90,110,74,.2); }
   .inline-edit-input { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone);
     border:none; border-bottom:2px solid var(--rust); background:transparent; outline:none; min-width:160px; }
   .inline-edit-input.teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
@@ -237,7 +356,6 @@
   .rename-hint { font-family:'DM Mono',monospace; font-size:.6rem; color:var(--slate); letter-spacing:.06em;
     opacity:.6; display:none; }
   .course-header-left:hover .rename-hint { display:inline; }
-
   .course-actions { display:flex; gap:.5rem; }
   .btn-sm { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.08em; padding:.3rem .7rem;
     border-radius:3px; border:1.5px solid rgba(100,80,60,.2); background:transparent;
@@ -245,7 +363,7 @@
   .btn-sm:hover       { border-color:var(--rust); color:var(--rust); }
   .btn-sm.danger:hover{ border-color:#c0392b; color:#c0392b; }
 
-  /* ── UNIT GROUP HEADERS (within a course) ── */
+  /* ── UNIT GROUPS ── */
   .unit-group { margin-bottom:1.5rem; }
   .unit-group-header {
     font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.18em; text-transform:uppercase;
@@ -257,14 +375,11 @@
 
   /* ── TEST ITEMS ── */
   .test-list { display:flex; flex-direction:column; gap:.6rem; }
-
-  /* Drag and drop */
   .test-item { background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:4px;
     transition:border-color .2s,transform .15s,box-shadow .2s; }
   .test-item.drag-over-top    { border-top:2px solid var(--rust); }
   .test-item.drag-over-bottom { border-bottom:2px solid var(--rust); }
   .test-item.dragging { opacity:.4; box-shadow:0 8px 24px rgba(44,36,22,.2); }
-
   .test-item-main { padding:.9rem 1.25rem; display:flex; align-items:center; justify-content:space-between;
     gap:.75rem; flex-wrap:wrap; }
   .drag-handle { cursor:grab; color:var(--slate); opacity:.4; font-size:1rem; padding:0 .3rem;
@@ -272,8 +387,6 @@
   .drag-handle:hover { opacity:.9; }
   .drag-handle:active { cursor:grabbing; }
   .test-item-left  { display:flex; flex-direction:column; gap:.2rem; flex:1; min-width:0; }
-
-  /* Inline edit for test name */
   .test-name-wrap { display:flex; align-items:center; gap:.4rem; }
   .test-item-name  { font-family:'Playfair Display',serif; font-size:1rem; }
   .test-item-name.editable { cursor:text; border-bottom:1px dashed transparent; transition:border-color .15s; }
@@ -281,17 +394,12 @@
   .test-name-input { font-family:'Playfair Display',serif; font-size:1rem; color:var(--stone);
     border:none; border-bottom:1.5px solid var(--rust); background:transparent; outline:none; width:100%; min-width:120px; }
   .test-item-meta  { font-family:'DM Mono',monospace; font-size:.67rem; color:var(--slate); letter-spacing:.04em; }
-
-  /* Unit badge on test item */
   .test-unit-badge {
     font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.1em; text-transform:uppercase;
     padding:.15rem .5rem; border-radius:2px; background:rgba(90,110,74,.12); color:var(--moss);
     border:1px solid rgba(90,110,74,.2); white-space:nowrap;
   }
-
   .test-item-right { display:flex; align-items:center; gap:.6rem; flex-shrink:0; flex-wrap:wrap; }
-
-  /* Inline type selector */
   .test-type-select { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.1em;
     text-transform:uppercase; padding:.2rem .5rem; border-radius:2px; border:1px solid transparent;
     background:transparent; cursor:pointer; outline:none; transition:all .15s; -webkit-appearance:none; }
@@ -300,8 +408,6 @@
   .type-test    { color:var(--granite); }
   .type-midterm { color:var(--rust); }
   .type-final   { color:var(--stone); font-weight:600; }
-
-  /* File links row */
   .test-files-row { padding:.0rem 1.25rem .75rem 1.25rem; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
   .file-link-btn { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.06em; text-transform:uppercase;
     padding:.22rem .65rem; border-radius:2px; border:1px solid rgba(100,80,60,.25); text-decoration:none;
@@ -314,22 +420,20 @@
   .file-link-btn.key:hover{ background:rgba(122,74,154,.08); }
   .file-link-btn.add      { color:var(--slate); border-style:dashed; opacity:.65; }
   .file-link-btn.add:hover{ opacity:1; border-color:var(--rust); color:var(--rust); }
-
-  /* Edit files dropdown */
-  .test-edit-bar { padding:0 1.25rem .75rem 1.25rem; display:none; }
-  .test-edit-bar.open { display:block; }
-  .test-edit-divider { border-top:1px solid rgba(100,80,60,.12); margin-bottom:.65rem; }
-
   .test-delete { background:none; border:none; cursor:pointer; color:var(--slate); font-size:.85rem;
     padding:.2rem .4rem; border-radius:3px; transition:color .2s; }
   .test-delete:hover { color:#c0392b; }
-
   .empty-state { text-align:center; padding:3rem 2rem; }
   .empty-icon  { font-size:2.5rem; opacity:.3; margin-bottom:.75rem; }
   .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--slate); margin-bottom:.4rem; }
   .empty-state p  { font-size:.82rem; color:var(--slate); font-family:'DM Mono',monospace; letter-spacing:.04em; }
 
   /* ── RESPONSIVE ── */
+  @media(max-width:900px) {
+    .intro-strip { grid-template-columns:1fr; }
+    .process-grid { grid-template-columns:1fr; }
+    .footer-top { grid-template-columns:1fr 1fr; }
+  }
   @media(max-width:768px){
     nav { padding:0 1.25rem; }
     .nav-links { display:none; position:fixed; top:64px; left:0; right:0; background:var(--obsidian);
@@ -339,9 +443,12 @@
     .nav-toggle { display:flex; }
     .hero { padding:7rem 1.25rem 4rem; }
     .section { padding:4rem 1.25rem; }
+    .timeline-section { padding:4rem 1.25rem; }
+    .timeline-entry { grid-template-columns:80px 1px 1fr; gap:0 1rem; }
     .form-row { grid-template-columns:1fr; }
     .articles-grid { grid-template-columns:1fr; }
-    footer { padding:2rem 1.25rem; flex-direction:column; align-items:flex-start; }
+    footer { padding:2rem 1.25rem; }
+    .footer-top { grid-template-columns:1fr; gap:2rem; }
     .archive-header { padding:4.5rem 1.25rem 2rem; }
     .archive-body { padding:1.5rem 1.25rem; }
     .admin-actions { flex-direction:column; }
@@ -349,10 +456,17 @@
     .test-item-main { flex-direction:column; align-items:flex-start; }
     .test-item-right { width:100%; justify-content:flex-start; }
     .modal { padding:1.75rem 1.25rem; }
+    .intro-strip { padding:3rem 1.25rem; }
+    .process-section { padding:4rem 1.25rem; }
+    .facts-strip { padding:3rem 1.25rem; }
+    .quote-section { padding:3.5rem 1.25rem; }
+    .filter-row { gap:.5rem; }
+    .filter-label { min-width:60px; }
   }
   @media(max-width:480px){
     .facts-strip { grid-template-columns:1fr 1fr; gap:2rem; }
-    .hero h1 { font-size:2.2rem; }
+    .hero h1 { font-size:2.4rem; }
+    .intro-strip-right { grid-template-columns:1fr 1fr; }
   }
 </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2016536931117014"
@@ -369,36 +483,200 @@
     </button>
     <ul class="nav-links" id="nav-links">
       <li><a href="#types" onclick="closeNav()">Rock Types</a></li>
-      <li><a href="#facts" onclick="closeNav()">By the Numbers</a></li>
-      <li><a href="#learn" onclick="closeNav()">Learn</a></li>
+      <li><a href="#process" onclick="closeNav()">Rock Cycle</a></li>
+      <li><a href="#timeline" onclick="closeNav()">Geological Time</a></li>
+      <li><a href="#learn" onclick="closeNav()">Articles</a></li>
     </ul>
   </nav>
 
   <section class="hero">
-    <div class="hero-eyebrow">Geology & Mineralogy Reference</div>
-    <h1>The Earth's<br><em>Lithic Record</em></h1>
-    <p class="hero-sub">A curated reference for students and enthusiasts exploring the mineralogical and petrological makeup of our planet's crust.</p>
+    <div class="hero-line"></div>
+    <div class="hero-bg-text">Geology</div>
+    <div class="hero-eyebrow">Geology &amp; Mineralogy Reference</div>
+    <h1>Beneath<br>the <em>Surface</em><br>of the Earth</h1>
+    <p class="hero-sub">A comprehensive reference for students and enthusiasts exploring the mineralogical and petrological makeup of our planet's crust — 4.5 billion years in the making.</p>
+    <div class="hero-cta-row">
+      <a href="#types" class="cta-btn primary">Explore Rock Types</a>
+      <a href="#learn" class="cta-btn ghost">Read Articles</a>
+    </div>
     <div class="hero-scroll">Scroll</div>
   </section>
+
+  <div class="intro-strip">
+    <div class="intro-strip-left">
+      <h2>The Science of<br>Stone &amp; Mineral</h2>
+      <p>Petrology and mineralogy are the twin pillars of geological science. From the basaltic ocean floor to the granite cores of mountain ranges, every rock tells a story of pressure, heat, time, and transformation.</p>
+      <p style="margin-top:.75rem;">This reference compiles the core knowledge that geology students need — classification systems, formation processes, and the grand timeline of Earth's lithic evolution.</p>
+      <div class="intro-pills">
+        <span class="pill">Igneous</span>
+        <span class="pill">Sedimentary</span>
+        <span class="pill">Metamorphic</span>
+        <span class="pill">Mineralogy</span>
+        <span class="pill">Plate Tectonics</span>
+        <span class="pill">Stratigraphy</span>
+      </div>
+    </div>
+    <div class="intro-strip-right">
+      <div class="mini-stat"><div class="mini-stat-num">4.5B</div><div class="mini-stat-label">Years Earth's age</div></div>
+      <div class="mini-stat"><div class="mini-stat-num">4,000+</div><div class="mini-stat-label">Mineral species</div></div>
+      <div class="mini-stat"><div class="mini-stat-num">3</div><div class="mini-stat-label">Rock classes</div></div>
+      <div class="mini-stat"><div class="mini-stat-num">40km</div><div class="mini-stat-label">Crust thickness</div></div>
+    </div>
+  </div>
 
   <section class="section" id="types">
     <div class="section-label">Classification</div>
     <h2>Rock Types &amp; Formation</h2>
     <div class="rock-grid">
-      <div class="rock-card"><div class="rock-card-img igneous">🌋</div><div class="rock-card-body"><h3>Igneous Rock</h3><p>Formed from the solidification of molten magma. Can be intrusive (plutonic) or extrusive (volcanic) depending on where cooling occurs.</p><span class="rock-tag tag-igneous">Igneous</span></div></div>
-      <div class="rock-card"><div class="rock-card-img sedimentary">🏜️</div><div class="rock-card-body"><h3>Sedimentary Rock</h3><p>Composed of particles derived from pre-existing rocks or biological material. Often contains fossils and forms in horizontal layers.</p><span class="rock-tag tag-sedimentary">Sedimentary</span></div></div>
-      <div class="rock-card"><div class="rock-card-img metamorphic">💎</div><div class="rock-card-body"><h3>Metamorphic Rock</h3><p>Rocks transformed by heat and pressure deep within the earth. Marble and slate are common examples.</p><span class="rock-tag tag-metamorphic">Metamorphic</span></div></div>
-      <div class="rock-card"><div class="rock-card-img mineral">🔮</div><div class="rock-card-body"><h3>Minerals &amp; Crystals</h3><p>Naturally occurring inorganic substances with a defined chemical composition and crystal structure.</p><span class="rock-tag tag-igneous">Mineralogy</span></div></div>
-      <div class="rock-card"><div class="rock-card-img volcanic">⛰️</div><div class="rock-card-body"><h3>Volcanic Deposits</h3><p>Pumice, obsidian, basalt, and tephra from explosive or effusive eruptions near tectonic subduction zones.</p><span class="rock-tag tag-igneous">Volcanic</span></div></div>
-      <div class="rock-card"><div class="rock-card-img coastal">🌊</div><div class="rock-card-body"><h3>Coastal Formations</h3><p>Sea stacks, arches, and wave-cut platforms sculpted by ocean waves and chemical weathering along shorelines.</p><span class="rock-tag tag-sedimentary">Erosional</span></div></div>
+      <div class="rock-card">
+        <div class="rock-card-img igneous"><span class="card-icon">🌋</span></div>
+        <div class="rock-card-body">
+          <h3>Igneous Rock</h3>
+          <p>Formed from the solidification of molten magma. Can be intrusive (plutonic) or extrusive (volcanic) depending on where cooling occurs. Granite, basalt, and obsidian are classic examples.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-igneous">Igneous</span>
+            <span class="rock-hardness">Mohs 5–7</span>
+          </div>
+        </div>
+      </div>
+      <div class="rock-card">
+        <div class="rock-card-img sedimentary"><span class="card-icon">🏜️</span></div>
+        <div class="rock-card-body">
+          <h3>Sedimentary Rock</h3>
+          <p>Composed of particles derived from pre-existing rocks or biological material. Often contains fossils and forms in horizontal layers called strata. Limestone, sandstone, and shale are common forms.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-sedimentary">Sedimentary</span>
+            <span class="rock-hardness">Mohs 2–5</span>
+          </div>
+        </div>
+      </div>
+      <div class="rock-card">
+        <div class="rock-card-img metamorphic"><span class="card-icon">💎</span></div>
+        <div class="rock-card-body">
+          <h3>Metamorphic Rock</h3>
+          <p>Rocks transformed by intense heat and pressure deep within the earth. The original mineralogy is altered without melting. Marble forms from limestone; slate from mudstone or shale.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-metamorphic">Metamorphic</span>
+            <span class="rock-hardness">Mohs 3–8</span>
+          </div>
+        </div>
+      </div>
+      <div class="rock-card">
+        <div class="rock-card-img mineral"><span class="card-icon">🔮</span></div>
+        <div class="rock-card-body">
+          <h3>Minerals &amp; Crystals</h3>
+          <p>Naturally occurring inorganic substances with a defined chemical composition and ordered crystal structure. The Mohs scale from talc (1) to diamond (10) measures their relative hardness.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-igneous">Mineralogy</span>
+            <span class="rock-hardness">Mohs 1–10</span>
+          </div>
+        </div>
+      </div>
+      <div class="rock-card">
+        <div class="rock-card-img volcanic"><span class="card-icon">⛰️</span></div>
+        <div class="rock-card-body">
+          <h3>Volcanic Deposits</h3>
+          <p>Pumice, obsidian, basalt, and tephra from explosive or effusive eruptions. Formed at tectonic subduction zones and hotspots where magma breaches the surface.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-igneous">Volcanic</span>
+            <span class="rock-hardness">Variable</span>
+          </div>
+        </div>
+      </div>
+      <div class="rock-card">
+        <div class="rock-card-img coastal"><span class="card-icon">🌊</span></div>
+        <div class="rock-card-body">
+          <h3>Coastal Formations</h3>
+          <p>Sea stacks, arches, wave-cut platforms, and sea caves sculpted by ocean waves, tidal action, and chemical weathering along shorelines over thousands of years.</p>
+          <div class="rock-card-meta">
+            <span class="rock-tag tag-sedimentary">Erosional</span>
+            <span class="rock-hardness">Mohs 2–4</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  <div class="process-section" id="process">
+    <div style="max-width:1200px; margin:0 auto;">
+      <div class="section-label">Formation Processes</div>
+      <h2 style="color:var(--cream);">The Rock Cycle</h2>
+      <div class="process-grid">
+        <div class="process-step">
+          <span class="step-tag">Stage 01</span>
+          <div class="process-num">01</div>
+          <h3>Weathering &amp; Erosion</h3>
+          <p>Surface rocks are broken down by physical forces (freeze-thaw, abrasion) and chemical processes (oxidation, hydration). Sediment is transported by rivers, wind, and glaciers to depositional basins.</p>
+        </div>
+        <div class="process-step">
+          <span class="step-tag">Stage 02</span>
+          <div class="process-num">02</div>
+          <h3>Compaction &amp; Lithification</h3>
+          <p>Accumulated sediment is compressed under its own weight and cemented by minerals precipitated from pore water. Over millions of years loose particles become solid sedimentary rock strata.</p>
+        </div>
+        <div class="process-step">
+          <span class="step-tag">Stage 03</span>
+          <div class="process-num">03</div>
+          <h3>Subduction &amp; Melting</h3>
+          <p>Tectonic plate collision drives rock deep into the mantle. Extreme heat and pressure either metamorphoses the rock or melts it entirely into magma, which may return to the surface via volcanic activity.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="facts-strip" id="facts">
     <div class="fact"><div class="fact-num">4.5B</div><div class="fact-label">Years of Earth's Age</div></div>
     <div class="fact"><div class="fact-num">4,000+</div><div class="fact-label">Known Mineral Species</div></div>
     <div class="fact"><div class="fact-num">3</div><div class="fact-label">Rock Cycle Stages</div></div>
     <div class="fact"><div class="fact-num">40km</div><div class="fact-label">Avg. Continental Crust Depth</div></div>
+    <div class="fact"><div class="fact-num">700+</div><div class="fact-label">Active Volcanoes on Earth</div></div>
+  </div>
+
+  <div class="timeline-section" id="timeline">
+    <div class="section-label">Deep Time</div>
+    <h2>Geological Time Scale</h2>
+    <div class="timeline">
+      <div class="timeline-entry">
+        <div class="timeline-era">4,540 Mya</div>
+        <div class="timeline-line"></div>
+        <div class="timeline-content">
+          <h4>Hadean Eon — Formation of Earth</h4>
+          <p>Earth accretes from the solar nebula. Intense bombardment by meteorites; a Mars-sized body collides with Earth, ejecting material that forms the Moon. The surface is largely molten.</p>
+        </div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-era">4,000 Mya</div>
+        <div class="timeline-line"></div>
+        <div class="timeline-content">
+          <h4>Archean Eon — First Crust</h4>
+          <p>Earth cools sufficiently to form a solid crust. The oldest known rocks — the Acasta Gneiss of Canada — date to this period. Single-celled life emerges in primordial oceans.</p>
+        </div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-era">541 Mya</div>
+        <div class="timeline-line"></div>
+        <div class="timeline-content">
+          <h4>Cambrian Explosion</h4>
+          <p>A rapid diversification of complex multicellular organisms leaves an abundant fossil record in sedimentary rock. Hard shells and exoskeletons preserve evidence of ancient life for geologists today.</p>
+        </div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-era">250 Mya</div>
+        <div class="timeline-line"></div>
+        <div class="timeline-content">
+          <h4>Permian–Triassic Extinction</h4>
+          <p>The largest mass extinction in Earth's history eliminates ~96% of marine species. Vast volcanic eruptions in Siberia release CO₂ and SO₂, leaving a geochemical signature visible in the stratigraphic record.</p>
+        </div>
+      </div>
+      <div class="timeline-entry">
+        <div class="timeline-era">66 Mya</div>
+        <div class="timeline-line"></div>
+        <div class="timeline-content">
+          <h4>K–Pg Boundary</h4>
+          <p>An asteroid impact deposits a global iridium-rich layer visible in outcrops worldwide. The end of the Cretaceous is marked by this thin dark band in the geological record — a precise timestamp in stone.</p>
+        </div>
+      </div>
+    </div>
   </div>
 
   <section class="section" id="learn">
@@ -406,24 +684,58 @@
     <h2>Deeper Reading</h2>
     <div class="articles-grid">
       <div class="article-main">
+        <span class="article-tag">Rock Cycle · Petrology</span>
         <h3>Understanding the Rock Cycle: How Rocks Transform Over Geological Time</h3>
         <p>The rock cycle is one of geology's most elegant concepts — a continuous system by which rocks are created, altered, destroyed, and reformed through the action of internal earth processes and surface weathering.</p>
-        <p>No rock type is permanent. Granite may be uplifted, weathered into sediment, compressed into sandstone, and eventually subducted back into the mantle where it melts into magma once more.</p>
-        <p>Geologists use radioactive isotope dating to trace these transformations across billions of years, revealing a planet in constant, slow-motion flux.</p>
+        <p>No rock type is permanent. Granite may be uplifted, weathered into sediment, compressed into sandstone, and eventually subducted back into the mantle where it melts into magma once more. The timescales involved — millions to hundreds of millions of years — are almost impossible to comprehend on a human scale.</p>
+        <p>Geologists use radioactive isotope dating to trace these transformations across billions of years, revealing a planet in constant, slow-motion flux. Uranium-lead, potassium-argon, and rubidium-strontium systems each unlock a different chapter of Earth's history written in the chemical signatures of its rocks.</p>
+        <a href="#" class="read-more">Continue reading →</a>
       </div>
       <div class="article-sidebar">
-        <div class="sidebar-item"><div class="sidebar-num">01</div><h4>Mohs Hardness Scale</h4><p>Ranges from talc (1) to diamond (10). The standard for mineral hardness identification.</p></div>
-        <div class="sidebar-item"><div class="sidebar-num">02</div><h4>Plate Tectonics</h4><p>Explains how crustal plates move, collide, and drive volcanic and seismic activity globally.</p></div>
-        <div class="sidebar-item"><div class="sidebar-num">03</div><h4>Stratigraphy</h4><p>The study of rock layers, fundamental to understanding Earth's geological timeline.</p></div>
-        <div class="sidebar-item"><div class="sidebar-num">04</div><h4>Geomorphology</h4><p>How landforms are shaped by geological processes, erosion, and deposition over time.</p></div>
+        <div class="sidebar-item"><div class="sidebar-num">01</div><h4>Mohs Hardness Scale</h4><p>Ranges from talc (1) to diamond (10). The standard comparative scale for mineral hardness identification in the field.</p></div>
+        <div class="sidebar-item"><div class="sidebar-num">02</div><h4>Plate Tectonics</h4><p>Explains how crustal plates move, collide, and subduct — driving volcanic activity, mountain building, and seismic events globally.</p></div>
+        <div class="sidebar-item"><div class="sidebar-num">03</div><h4>Stratigraphy</h4><p>The study of rock layers and their sequence — fundamental to reconstructing Earth's geological history and dating past events.</p></div>
+        <div class="sidebar-item"><div class="sidebar-num">04</div><h4>Geomorphology</h4><p>How landforms are shaped by geological processes, including erosion, deposition, volcanic activity, and tectonic uplift over time.</p></div>
+        <div class="sidebar-item"><div class="sidebar-num">05</div><h4>Radiometric Dating</h4><p>Using known decay rates of radioactive isotopes to assign absolute ages to rocks and minerals — the geological clock.</p></div>
       </div>
     </div>
   </section>
 
+  <div class="quote-section">
+    <p class="big-quote">"The book of nature is written in the language of geology — every stratum a sentence, every mineral a word, every fossil a signature of life that once was."</p>
+    <div class="quote-attr">— Charles Lyell, Principles of Geology, 1830</div>
+  </div>
+
   <footer>
-    <div class="footer-logo">RockSolid</div>
-    <div class="footer-copy">
-      <span id="secret-trigger" title="">©</span> 2025 RockSolid Reference. All rights reserved.
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="nav-logo footer-logo-text">Rock<span style="color:var(--rust);font-style:italic;">Solid</span></span>
+        <p>A curated geology and mineralogy reference for students, educators, and enthusiasts. Built to make Earth science more accessible.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Reference</h5>
+        <ul>
+          <li><a href="#types">Rock Types</a></li>
+          <li><a href="#process">Rock Cycle</a></li>
+          <li><a href="#timeline">Geological Time</a></li>
+          <li><a href="#learn">Articles</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Topics</h5>
+        <ul>
+          <li><a href="#">Plate Tectonics</a></li>
+          <li><a href="#">Mineralogy</a></li>
+          <li><a href="#">Stratigraphy</a></li>
+          <li><a href="#">Volcanology</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-logo">RockSolid Reference</div>
+      <div class="footer-copy">
+        <span id="secret-trigger" title="">©</span> 2025 RockSolid. All rights reserved.
+      </div>
     </div>
   </footer>
 </div>
@@ -473,17 +785,23 @@
       <input type="text" id="cat-name" placeholder="e.g. AP Chemistry"></div>
     <div class="form-group"><label>Teacher Name</label>
       <input type="text" id="cat-teacher" placeholder="e.g. Ms. Okafor"></div>
-    <div class="form-group"><label>Subject (for filter bar)</label>
-      <select id="cat-subject">
-        <option value="other">Other / General</option>
-        <option value="math">Mathematics</option>
-        <option value="sci">Science</option>
-        <option value="eng">English</option>
-        <option value="hist">History / Social Studies</option>
-        <option value="lang">Language</option>
-        <option value="art">Arts</option>
-        <option value="tech">Technology / CS</option>
-      </select>
+    <div class="form-row">
+      <div class="form-group"><label>Subject (for filter bar)</label>
+        <select id="cat-subject">
+          <option value="other">Other / General</option>
+          <option value="math">Mathematics</option>
+          <option value="sci">Science</option>
+          <option value="eng">English</option>
+          <option value="hist">History / Social Studies</option>
+          <option value="lang">Language</option>
+          <option value="art">Arts</option>
+          <option value="tech">Technology / CS</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Semester</label>
+        <input type="text" id="cat-semester" placeholder="e.g. Fall 2024" list="sem-suggestions">
+        <datalist id="sem-suggestions"></datalist>
+      </div>
     </div>
     <button class="modal-btn" id="cat-save-btn">Create Category</button>
     <div class="modal-error" id="cat-error"></div>
@@ -511,20 +829,16 @@
         </select>
       </div>
     </div>
-    <!-- NEW: Unit field -->
     <div class="form-group">
-      <label>Unit <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. Unit 1, Chapter 3, Semester 2)</span></label>
+      <label>Unit <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. Unit 1, Chapter 3)</span></label>
       <input type="text" id="test-unit" placeholder="e.g. Unit 1" list="unit-suggestions">
       <datalist id="unit-suggestions"></datalist>
     </div>
     <div class="form-group"><label>Notes (optional)</label>
       <textarea id="test-notes" rows="2" placeholder="e.g. 40 questions, calculator allowed, Fall 2024"></textarea></div>
-
-    <!-- Three file slots -->
     <div class="form-group"><label>Files</label>
       <div class="file-slots" id="file-slots-container"></div>
     </div>
-
     <button class="modal-btn" id="test-save-btn">Add to Archive</button>
     <div class="modal-error" id="test-error"></div>
   </div>
@@ -550,7 +864,7 @@
     <div class="archive-header-row">
       <div>
         <h1>Course Archive</h1>
-        <p>Past exams and study materials — organized by course and instructor</p>
+        <p>Past exams and study materials — organized by course, teacher, and semester</p>
       </div>
       <div id="admin-badge" class="admin-badge" style="display:none">⚙ Admin Mode</div>
     </div>
@@ -564,15 +878,31 @@
         <button class="admin-btn" id="btn-clear-all">🗑 Clear All Data</button>
       </div>
     </div>
-    <!-- Subject filter bar -->
-    <div class="filter-bar" id="filter-bar">
-      <span class="filter-label">Subject:</span>
-      <button class="filter-btn active" data-filter="all">All Courses</button>
+
+    <!-- Combined filter panel -->
+    <div class="filter-section" id="filter-section">
+      <div class="filter-row" id="subject-filter-row">
+        <span class="filter-label">Subject</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+      </div>
+      <div class="filter-row sem" id="semester-filter-row" style="display:none">
+        <span class="filter-label">Semester</span>
+        <button class="filter-btn active" data-sem="all">All</button>
+      </div>
+      <div class="filter-row teacher" id="teacher-filter-row" style="display:none">
+        <span class="filter-label">Teacher</span>
+        <button class="filter-btn active" data-teacher="all">All</button>
+      </div>
+      <div class="filter-row" id="course-filter-row" style="display:none">
+        <span class="filter-label">Course</span>
+        <button class="filter-btn active" data-course="all">All</button>
+      </div>
+      <div class="filter-row unit" id="unit-filter-row" style="display:none">
+        <span class="filter-label">Unit</span>
+        <button class="filter-btn active" data-unit="all">All</button>
+      </div>
     </div>
-    <!-- Unit filter bar (hidden when no units exist) -->
-    <div class="unit-filter-bar" id="unit-filter-bar" style="display:none">
-      <span class="filter-label">Unit:</span>
-    </div>
+
     <div id="courses-container">
       <div class="loading-state"><p>Loading archive…</p></div>
     </div>
@@ -625,12 +955,14 @@ const auth        = getAuth(app);
 // ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
-let currentFilter = 'all';   // subject filter
-let currentUnit   = 'all';   // unit filter
+let currentFilter  = 'all';  // subject
+let currentSem     = 'all';  // semester
+let currentTeacher = 'all';  // teacher
+let currentCourse  = 'all';  // specific course
+let currentUnit    = 'all';  // unit
 let dbLoaded      = false;
 let archiveOpen   = false;
 
-// File slot state for modal
 let pendingSlots  = { pdf: null, orig: null, key: null };
 let editingTestId = null;
 
@@ -642,10 +974,13 @@ async function loadDB() {
       db = snap.data();
       if (!Array.isArray(db.cats))  db.cats  = [];
       if (!Array.isArray(db.tests)) db.tests = [];
-      // Migrate: add order / unit fields if missing
       db.tests.forEach((t, i) => {
         if (t.order === undefined) t.order = i;
         if (t.unit  === undefined) t.unit  = '';
+      });
+      // Migrate: add semester to cats if missing
+      db.cats.forEach(c => {
+        if (!c.semester) c.semester = '';
       });
     } else {
       await saveDB();
@@ -765,8 +1100,17 @@ document.getElementById('back-btn').onclick = () => {
   window.scrollTo(0, 0);
 };
 
-// ── UNIT HELPERS ──
-// Returns a sorted, deduplicated list of non-empty unit strings from visible tests
+// ── FILTER HELPERS ──
+function getFilteredCats() {
+  return db.cats.filter(c => {
+    if (currentFilter  !== 'all' && c.subject  !== currentFilter)  return false;
+    if (currentSem     !== 'all' && (c.semester||'').trim() !== currentSem) return false;
+    if (currentTeacher !== 'all' && c.teacher   !== currentTeacher) return false;
+    if (currentCourse  !== 'all' && c.id        !== currentCourse)  return false;
+    return true;
+  });
+}
+
 function getVisibleUnits(visibleCatIds) {
   const units = new Set();
   db.tests.forEach(t => {
@@ -774,68 +1118,133 @@ function getVisibleUnits(visibleCatIds) {
       units.add(t.unit.trim());
     }
   });
-  // Sort naturally: "Unit 1" < "Unit 2" < "Unit 10"
   return [...units].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 }
 
-// Natural-sort key for unit: puts '' (no unit) last
-function unitSortKey(unit) {
-  return unit ? unit.trim() : '\uffff'; // high codepoint → sorts last
-}
+function unitSortKey(unit) { return unit ? unit.trim() : '\uffff'; }
 
 // ── RENDER ──
 function renderAll() { renderFilters(); renderCourses(); }
 
 const SUBJ_LABELS = {
-  all:'All Courses', math:'Mathematics', sci:'Science', eng:'English',
+  all:'All', math:'Math', sci:'Science', eng:'English',
   hist:'History', lang:'Language', art:'Arts', tech:'Technology', other:'Other'
 };
 
 function renderFilters() {
-  // ── Subject filter ──
-  const bar      = document.getElementById('filter-bar');
-  const subjects = [...new Set(db.cats.map(c => c.subject).filter(s => s && s !== 'other'))];
-  let html = `<span class="filter-label">Subject:</span>
-    <button class="filter-btn ${currentFilter==='all'?'active':''}" data-filter="all">All Courses</button>`;
-  subjects.forEach(s => {
-    html += `<button class="filter-btn ${currentFilter===s?'active':''}" data-filter="${s}">${SUBJ_LABELS[s]||s}</button>`;
+  // Subject
+  const subjects = [...new Set(db.cats.map(c => c.subject).filter(Boolean))];
+  const subjRow  = document.getElementById('subject-filter-row');
+  let subjHtml = `<span class="filter-label">Subject</span>
+    <button class="filter-btn ${currentFilter==='all'?'active':''}" data-filter="all">All</button>`;
+  subjects.filter(s => s !== 'other' && s !== 'all').forEach(s => {
+    subjHtml += `<button class="filter-btn ${currentFilter===s?'active':''}" data-filter="${s}">${SUBJ_LABELS[s]||s}</button>`;
   });
-  bar.innerHTML = html;
-  bar.querySelectorAll('.filter-btn').forEach(btn => {
+  if (subjects.includes('other')) {
+    subjHtml += `<button class="filter-btn ${currentFilter==='other'?'active':''}" data-filter="other">Other</button>`;
+  }
+  subjRow.innerHTML = subjHtml;
+  subjRow.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentFilter = btn.dataset.filter;
-      currentUnit   = 'all'; // reset unit filter when subject changes
+      currentSem = currentTeacher = currentCourse = currentUnit = 'all';
       renderAll();
     });
   });
 
-  // ── Unit filter ──
-  const visibleCatIds = db.cats
-    .filter(c => currentFilter === 'all' || c.subject === currentFilter)
-    .map(c => c.id);
-  const units    = getVisibleUnits(visibleCatIds);
-  const unitBar  = document.getElementById('unit-filter-bar');
-
-  if (units.length === 0) {
-    unitBar.style.display = 'none';
-    currentUnit = 'all';
+  // Semester — from cats visible under current subject filter
+  const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
+  const semesters   = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
+    .sort((a,b) => b.localeCompare(a)); // newest first
+  const semRow = document.getElementById('semester-filter-row');
+  if (semesters.length > 0) {
+    let semHtml = `<span class="filter-label">Semester</span>
+      <button class="filter-btn ${currentSem==='all'?'active':''}" data-sem="all">All</button>`;
+    semesters.forEach(s => {
+      semHtml += `<button class="filter-btn ${currentSem===s?'active':''}" data-sem="${esc(s)}">${esc(s)}</button>`;
+    });
+    semRow.innerHTML = semHtml;
+    semRow.style.display = 'flex';
+    semRow.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentSem = btn.dataset.sem;
+        currentTeacher = currentCourse = currentUnit = 'all';
+        renderAll();
+      });
+    });
   } else {
-    unitBar.style.display = 'flex';
-    let uHtml = `<span class="filter-label">Unit:</span>
-      <button class="filter-btn ${currentUnit==='all'?'active':''}" data-unit="all">All Units</button>`;
+    semRow.style.display = 'none';
+  }
+
+  // Teacher — from cats visible under current subject+semester filters
+  const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
+  const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
+  const teacherRow = document.getElementById('teacher-filter-row');
+  if (teachers.length > 1) {
+    let tHtml = `<span class="filter-label">Teacher</span>
+      <button class="filter-btn ${currentTeacher==='all'?'active':''}" data-teacher="all">All</button>`;
+    teachers.forEach(t => {
+      tHtml += `<button class="filter-btn ${currentTeacher===t?'active':''}" data-teacher="${esc(t)}">${esc(t)}</button>`;
+    });
+    teacherRow.innerHTML = tHtml;
+    teacherRow.style.display = 'flex';
+    teacherRow.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentTeacher = btn.dataset.teacher;
+        currentCourse = currentUnit = 'all';
+        renderAll();
+      });
+    });
+  } else {
+    teacherRow.style.display = 'none';
+  }
+
+  // Course — from cats visible under current subject+semester+teacher filters
+  const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
+  const courseRow   = document.getElementById('course-filter-row');
+  if (teacherCats.length > 1) {
+    let cHtml = `<span class="filter-label">Course</span>
+      <button class="filter-btn ${currentCourse==='all'?'active':''}" data-course="all">All</button>`;
+    teacherCats.forEach(c => {
+      cHtml += `<button class="filter-btn ${currentCourse===c.id?'active':''}" data-course="${c.id}">${esc(c.name)}</button>`;
+    });
+    courseRow.innerHTML = cHtml;
+    courseRow.style.display = 'flex';
+    courseRow.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCourse = btn.dataset.course;
+        currentUnit = 'all';
+        renderAll();
+      });
+    });
+  } else {
+    courseRow.style.display = 'none';
+  }
+
+  // Unit — from tests in visible cats
+  const visibleCatIds = getFilteredCats().map(c => c.id);
+  const units    = getVisibleUnits(visibleCatIds);
+  const unitRow  = document.getElementById('unit-filter-row');
+  if (units.length > 0) {
+    let uHtml = `<span class="filter-label">Unit</span>
+      <button class="filter-btn ${currentUnit==='all'?'active':''}" data-unit="all">All</button>`;
     units.forEach(u => {
       uHtml += `<button class="filter-btn ${currentUnit===u?'active':''}" data-unit="${esc(u)}">${esc(u)}</button>`;
     });
-    unitBar.innerHTML = uHtml;
-    unitBar.querySelectorAll('.filter-btn').forEach(btn => {
+    unitRow.innerHTML = uHtml;
+    unitRow.style.display = 'flex';
+    unitRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => { currentUnit = btn.dataset.unit; renderAll(); });
     });
+  } else {
+    unitRow.style.display = 'none';
+    if (currentUnit !== 'all') currentUnit = 'all';
   }
 }
 
 function renderCourses() {
   const cont    = document.getElementById('courses-container');
-  const visible = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
+  const visible = getFilteredCats();
 
   if (db.cats.length === 0) {
     cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂</div><h3>No courses yet</h3>
@@ -843,13 +1252,12 @@ function renderCourses() {
     return;
   }
   if (visible.length === 0) {
-    cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No courses in this category</h3>
-      <p>Try selecting a different filter above.</p></div>`;
+    cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><h3>No courses match these filters</h3>
+      <p>Try adjusting the filters above.</p></div>`;
     return;
   }
 
   cont.innerHTML = visible.map(cat => {
-    // All tests for this course sorted by unit (natural), then by manual order within each unit
     let tests = [...db.tests.filter(t => t.catId === cat.id)]
       .sort((a, b) => {
         const ua = unitSortKey(a.unit), ub = unitSortKey(b.unit);
@@ -857,7 +1265,6 @@ function renderCourses() {
         return (a.order ?? 0) - (b.order ?? 0);
       });
 
-    // Apply unit filter
     if (currentUnit !== 'all') {
       tests = tests.filter(t => (t.unit || '').trim() === currentUnit);
     }
@@ -868,26 +1275,28 @@ function renderCourses() {
         <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
       </div>` : '';
 
+    const semBadge = cat.semester
+      ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '';
+
     const titleBlock = isAdmin
       ? `<div class="course-title-wrap">
            <span class="course-title editable-cat-name" data-cat-id="${cat.id}">${esc(cat.name)}</span>
            <span class="rename-hint">click to rename</span>
          </div>
-         <span class="course-teacher editable-cat-teacher" data-cat-id="${cat.id}">${esc(cat.teacher)}</span>`
+         <span class="course-teacher editable-cat-teacher" data-cat-id="${cat.id}">${esc(cat.teacher)}</span>
+         ${semBadge}`
       : `<span class="course-title">${esc(cat.name)}</span>
-         <span class="course-teacher">${esc(cat.teacher)}</span>`;
+         <span class="course-teacher">${esc(cat.teacher)}</span>
+         ${semBadge}`;
 
     let testsHtml = '';
     if (tests.length === 0) {
       testsHtml = `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests${currentUnit !== 'all' ? ' in this unit' : ''} uploaded yet.</p>`;
     } else if (currentUnit !== 'all') {
-      // Unit is already filtered — just render flat list
       testsHtml = tests.map(t => buildTestItem(t)).join('');
     } else {
-      // Group by unit when showing all units
       const groups = groupByUnit(tests);
       if (groups.length === 1 && !groups[0].unit) {
-        // No units assigned anywhere — render flat (legacy behaviour)
         testsHtml = groups[0].items.map(t => buildTestItem(t)).join('');
       } else {
         testsHtml = groups.map(g => {
@@ -896,12 +1305,10 @@ function renderCourses() {
             : `<div class="unit-group-header" style="color:var(--slate);opacity:.5;">Unassigned</div>`;
           return `<div class="unit-group">${header}<div class="test-list" data-list-cat="${cat.id}">${g.items.map(t => buildTestItem(t)).join('')}</div></div>`;
         }).join('');
-        // Wrap in a dummy outer list so drag-drop still works per-cat
         testsHtml = `<div>${testsHtml}</div>`;
       }
     }
 
-    // When grouping, the test-list is nested; top-level wrapper differs
     const listWrapper = (currentUnit !== 'all' || !hasAnyUnits(tests))
       ? `<div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>`
       : testsHtml;
@@ -921,7 +1328,6 @@ function renderCourses() {
   cont.querySelectorAll('[data-del-test]').forEach(btn  => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
   cont.querySelectorAll('[data-edit-test]').forEach(btn => btn.onclick = () => openEditTest(btn.dataset.editTest));
 
-  // Inline category rename
   if (isAdmin) {
     cont.querySelectorAll('.editable-cat-name').forEach(el => {
       el.style.cursor = 'text';
@@ -938,10 +1344,8 @@ function renderCourses() {
       sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
     });
     setupDragDrop();
-    setupFileSlotToggles();
-  } else {
-    setupFileSlotToggles();
   }
+  setupFileSlotToggles();
 }
 
 // ── GROUP BY UNIT ──
@@ -952,7 +1356,6 @@ function groupByUnit(tests) {
     if (!map.has(key)) map.set(key, []);
     map.get(key).push(t);
   });
-  // Sort groups: named units naturally, then '' (unassigned) last
   return [...map.entries()]
     .sort(([a], [b]) => {
       if (!a && b) return 1;
@@ -969,7 +1372,6 @@ function hasAnyUnits(tests) {
 function buildTestItem(t) {
   const slots = t.files || {};
   let fileLinksHtml = '';
-
   const hasAnyFile = slots.pdf || slots.orig || slots.key;
 
   if (isAdmin || hasAnyFile) {
@@ -989,7 +1391,7 @@ function buildTestItem(t) {
     } else if (isAdmin) {
       links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
     }
-    if (links) fileLinksHtml = `<div class="test-files-row" data-files-row="${t.id}">${links}</div>`;
+    if (links) fileLinksHtml = `<div class="test-files-row">${links}</div>`;
   }
 
   const dragHandle = isAdmin ? `<div class="drag-handle" draggable="false" title="Drag to reorder">⠿</div>` : '';
@@ -1004,18 +1406,12 @@ function buildTestItem(t) {
          <option value="midterm" ${t.type==='midterm' ?'selected':''}>midterm</option>
          <option value="final"   ${t.type==='final'   ?'selected':''}>final</option>
        </select>`
-    : `<span class="test-badge badge-${esc(t.type)}">${esc(t.type)}</span>`;
+    : `<span style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;" class="${typeClass}">${esc(t.type)}</span>`;
 
   const nameEl = isAdmin
     ? `<span class="test-item-name editable-test-name" data-test-id="${t.id}" title="Click to rename">${esc(t.name)}</span>`
     : `<span class="test-item-name">${esc(t.name)}</span>`;
 
-  // Show unit badge on the item only when in "all units" view (so it's still visible in grouped headers)
-  const unitBadge = (t.unit && t.unit.trim() && currentUnit === 'all' && hasAnyUnits([t]))
-    ? '' // hidden when grouped — header already shows it
-    : '';
-  // Actually: always hide badge since group header already shows it.
-  // Only show if unit filter is active (then there's no header).
   const showBadge = currentUnit !== 'all' && t.unit && t.unit.trim();
   const unitBadgeHtml = showBadge ? `<span class="test-unit-badge">${esc(t.unit.trim())}</span>` : '';
 
@@ -1156,12 +1552,9 @@ function setupDragDrop() {
         const after  = e.clientY >= rect.top + rect.height / 2;
         const catId  = dragSrcCat;
 
-        // Reorder within the same unit group
         const srcTest = db.tests.find(t => t.id === dragSrcId);
         const tgtTest = db.tests.find(t => t.id === item.dataset.testId);
         if (!srcTest || !tgtTest) return;
-
-        // Only allow reorder within same unit
         if (srcTest.unit !== tgtTest.unit) return;
 
         let catTests = db.tests
@@ -1284,12 +1677,18 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
   });
 }
 
-// ── UNIT DATALIST (autocomplete from existing units) ──
+// ── UNIT & SEMESTER DATALISTS ──
 function populateUnitSuggestions() {
   const dl    = document.getElementById('unit-suggestions');
   const units = [...new Set(db.tests.map(t => (t.unit || '').trim()).filter(Boolean))]
     .sort((a,b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
   dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
+}
+
+function populateSemesterSuggestions() {
+  const dl   = document.getElementById('sem-suggestions');
+  const sems = [...new Set(db.cats.map(c => (c.semester||'').trim()).filter(Boolean))].sort().reverse();
+  dl.innerHTML = sems.map(s => `<option value="${esc(s)}">`).join('');
 }
 
 // ── ADD TEST MODAL ──
@@ -1306,7 +1705,7 @@ function openAddTest(preselCatId) {
 
   const sel = document.getElementById('test-cat-select');
   sel.innerHTML = db.cats.map(c =>
-    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}</option>`
+    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}${c.semester ? ' — ' + esc(c.semester) : ''}</option>`
   ).join('');
   if (!sel.innerHTML) {
     document.getElementById('test-error').textContent = 'Create a category first.';
@@ -1339,7 +1738,7 @@ function openEditTest(testId, focusSlot = null) {
   openModal('test-overlay');
 }
 
-function clearTestForm(preselCatId) {
+function clearTestForm() {
   ['test-name','test-notes','test-unit'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('test-error').textContent = '';
   document.getElementById('test-type').value = 'quiz';
@@ -1419,24 +1818,25 @@ async function saveTest() {
 }
 
 // ── ADMIN CATEGORIES ──
-document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); openModal('cat-overlay'); };
+document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterSuggestions(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
 
 function clearCatForm() {
-  ['cat-name','cat-teacher'].forEach(id => document.getElementById(id).value = '');
+  ['cat-name','cat-teacher','cat-semester'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cat-error').textContent = '';
   document.getElementById('cat-subject').value = 'other';
 }
 
 async function saveCategory() {
-  const name    = document.getElementById('cat-name').value.trim();
-  const teacher = document.getElementById('cat-teacher').value.trim();
-  const subject = document.getElementById('cat-subject').value;
+  const name     = document.getElementById('cat-name').value.trim();
+  const teacher  = document.getElementById('cat-teacher').value.trim();
+  const subject  = document.getElementById('cat-subject').value;
+  const semester = document.getElementById('cat-semester').value.trim();
   if (!name || !teacher) { document.getElementById('cat-error').textContent = 'Course name and teacher are required.'; return; }
   const btn = document.getElementById('cat-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
-    db.cats.push({ id: uid(), name, teacher, subject });
+    db.cats.push({ id: uid(), name, teacher, subject, semester });
     await saveDB();
     closeModal('cat-overlay');
     renderAll();
