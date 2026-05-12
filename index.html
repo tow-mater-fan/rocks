@@ -327,13 +327,10 @@
     color:var(--granite); cursor:pointer; transition:all .2s; white-space:nowrap; }
   .filter-btn:hover { border-color:var(--stone); color:var(--stone); }
   .filter-btn.active { background:var(--stone); color:var(--cream); border-color:var(--stone); }
-  /* Semester row */
   .filter-row.sem .filter-btn.active { background:var(--rust); border-color:var(--rust); }
   .filter-row.sem .filter-btn:hover:not(.active) { border-color:var(--rust); color:var(--rust); }
-  /* Teacher row */
   .filter-row.teacher .filter-btn.active { background:var(--moss); border-color:var(--moss); }
   .filter-row.teacher .filter-btn:hover:not(.active) { border-color:var(--moss); color:var(--moss); }
-  /* Unit row */
   .filter-row.unit .filter-btn.active { background:#6a5a8a; border-color:#6a5a8a; }
   .filter-row.unit .filter-btn:hover:not(.active) { border-color:#6a5a8a; color:#6a5a8a; }
 
@@ -349,6 +346,8 @@
   .course-semester-badge { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.1em;
     text-transform:uppercase; padding:.2rem .65rem; border-radius:100px;
     background:rgba(90,110,74,.12); color:var(--moss); border:1px solid rgba(90,110,74,.2); }
+  .course-semester-badge.editable-semester { cursor:pointer; transition:background .15s, border-color .15s; }
+  .course-semester-badge.editable-semester:hover { background:rgba(90,110,74,.22); border-color:rgba(90,110,74,.5); }
   .inline-edit-input { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone);
     border:none; border-bottom:2px solid var(--rust); background:transparent; outline:none; min-width:160px; }
   .inline-edit-input.teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
@@ -427,6 +426,23 @@
   .empty-icon  { font-size:2.5rem; opacity:.3; margin-bottom:.75rem; }
   .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--slate); margin-bottom:.4rem; }
   .empty-state p  { font-size:.82rem; color:var(--slate); font-family:'DM Mono',monospace; letter-spacing:.04em; }
+
+  /* ── SEMESTER INLINE EDIT ── */
+  .sem-inline-wrap { display:inline-flex; gap:.35rem; align-items:center; flex-wrap:wrap; }
+  .sem-inline-select {
+    font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.08em;
+    padding:.25rem .45rem; border-radius:3px;
+    border:1.5px solid var(--rust); background:var(--parchment);
+    color:var(--stone); outline:none; cursor:pointer;
+  }
+  .sem-inline-btn {
+    font-size:.72rem; padding:.18rem .45rem; border-radius:3px;
+    border:1.5px solid; background:transparent; cursor:pointer; line-height:1;
+  }
+  .sem-inline-btn.confirm { border-color:var(--moss); color:var(--moss); }
+  .sem-inline-btn.confirm:hover { background:rgba(90,110,74,.12); }
+  .sem-inline-btn.cancel  { border-color:rgba(100,80,60,.3); color:var(--slate); }
+  .sem-inline-btn.cancel:hover  { background:rgba(100,80,60,.06); }
 
   /* ── RESPONSIVE ── */
   @media(max-width:900px) {
@@ -1171,7 +1187,7 @@ function renderFilters() {
   // Semester — from cats visible under current subject filter
   const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
   const semesters   = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
-    .sort((a,b) => b.localeCompare(a)); // newest first
+    .sort((a,b) => b.localeCompare(a));
   const semRow = document.getElementById('semester-filter-row');
   if (semesters.length > 0) {
     let semHtml = `<span class="filter-label">Semester</span>
@@ -1192,7 +1208,7 @@ function renderFilters() {
     semRow.style.display = 'none';
   }
 
-  // Teacher — from cats visible under current subject+semester filters
+  // Teacher
   const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
   const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
   const teacherRow = document.getElementById('teacher-filter-row');
@@ -1215,7 +1231,7 @@ function renderFilters() {
     teacherRow.style.display = 'none';
   }
 
-  // Course — from cats visible under current subject+semester+teacher filters
+  // Course
   const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
   const courseRow   = document.getElementById('course-filter-row');
   if (teacherCats.length > 1) {
@@ -1237,7 +1253,7 @@ function renderFilters() {
     courseRow.style.display = 'none';
   }
 
-  // Unit — from tests in visible cats
+  // Unit
   const visibleCatIds = getFilteredCats().map(c => c.id);
   const units    = getVisibleUnits(visibleCatIds);
   const unitRow  = document.getElementById('unit-filter-row');
@@ -1293,7 +1309,7 @@ function renderCourses() {
 
     const semLabel = cat.semester || '+ Semester';
     const semBadge = isAdmin
-      ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to change semester">${esc(semLabel)}</span>`
+      ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to edit semester">${esc(semLabel)}</span>`
       : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
 
     const titleBlock = isAdmin
@@ -1480,6 +1496,91 @@ function startCatRename(el, field) {
   input.addEventListener('keydown', e => {
     if (e.key === 'Enter') { input.blur(); }
     if (e.key === 'Escape') { input.value = current; input.blur(); }
+  });
+}
+
+// ── INLINE SEMESTER EDIT ──
+function startSemesterEdit(el) {
+  const catId = el.dataset.catId;
+  const cat   = db.cats.find(c => c.id === catId);
+  if (!cat) return;
+
+  const current = (cat.semester || '').trim();
+
+  const SEASONS = ['', 'Fall', 'Spring', 'Summer', 'Winter',
+                   'Semester 1', 'Semester 2', 'Q1', 'Q2', 'Q3', 'Q4'];
+  const currentYear = new Date().getFullYear();
+
+  // Parse existing "Season Year" back into parts
+  let initSeason = '', initYear = String(currentYear);
+  if (current) {
+    const matched = SEASONS.filter(Boolean).find(s => current.startsWith(s));
+    if (matched) {
+      initSeason = matched;
+      initYear   = current.slice(matched.length).trim() || String(currentYear);
+    } else {
+      // It's just a year or something unrecognised — put it in year
+      initYear = current;
+    }
+  }
+
+  const years = ['', ...Array.from({ length: 9 }, (_, i) => String(currentYear + 1 - i))];
+
+  // Build the inline wrapper
+  const wrap = document.createElement('span');
+  wrap.className = 'sem-inline-wrap';
+
+  const makeSelect = (opts, val) => {
+    const s = document.createElement('select');
+    s.className = 'sem-inline-select';
+    opts.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o;
+      opt.textContent = o || '— None —';
+      if (o === val) opt.selected = true;
+      s.appendChild(opt);
+    });
+    return s;
+  };
+
+  const seasonSel = makeSelect(SEASONS, initSeason);
+  const yearSel   = makeSelect(years, initYear);
+
+  const saveBtn   = document.createElement('button');
+  saveBtn.textContent = '✓';
+  saveBtn.className   = 'sem-inline-btn confirm';
+  saveBtn.title       = 'Save';
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = '✕';
+  cancelBtn.className   = 'sem-inline-btn cancel';
+  cancelBtn.title       = 'Cancel';
+
+  wrap.append(seasonSel, yearSel, saveBtn, cancelBtn);
+  el.replaceWith(wrap);
+  seasonSel.focus();
+
+  async function commit() {
+    const season = seasonSel.value;
+    const year   = yearSel.value;
+    const newSem = (season && year) ? `${season} ${year}`
+                 : (season || year || '');
+    if (newSem !== current) {
+      cat.semester = newSem;
+      try { await saveDB(); }
+      catch { cat.semester = current; }
+    }
+    renderAll();
+  }
+
+  saveBtn.addEventListener('click', commit);
+  cancelBtn.addEventListener('click', () => renderAll());
+
+  [seasonSel, yearSel].forEach(s => {
+    s.addEventListener('keydown', e => {
+      if (e.key === 'Enter')  commit();
+      if (e.key === 'Escape') renderAll();
+    });
   });
 }
 
@@ -1698,7 +1799,7 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
   });
 }
 
-// ── UNIT & SEMESTER DATALISTS ──
+// ── UNIT DATALIST ──
 function populateUnitSuggestions() {
   const dl    = document.getElementById('unit-suggestions');
   const units = [...new Set(db.tests.map(t => (t.unit || '').trim()).filter(Boolean))]
@@ -1843,7 +1944,6 @@ function populateSemesterYears() {
   for (let y = currentYear + 1; y >= currentYear - 6; y--) {
     sel.appendChild(Object.assign(document.createElement('option'), { value: y, textContent: y }));
   }
-  // Pre-select current year
   sel.value = currentYear;
 }
 
