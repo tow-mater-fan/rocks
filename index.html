@@ -785,22 +785,38 @@
       <input type="text" id="cat-name" placeholder="e.g. AP Chemistry"></div>
     <div class="form-group"><label>Teacher Name</label>
       <input type="text" id="cat-teacher" placeholder="e.g. Ms. Okafor"></div>
+    <div class="form-group"><label>Subject (for filter bar)</label>
+      <select id="cat-subject">
+        <option value="other">Other / General</option>
+        <option value="math">Mathematics</option>
+        <option value="sci">Science</option>
+        <option value="eng">English</option>
+        <option value="hist">History / Social Studies</option>
+        <option value="lang">Language</option>
+        <option value="art">Arts</option>
+        <option value="tech">Technology / CS</option>
+      </select>
+    </div>
     <div class="form-row">
-      <div class="form-group"><label>Subject (for filter bar)</label>
-        <select id="cat-subject">
-          <option value="other">Other / General</option>
-          <option value="math">Mathematics</option>
-          <option value="sci">Science</option>
-          <option value="eng">English</option>
-          <option value="hist">History / Social Studies</option>
-          <option value="lang">Language</option>
-          <option value="art">Arts</option>
-          <option value="tech">Technology / CS</option>
+      <div class="form-group"><label>Semester / Term</label>
+        <select id="cat-sem-season">
+          <option value="">— None —</option>
+          <option value="Fall">Fall</option>
+          <option value="Spring">Spring</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+          <option value="Semester 1">Semester 1</option>
+          <option value="Semester 2">Semester 2</option>
+          <option value="Q1">Q1</option>
+          <option value="Q2">Q2</option>
+          <option value="Q3">Q3</option>
+          <option value="Q4">Q4</option>
         </select>
       </div>
-      <div class="form-group"><label>Semester</label>
-        <input type="text" id="cat-semester" placeholder="e.g. Fall 2024" list="sem-suggestions">
-        <datalist id="sem-suggestions"></datalist>
+      <div class="form-group"><label>Year</label>
+        <select id="cat-sem-year">
+          <option value="">— None —</option>
+        </select>
       </div>
     </div>
     <button class="modal-btn" id="cat-save-btn">Create Category</button>
@@ -1685,12 +1701,6 @@ function populateUnitSuggestions() {
   dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
 }
 
-function populateSemesterSuggestions() {
-  const dl   = document.getElementById('sem-suggestions');
-  const sems = [...new Set(db.cats.map(c => (c.semester||'').trim()).filter(Boolean))].sort().reverse();
-  dl.innerHTML = sems.map(s => `<option value="${esc(s)}">`).join('');
-}
-
 // ── ADD TEST MODAL ──
 document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
 document.getElementById('test-save-btn').onclick = saveTest;
@@ -1818,20 +1828,34 @@ async function saveTest() {
 }
 
 // ── ADMIN CATEGORIES ──
-document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterSuggestions(); openModal('cat-overlay'); };
+document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterYears(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
 
+function populateSemesterYears() {
+  const sel = document.getElementById('cat-sem-year');
+  const currentYear = new Date().getFullYear();
+  sel.innerHTML = '<option value="">— None —</option>';
+  for (let y = currentYear + 1; y >= currentYear - 6; y--) {
+    sel.appendChild(Object.assign(document.createElement('option'), { value: y, textContent: y }));
+  }
+  // Pre-select current year
+  sel.value = currentYear;
+}
+
 function clearCatForm() {
-  ['cat-name','cat-teacher','cat-semester'].forEach(id => document.getElementById(id).value = '');
+  ['cat-name','cat-teacher'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('cat-error').textContent = '';
   document.getElementById('cat-subject').value = 'other';
+  document.getElementById('cat-sem-season').value = '';
 }
 
 async function saveCategory() {
-  const name     = document.getElementById('cat-name').value.trim();
-  const teacher  = document.getElementById('cat-teacher').value.trim();
-  const subject  = document.getElementById('cat-subject').value;
-  const semester = document.getElementById('cat-semester').value.trim();
+  const name    = document.getElementById('cat-name').value.trim();
+  const teacher = document.getElementById('cat-teacher').value.trim();
+  const subject = document.getElementById('cat-subject').value;
+  const season  = document.getElementById('cat-sem-season').value;
+  const year    = document.getElementById('cat-sem-year').value;
+  const semester = (season && year) ? `${season} ${year}` : (season || year || '');
   if (!name || !teacher) { document.getElementById('cat-error').textContent = 'Course name and teacher are required.'; return; }
   const btn = document.getElementById('cat-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
