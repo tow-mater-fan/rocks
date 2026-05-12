@@ -14,7 +14,6 @@
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--stone); overflow-x:hidden; }
-
   /* ── NAV ── */
   nav {
     position:fixed; top:0; left:0; right:0; z-index:100; background:var(--obsidian);
@@ -32,7 +31,6 @@
   .nav-toggle.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
   .nav-toggle.open span:nth-child(2) { opacity:0; }
   .nav-toggle.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
-
   /* ── HERO ── */
   .hero {
     min-height:100vh; background:var(--deep); display:flex; flex-direction:column;
@@ -82,7 +80,6 @@
   .hero-scroll::after { content:''; width:1px; height:40px;
     background:linear-gradient(to bottom,var(--slate),transparent); animation:scrollLine 1.5s ease-in-out infinite; }
   @keyframes scrollLine { 0%,100%{opacity:.3} 50%{opacity:1} }
-
   /* ── INTRO STRIP ── */
   .intro-strip {
     background:var(--obsidian); padding:4rem 3rem;
@@ -100,7 +97,6 @@
   .mini-stat { background:var(--obsidian); padding:1.5rem; }
   .mini-stat-num { font-family:'Playfair Display',serif; font-size:2rem; color:var(--sand); }
   .mini-stat-label { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:var(--slate); margin-top:.35rem; }
-
   /* ── SECTIONS ── */
   .section { padding:6rem 3rem; }
   .section-label { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.25em;
@@ -109,7 +105,6 @@
   .section-label::after { content:''; flex:1; max-width:60px; height:1px; background:var(--rust); opacity:.4; }
   .section h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem);
     line-height:1.2; margin-bottom:3rem; color:var(--stone); }
-
   /* ── ROCK GRID ── */
   .rock-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.5rem; }
   .rock-card { background:var(--parchment); border:1px solid rgba(100,80,60,.2); border-radius:3px;
@@ -136,7 +131,6 @@
   .tag-sedimentary{ background:rgba(196,168,130,.3); color:var(--granite); }
   .tag-metamorphic{ background:rgba(74,110,74,.15);  color:var(--moss); }
   .rock-hardness { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--slate); opacity:.6; }
-
   /* ── PROCESS SECTION ── */
   .process-section { background:var(--stone); padding:6rem 3rem; }
   .process-section .section-label { color:var(--sand); }
@@ -150,7 +144,6 @@
   .process-step p { font-size:.875rem; color:rgba(232,221,208,.5); line-height:1.7; }
   .process-step .step-tag { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; display:block; }
-
   /* ── FACTS STRIP ── */
   .facts-strip { background:var(--rust); padding:4rem 3rem;
     display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:3rem; }
@@ -158,7 +151,6 @@
   .fact-num   { font-family:'Playfair Display',serif; font-size:3.2rem; color:var(--cream); }
   .fact-label { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.2em;
     text-transform:uppercase; color:rgba(245,239,230,.65); margin-top:.5rem; }
-
   /* ── TIMELINE SECTION ── */
   .timeline-section { padding:6rem 3rem; background:var(--parchment); }
   .timeline { max-width:800px; margin:0 auto; }
@@ -171,7 +163,6 @@
   .timeline-content { padding-left:1rem; }
   .timeline-content h4 { font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:.4rem; }
   .timeline-content p { font-size:.875rem; color:var(--slate); line-height:1.7; }
-
   /* ── ARTICLES ── */
   .articles-grid { display:grid; grid-template-columns:2fr 1fr; gap:3rem; align-items:start; }
   .article-main h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1rem; line-height:1.3; }
@@ -187,14 +178,12 @@
   .sidebar-item h4 { font-family:'Playfair Display',serif; font-size:1rem; margin-bottom:.35rem; }
   .sidebar-item p  { font-size:.8rem; color:var(--slate); line-height:1.6; }
   .sidebar-num { font-family:'DM Mono',monospace; font-size:.62rem; color:var(--rust); letter-spacing:.1em; margin-bottom:.35rem; }
-
   /* ── QUOTE SECTION ── */
   .quote-section { background:var(--obsidian); padding:5rem 3rem; text-align:center; }
   .big-quote { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3vw,2.2rem);
     color:var(--cream); line-height:1.5; max-width:800px; margin:0 auto; font-style:italic; opacity:.85; }
   .quote-attr { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.2em;
     text-transform:uppercase; color:var(--rust); margin-top:1.5rem; }
-
   /* ── FOOTER ── */
   footer { background:var(--deep); padding:4rem 3rem 2rem; border-top:1px solid rgba(196,168,130,.08); }
   .footer-top { display:grid; grid-template-columns:2fr 1fr 1fr; gap:3rem; margin-bottom:3rem; }
@@ -211,7 +200,6 @@
   .footer-copy { font-family:'DM Mono',monospace; font-size:.68rem; color:var(--slate); letter-spacing:.08em; }
   #secret-trigger { cursor:default; user-select:none; padding:4px 6px; border-radius:3px; transition:background .15s; }
   #secret-trigger.activating { background:rgba(184,92,56,.2); }
-
   /* ── MODALS ── */
   .modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(14,12,9,.93);
     backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center;
@@ -239,7 +227,6 @@
   .modal-btn.secondary:hover { background:var(--parchment); }
   .modal-error { font-family:'DM Mono',monospace; font-size:.72rem; color:var(--rust);
     text-align:center; margin-top:.75rem; min-height:1rem; }
-
   .form-group { margin-bottom:.9rem; }
   .form-group label { display:block; font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--granite); margin-bottom:.35rem; }
@@ -255,7 +242,7 @@
   }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--rust); }
   .form-row { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
-
+  .form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:.75rem; }
   /* ── FILE SLOTS ── */
   .file-slots { display:flex; flex-direction:column; gap:.6rem; margin-bottom:.9rem; }
   .file-slot { border:1.5px solid rgba(100,80,60,.2); border-radius:4px; background:var(--parchment); overflow:hidden; }
@@ -280,7 +267,6 @@
     margin-top:.35rem; letter-spacing:.04em; }
   .slot-clear-btn { font-family:'DM Mono',monospace; font-size:.63rem; color:var(--rust); background:none;
     border:none; cursor:pointer; padding:.2rem 0; text-decoration:underline; letter-spacing:.04em; margin-top:.25rem; display:none; }
-
   /* ── ARCHIVE PAGE ── */
   #archive-page { display:none; min-height:100vh; flex-direction:column; background:var(--cream); }
   #archive-page.visible { display:flex; }
@@ -302,7 +288,6 @@
   .loading-state p { font-family:'DM Mono',monospace; font-size:.8rem; color:var(--slate); letter-spacing:.1em;
     animation:pulse 1.5s ease-in-out infinite; }
   @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:1} }
-
   .admin-panel { background:var(--obsidian); border:1px solid var(--granite); border-radius:6px;
     padding:1.75rem 2rem; margin-bottom:2.5rem; }
   .admin-panel-title { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.2em;
@@ -314,7 +299,6 @@
   .admin-btn:hover { background:var(--granite); border-color:var(--sand); color:var(--sand); }
   .admin-btn.primary { background:var(--rust); border-color:var(--rust); color:var(--cream); }
   .admin-btn.primary:hover { background:#a04e30; border-color:#a04e30; }
-
   /* ── FILTER SECTION ── */
   .filter-section { margin-bottom:2rem; background:var(--parchment); border:1px solid rgba(100,80,60,.15);
     border-radius:6px; padding:1.25rem 1.5rem; }
@@ -333,7 +317,6 @@
   .filter-row.teacher .filter-btn:hover:not(.active) { border-color:var(--moss); color:var(--moss); }
   .filter-row.unit .filter-btn.active { background:#6a5a8a; border-color:#6a5a8a; }
   .filter-row.unit .filter-btn:hover:not(.active) { border-color:#6a5a8a; color:#6a5a8a; }
-
   /* ── COURSE SECTIONS ── */
   .course-section { margin-bottom:2.5rem; }
   .course-header { display:flex; align-items:center; justify-content:space-between; gap:1rem;
@@ -348,6 +331,14 @@
     background:rgba(90,110,74,.12); color:var(--moss); border:1px solid rgba(90,110,74,.2); }
   .course-semester-badge.editable-semester { cursor:pointer; transition:background .15s, border-color .15s; }
   .course-semester-badge.editable-semester:hover { background:rgba(90,110,74,.22); border-color:rgba(90,110,74,.5); }
+  /* ── COURSE TYPE BADGE ── */
+  .course-type-badge {
+    font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase;
+    padding:.2rem .65rem; border-radius:100px;
+    background:rgba(184,92,56,.1); color:var(--rust); border:1px solid rgba(184,92,56,.25);
+  }
+  .course-type-badge.editable-course-type { cursor:pointer; transition:background .15s, border-color .15s; }
+  .course-type-badge.editable-course-type:hover { background:rgba(184,92,56,.2); border-color:var(--rust); }
   .inline-edit-input { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone);
     border:none; border-bottom:2px solid var(--rust); background:transparent; outline:none; min-width:160px; }
   .inline-edit-input.teacher { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.1em;
@@ -361,7 +352,6 @@
     color:var(--slate); cursor:pointer; transition:all .2s; white-space:nowrap; }
   .btn-sm:hover       { border-color:var(--rust); color:var(--rust); }
   .btn-sm.danger:hover{ border-color:#c0392b; color:#c0392b; }
-
   /* ── UNIT GROUPS ── */
   .unit-group { margin-bottom:1.5rem; }
   .unit-group-header {
@@ -371,7 +361,6 @@
   }
   .unit-group-header::before { content:''; display:inline-block; width:8px; height:8px;
     border-radius:50%; background:var(--moss); opacity:.6; }
-
   /* ── TEST ITEMS ── */
   .test-list { display:flex; flex-direction:column; gap:.6rem; }
   .test-item { background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:4px;
@@ -398,6 +387,13 @@
     padding:.15rem .5rem; border-radius:2px; background:rgba(90,110,74,.12); color:var(--moss);
     border:1px solid rgba(90,110,74,.2); white-space:nowrap;
   }
+  /* ── TEST VARIANT BADGE (A/B/C) ── */
+  .test-variant-badge {
+    font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.14em; font-weight:500;
+    text-transform:uppercase; padding:.15rem .55rem; border-radius:2px;
+    background:rgba(212,135,42,.15); color:var(--amber); border:1px solid rgba(212,135,42,.3);
+    white-space:nowrap;
+  }
   .test-item-right { display:flex; align-items:center; gap:.6rem; flex-shrink:0; flex-wrap:wrap; }
   .test-type-select { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.1em;
     text-transform:uppercase; padding:.2rem .5rem; border-radius:2px; border:1px solid transparent;
@@ -407,6 +403,7 @@
   .type-test    { color:var(--granite); }
   .type-midterm { color:var(--rust); }
   .type-final   { color:var(--stone); font-weight:600; }
+  .type-assignment { color:#5a6e9a; }
   .test-files-row { padding:.0rem 1.25rem .75rem 1.25rem; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
   .file-link-btn { font-family:'DM Mono',monospace; font-size:.63rem; letter-spacing:.06em; text-transform:uppercase;
     padding:.22rem .65rem; border-radius:2px; border:1px solid rgba(100,80,60,.25); text-decoration:none;
@@ -417,6 +414,9 @@
   .file-link-btn.orig:hover{ background:rgba(90,110,74,.08); }
   .file-link-btn.key      { color:#7a4a9a; border-color:rgba(122,74,154,.3); }
   .file-link-btn.key:hover{ background:rgba(122,74,154,.08); }
+  /* ── ASSIGNMENT FILE SLOT ── */
+  .file-link-btn.assign      { color:#5a6e9a; border-color:rgba(90,110,154,.3); }
+  .file-link-btn.assign:hover{ background:rgba(90,110,154,.08); }
   .file-link-btn.add      { color:var(--slate); border-style:dashed; opacity:.65; }
   .file-link-btn.add:hover{ opacity:1; border-color:var(--rust); color:var(--rust); }
   .test-delete { background:none; border:none; cursor:pointer; color:var(--slate); font-size:.85rem;
@@ -426,7 +426,6 @@
   .empty-icon  { font-size:2.5rem; opacity:.3; margin-bottom:.75rem; }
   .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--slate); margin-bottom:.4rem; }
   .empty-state p  { font-size:.82rem; color:var(--slate); font-family:'DM Mono',monospace; letter-spacing:.04em; }
-
   /* ── SEMESTER INLINE EDIT ── */
   .sem-inline-wrap { display:inline-flex; gap:.35rem; align-items:center; flex-wrap:wrap; }
   .sem-inline-select {
@@ -443,7 +442,6 @@
   .sem-inline-btn.confirm:hover { background:rgba(90,110,74,.12); }
   .sem-inline-btn.cancel  { border-color:rgba(100,80,60,.3); color:var(--slate); }
   .sem-inline-btn.cancel:hover  { background:rgba(100,80,60,.06); }
-
   /* ── RESPONSIVE ── */
   @media(max-width:900px) {
     .intro-strip { grid-template-columns:1fr; }
@@ -462,6 +460,7 @@
     .timeline-section { padding:4rem 1.25rem; }
     .timeline-entry { grid-template-columns:80px 1px 1fr; gap:0 1rem; }
     .form-row { grid-template-columns:1fr; }
+    .form-row-3 { grid-template-columns:1fr; }
     .articles-grid { grid-template-columns:1fr; }
     footer { padding:2rem 1.25rem; }
     .footer-top { grid-template-columns:1fr; gap:2rem; }
@@ -489,7 +488,6 @@
      crossorigin="anonymous"></script>
 </head>
 <body>
-
 <!-- ═══════════════ MAIN SITE ═══════════════ -->
 <div id="main-site">
   <nav>
@@ -504,7 +502,6 @@
       <li><a href="#learn" onclick="closeNav()">Articles</a></li>
     </ul>
   </nav>
-
   <section class="hero">
     <div class="hero-line"></div>
     <div class="hero-bg-text">Geology</div>
@@ -517,7 +514,6 @@
     </div>
     <div class="hero-scroll">Scroll</div>
   </section>
-
   <div class="intro-strip">
     <div class="intro-strip-left">
       <h2>The Science of<br>Stone &amp; Mineral</h2>
@@ -539,7 +535,6 @@
       <div class="mini-stat"><div class="mini-stat-num">40km</div><div class="mini-stat-label">Crust thickness</div></div>
     </div>
   </div>
-
   <section class="section" id="types">
     <div class="section-label">Classification</div>
     <h2>Rock Types &amp; Formation</h2>
@@ -612,7 +607,6 @@
       </div>
     </div>
   </section>
-
   <div class="process-section" id="process">
     <div style="max-width:1200px; margin:0 auto;">
       <div class="section-label">Formation Processes</div>
@@ -639,7 +633,6 @@
       </div>
     </div>
   </div>
-
   <div class="facts-strip" id="facts">
     <div class="fact"><div class="fact-num">4.5B</div><div class="fact-label">Years of Earth's Age</div></div>
     <div class="fact"><div class="fact-num">4,000+</div><div class="fact-label">Known Mineral Species</div></div>
@@ -647,7 +640,6 @@
     <div class="fact"><div class="fact-num">40km</div><div class="fact-label">Avg. Continental Crust Depth</div></div>
     <div class="fact"><div class="fact-num">700+</div><div class="fact-label">Active Volcanoes on Earth</div></div>
   </div>
-
   <div class="timeline-section" id="timeline">
     <div class="section-label">Deep Time</div>
     <h2>Geological Time Scale</h2>
@@ -694,7 +686,6 @@
       </div>
     </div>
   </div>
-
   <section class="section" id="learn">
     <div class="section-label">Featured Articles</div>
     <h2>Deeper Reading</h2>
@@ -716,12 +707,10 @@
       </div>
     </div>
   </section>
-
   <div class="quote-section">
     <p class="big-quote">"The book of nature is written in the language of geology — every stratum a sentence, every mineral a word, every fossil a signature of life that once was."</p>
     <div class="quote-attr">— Charles Lyell, Principles of Geology, 1830</div>
   </div>
-
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
@@ -755,7 +744,6 @@
     </div>
   </footer>
 </div>
-
 <!-- ═══════════════ MODALS ═══════════════ -->
 <div class="modal-overlay" id="login-overlay">
   <div class="modal">
@@ -791,6 +779,7 @@
   </div>
 </div>
 
+<!-- Add Course Modal -->
 <div class="modal-overlay" id="cat-overlay">
   <div class="modal">
     <button class="modal-close" id="cat-close">✕</button>
@@ -801,6 +790,15 @@
       <input type="text" id="cat-name" placeholder="e.g. AP Chemistry"></div>
     <div class="form-group"><label>Teacher Name</label>
       <input type="text" id="cat-teacher" placeholder="e.g. Ms. Okafor"></div>
+    <!-- NEW: Course Type A / B / C -->
+    <div class="form-group"><label>Course Type <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. A, B, C stream)</span></label>
+      <select id="cat-course-type">
+        <option value="">— None —</option>
+        <option value="A">Type A</option>
+        <option value="B">Type B</option>
+        <option value="C">Type C</option>
+      </select>
+    </div>
     <div class="form-group"><label>Subject (for filter bar)</label>
       <select id="cat-subject">
         <option value="other">Other / General</option>
@@ -858,13 +856,26 @@
           <option value="test">Test</option>
           <option value="midterm">Midterm</option>
           <option value="final">Final</option>
+          <option value="assignment">Assignment</option>
         </select>
       </div>
     </div>
-    <div class="form-group">
-      <label>Unit <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. Unit 1, Chapter 3)</span></label>
-      <input type="text" id="test-unit" placeholder="e.g. Unit 1" list="unit-suggestions">
-      <datalist id="unit-suggestions"></datalist>
+    <!-- NEW: Test Variant A / B / C -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Test Variant <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — A, B, or C form)</span></label>
+        <select id="test-variant">
+          <option value="">— None —</option>
+          <option value="A">Variant A</option>
+          <option value="B">Variant B</option>
+          <option value="C">Variant C</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Unit <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional)</span></label>
+        <input type="text" id="test-unit" placeholder="e.g. Unit 1" list="unit-suggestions">
+        <datalist id="unit-suggestions"></datalist>
+      </div>
     </div>
     <div class="form-group"><label>Notes (optional)</label>
       <textarea id="test-notes" rows="2" placeholder="e.g. 40 questions, calculator allowed, Fall 2024"></textarea></div>
@@ -885,7 +896,6 @@
     <button class="modal-btn secondary" id="del-cancel">Cancel</button>
   </div>
 </div>
-
 <!-- ═══════════════ ARCHIVE PAGE ═══════════════ -->
 <div id="archive-page">
   <div class="archive-header">
@@ -910,7 +920,6 @@
         <button class="admin-btn" id="btn-clear-all">🗑 Clear All Data</button>
       </div>
     </div>
-
     <!-- Combined filter panel -->
     <div class="filter-section" id="filter-section">
       <div class="filter-row" id="subject-filter-row">
@@ -934,13 +943,11 @@
         <button class="filter-btn active" data-unit="all">All</button>
       </div>
     </div>
-
     <div id="courses-container">
       <div class="loading-state"><p>Loading archive…</p></div>
     </div>
   </div>
 </div>
-
 <!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
   const navToggle = document.getElementById('nav-toggle');
@@ -957,10 +964,8 @@
     if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) closeNav();
   });
 </script>
-
 <script type="module">
 const STUDENT_CODE = 'geology42';
-
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc }
@@ -969,7 +974,6 @@ import { getStorage, ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-
 const firebaseConfig = {
   apiKey:            "AIzaSyCI51C3FjWCA_S9ngvIOfSsa9jFDjipEzw",
   authDomain:        "rocks-2ee57.firebaseapp.com",
@@ -978,26 +982,22 @@ const firebaseConfig = {
   messagingSenderId: "1052940422276",
   appId:             "1:1052940422276:web:1e841b54ea852ece4406d1"
 };
-
 const app         = initializeApp(firebaseConfig);
 const firestoreDB = getFirestore(app);
 const storage     = getStorage(app);
 const auth        = getAuth(app);
-
 // ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
-let currentFilter  = 'all';  // subject
-let currentSem     = 'all';  // semester
-let currentTeacher = 'all';  // teacher
-let currentCourse  = 'all';  // specific course
-let currentUnit    = 'all';  // unit
+let currentFilter  = 'all';
+let currentSem     = 'all';
+let currentTeacher = 'all';
+let currentCourse  = 'all';
+let currentUnit    = 'all';
 let dbLoaded      = false;
 let archiveOpen   = false;
-
-let pendingSlots  = { pdf: null, orig: null, key: null };
+let pendingSlots  = { pdf: null, orig: null, key: null, assign: null };
 let editingTestId = null;
-
 // ── DATABASE ──
 async function loadDB() {
   try {
@@ -1007,12 +1007,13 @@ async function loadDB() {
       if (!Array.isArray(db.cats))  db.cats  = [];
       if (!Array.isArray(db.tests)) db.tests = [];
       db.tests.forEach((t, i) => {
-        if (t.order === undefined) t.order = i;
-        if (t.unit  === undefined) t.unit  = '';
+        if (t.order   === undefined) t.order   = i;
+        if (t.unit    === undefined) t.unit    = '';
+        if (t.variant === undefined) t.variant = '';
       });
-      // Migrate: add semester to cats if missing
       db.cats.forEach(c => {
-        if (!c.semester) c.semester = '';
+        if (!c.semester)    c.semester    = '';
+        if (!c.courseType)  c.courseType  = '';
       });
     } else {
       await saveDB();
@@ -1024,7 +1025,6 @@ async function loadDB() {
     if (archiveOpen) renderAll();
   }
 }
-
 async function saveDB() {
   try {
     await setDoc(doc(firestoreDB, "archive", "mainData"), db);
@@ -1034,7 +1034,6 @@ async function saveDB() {
     throw err;
   }
 }
-
 // ── AUTH ──
 onAuthStateChanged(auth, (user) => {
   isAdmin = !!user;
@@ -1043,24 +1042,19 @@ onAuthStateChanged(auth, (user) => {
   document.getElementById('admin-badge').style.display = isAdmin ? 'inline-block' : 'none';
   if (archiveOpen && dbLoaded) renderAll();
 });
-
 loadDB();
-
 // ── MODALS ──
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
 ['login-overlay','cat-overlay','test-overlay','del-overlay'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
     if (e.target.id === id) closeModal(id);
   });
 });
-
 document.getElementById('login-close').onclick  = () => closeModal('login-overlay');
 document.getElementById('cat-close').onclick    = () => closeModal('cat-overlay');
 document.getElementById('test-close').onclick   = () => closeModal('test-overlay');
 document.getElementById('del-cancel').onclick   = () => closeModal('del-overlay');
-
 // ── SECRET TRIGGER ──
 let clicks = 0, clickTimer = null;
 document.getElementById('secret-trigger').addEventListener('click', e => {
@@ -1069,20 +1063,16 @@ document.getElementById('secret-trigger').addEventListener('click', e => {
   if (clicks >= 3) { clicks = 0; openModal('login-overlay'); }
   else { clickTimer = setTimeout(() => clicks = 0, 800); }
 });
-
 // ── LOGIN ──
 const studentBox = document.getElementById('student-login-box');
 const adminBox   = document.getElementById('admin-login-box');
-
 document.getElementById('toggle-admin-ui').onclick   = e => { e.preventDefault(); studentBox.style.display='none'; adminBox.style.display='block'; };
 document.getElementById('toggle-student-ui').onclick = e => { e.preventDefault(); studentBox.style.display='block'; adminBox.style.display='none'; };
-
 document.getElementById('login-student-btn').onclick = () => {
   const v = document.getElementById('access-code').value.trim();
   if (v === STUDENT_CODE) { closeModal('login-overlay'); showArchive(); }
   else showLoginErr('Incorrect student code.');
 };
-
 document.getElementById('login-admin-btn').onclick = async () => {
   const email = document.getElementById('admin-email').value.trim();
   const pass  = document.getElementById('admin-password').value;
@@ -1096,16 +1086,13 @@ document.getElementById('login-admin-btn').onclick = async () => {
   } catch { showLoginErr('Invalid admin credentials.'); }
   finally { btn.textContent = 'Admin Login'; btn.disabled = false; }
 };
-
 function showLoginErr(msg) {
   const el = document.getElementById('login-error');
   el.textContent = msg;
   setTimeout(() => el.textContent = '', 3000);
 }
-
 document.getElementById('access-code').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('login-student-btn').click(); });
 document.getElementById('admin-password').addEventListener('keydown', e => { if (e.key==='Enter') document.getElementById('login-admin-btn').click(); });
-
 document.getElementById('logout-btn').onclick = async () => {
   await signOut(auth);
   archiveOpen = false;
@@ -1113,7 +1100,6 @@ document.getElementById('logout-btn').onclick = async () => {
   document.getElementById('main-site').style.display = 'block';
   window.scrollTo(0, 0);
 };
-
 // ── SHOW / HIDE ARCHIVE ──
 function showArchive() {
   archiveOpen = true;
@@ -1124,14 +1110,12 @@ function showArchive() {
   window.scrollTo(0, 0);
   if (dbLoaded) renderAll();
 }
-
 document.getElementById('back-btn').onclick = () => {
   archiveOpen = false;
   document.getElementById('archive-page').classList.remove('visible');
   document.getElementById('main-site').style.display = 'block';
   window.scrollTo(0, 0);
 };
-
 // ── FILTER HELPERS ──
 function getFilteredCats() {
   return db.cats.filter(c => {
@@ -1142,7 +1126,6 @@ function getFilteredCats() {
     return true;
   });
 }
-
 function getVisibleUnits(visibleCatIds) {
   const units = new Set();
   db.tests.forEach(t => {
@@ -1152,19 +1135,14 @@ function getVisibleUnits(visibleCatIds) {
   });
   return [...units].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 }
-
 function unitSortKey(unit) { return unit ? unit.trim() : '\uffff'; }
-
 // ── RENDER ──
 function renderAll() { renderFilters(); renderCourses(); }
-
 const SUBJ_LABELS = {
   all:'All', math:'Math', sci:'Science', eng:'English',
   hist:'History', lang:'Language', art:'Arts', tech:'Technology', other:'Other'
 };
-
 function renderFilters() {
-  // Subject
   const subjects = [...new Set(db.cats.map(c => c.subject).filter(Boolean))];
   const subjRow  = document.getElementById('subject-filter-row');
   let subjHtml = `<span class="filter-label">Subject</span>
@@ -1183,8 +1161,6 @@ function renderFilters() {
       renderAll();
     });
   });
-
-  // Semester — from cats visible under current subject filter
   const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
   const semesters   = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
     .sort((a,b) => b.localeCompare(a));
@@ -1207,8 +1183,6 @@ function renderFilters() {
   } else {
     semRow.style.display = 'none';
   }
-
-  // Teacher
   const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
   const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
   const teacherRow = document.getElementById('teacher-filter-row');
@@ -1230,8 +1204,6 @@ function renderFilters() {
   } else {
     teacherRow.style.display = 'none';
   }
-
-  // Course
   const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
   const courseRow   = document.getElementById('course-filter-row');
   if (teacherCats.length > 1) {
@@ -1252,8 +1224,6 @@ function renderFilters() {
   } else {
     courseRow.style.display = 'none';
   }
-
-  // Unit
   const visibleCatIds = getFilteredCats().map(c => c.id);
   const units    = getVisibleUnits(visibleCatIds);
   const unitRow  = document.getElementById('unit-filter-row');
@@ -1273,11 +1243,9 @@ function renderFilters() {
     if (currentUnit !== 'all') currentUnit = 'all';
   }
 }
-
 function renderCourses() {
   const cont    = document.getElementById('courses-container');
   const visible = getFilteredCats();
-
   if (db.cats.length === 0) {
     cont.innerHTML = `<div class="empty-state"><div class="empty-icon">🗂</div><h3>No courses yet</h3>
       <p>${isAdmin ? 'Click "+ New Category" above to get started.' : 'Nothing here yet — check back soon.'}</p></div>`;
@@ -1288,7 +1256,6 @@ function renderCourses() {
       <p>Try adjusting the filters above.</p></div>`;
     return;
   }
-
   cont.innerHTML = visible.map(cat => {
     let tests = [...db.tests.filter(t => t.catId === cat.id)]
       .sort((a, b) => {
@@ -1296,21 +1263,25 @@ function renderCourses() {
         if (ua !== ub) return ua.localeCompare(ub, undefined, { numeric: true, sensitivity: 'base' });
         return (a.order ?? 0) - (b.order ?? 0);
       });
-
     if (currentUnit !== 'all') {
       tests = tests.filter(t => (t.unit || '').trim() === currentUnit);
     }
-
     const adminBtns = isAdmin ? `
       <div class="course-actions">
         <button class="btn-sm" data-add-test="${cat.id}">+ Test</button>
         <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
       </div>` : '';
-
+    // ── Semester badge ──
     const semLabel = cat.semester || '+ Semester';
     const semBadge = isAdmin
       ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to edit semester">${esc(semLabel)}</span>`
       : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
+
+    // ── NEW: Course type badge (A/B/C) ──
+    const ctLabel = cat.courseType ? `Type ${esc(cat.courseType)}` : '+ Type';
+    const courseTypeBadge = isAdmin
+      ? `<span class="course-type-badge editable-course-type" data-cat-id="${cat.id}" title="Click to edit course type">${ctLabel}</span>`
+      : (cat.courseType ? `<span class="course-type-badge">Type ${esc(cat.courseType)}</span>` : '');
 
     const titleBlock = isAdmin
       ? `<div class="course-title-wrap">
@@ -1318,11 +1289,12 @@ function renderCourses() {
            <span class="rename-hint">click to rename</span>
          </div>
          <span class="course-teacher editable-cat-teacher" data-cat-id="${cat.id}">${esc(cat.teacher)}</span>
-         <span class="sem-badge-wrap" style="position:relative;display:inline-block;">${semBadge}</span>`
+         <span class="sem-badge-wrap" style="position:relative;display:inline-block;">${semBadge}</span>
+         <span class="type-badge-wrap" style="position:relative;display:inline-block;">${courseTypeBadge}</span>`
       : `<span class="course-title">${esc(cat.name)}</span>
          <span class="course-teacher">${esc(cat.teacher)}</span>
-         ${cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : ''}`;
-
+         ${cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : ''}
+         ${cat.courseType ? `<span class="course-type-badge">Type ${esc(cat.courseType)}</span>` : ''}`;
     let testsHtml = '';
     if (tests.length === 0) {
       testsHtml = `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests${currentUnit !== 'all' ? ' in this unit' : ''} uploaded yet.</p>`;
@@ -1342,11 +1314,9 @@ function renderCourses() {
         testsHtml = `<div>${testsHtml}</div>`;
       }
     }
-
     const listWrapper = (currentUnit !== 'all' || !hasAnyUnits(tests))
       ? `<div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>`
       : testsHtml;
-
     return `<div class="course-section" data-cat-id="${cat.id}">
       <div class="course-header">
         <div class="course-header-left">${titleBlock}</div>
@@ -1355,13 +1325,11 @@ function renderCourses() {
       ${listWrapper}
     </div>`;
   }).join('');
-
   // Attach events
   cont.querySelectorAll('[data-add-test]').forEach(btn  => btn.onclick = () => openAddTest(btn.dataset.addTest));
   cont.querySelectorAll('[data-del-cat]').forEach(btn   => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
   cont.querySelectorAll('[data-del-test]').forEach(btn  => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
   cont.querySelectorAll('[data-edit-test]').forEach(btn => btn.onclick = () => openEditTest(btn.dataset.editTest));
-
   if (isAdmin) {
     cont.querySelectorAll('.editable-cat-name').forEach(el => {
       el.style.cursor = 'text';
@@ -1374,17 +1342,24 @@ function renderCourses() {
     cont.querySelectorAll('.editable-semester').forEach(el => {
       el.addEventListener('click', () => startSemesterEdit(el));
     });
+    // NEW: inline course type edit
+    cont.querySelectorAll('.editable-course-type').forEach(el => {
+      el.addEventListener('click', () => startCourseTypeEdit(el));
+    });
     cont.querySelectorAll('.editable-test-name').forEach(el => {
       el.addEventListener('click', () => startTestNameEdit(el));
     });
     cont.querySelectorAll('.inline-type-select').forEach(sel => {
       sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
     });
+    // NEW: inline test variant select
+    cont.querySelectorAll('.inline-variant-select').forEach(sel => {
+      sel.addEventListener('change', () => changeTestVariant(sel.dataset.testId, sel.value));
+    });
     setupDragDrop();
   }
   setupFileSlotToggles();
 }
-
 // ── GROUP BY UNIT ──
 function groupByUnit(tests) {
   const map = new Map();
@@ -1401,16 +1376,13 @@ function groupByUnit(tests) {
     })
     .map(([unit, items]) => ({ unit, items }));
 }
-
 function hasAnyUnits(tests) {
   return tests.some(t => t.unit && t.unit.trim());
 }
-
 function buildTestItem(t) {
   const slots = t.files || {};
   let fileLinksHtml = '';
-  const hasAnyFile = slots.pdf || slots.orig || slots.key;
-
+  const hasAnyFile = slots.pdf || slots.orig || slots.key || slots.assign;
   if (isAdmin || hasAnyFile) {
     let links = '';
     if (slots.pdf?.url) {
@@ -1428,30 +1400,42 @@ function buildTestItem(t) {
     } else if (isAdmin) {
       links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
     }
+    // NEW: Assignment slot
+    if (slots.assign?.url) {
+      links += `<a class="file-link-btn assign" href="${esc(slots.assign.url)}" target="_blank" rel="noopener">📝 Assignment</a>`;
+    } else if (isAdmin) {
+      links += `<button class="file-link-btn add" data-slot-add="assign" data-test-id="${t.id}">+ Assignment</button>`;
+    }
     if (links) fileLinksHtml = `<div class="test-files-row">${links}</div>`;
   }
-
   const dragHandle = isAdmin ? `<div class="drag-handle" draggable="false" title="Drag to reorder">⠿</div>` : '';
   const editBtn    = isAdmin ? `<button class="btn-sm" data-edit-test="${t.id}">Edit</button>` : '';
   const delBtn     = isAdmin ? `<button class="test-delete" data-del-test="${t.id}" title="Delete">✕</button>` : '';
-
   const typeClass = `type-${esc(t.type)}`;
+  // Type select (admin) or badge (student)
   const typeSelectOrBadge = isAdmin
     ? `<select class="test-type-select ${typeClass} inline-type-select" data-test-id="${t.id}">
-         <option value="quiz"    ${t.type==='quiz'    ?'selected':''}>quiz</option>
-         <option value="test"    ${t.type==='test'    ?'selected':''}>test</option>
-         <option value="midterm" ${t.type==='midterm' ?'selected':''}>midterm</option>
-         <option value="final"   ${t.type==='final'   ?'selected':''}>final</option>
+         <option value="quiz"       ${t.type==='quiz'       ?'selected':''}>quiz</option>
+         <option value="test"       ${t.type==='test'       ?'selected':''}>test</option>
+         <option value="midterm"    ${t.type==='midterm'    ?'selected':''}>midterm</option>
+         <option value="final"      ${t.type==='final'      ?'selected':''}>final</option>
+         <option value="assignment" ${t.type==='assignment' ?'selected':''}>assignment</option>
        </select>`
     : `<span style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;" class="${typeClass}">${esc(t.type)}</span>`;
-
+  // NEW: Variant select (admin) or badge (student/always shown if set)
+  const variantSelectOrBadge = isAdmin
+    ? `<select class="test-type-select inline-variant-select" data-test-id="${t.id}" title="Test variant" style="color:var(--amber);">
+         <option value=""  ${!t.variant ?'selected':''}>—</option>
+         <option value="A" ${t.variant==='A'?'selected':''}>A</option>
+         <option value="B" ${t.variant==='B'?'selected':''}>B</option>
+         <option value="C" ${t.variant==='C'?'selected':''}>C</option>
+       </select>`
+    : (t.variant ? `<span class="test-variant-badge">${esc(t.variant)}</span>` : '');
   const nameEl = isAdmin
     ? `<span class="test-item-name editable-test-name" data-test-id="${t.id}" title="Click to rename">${esc(t.name)}</span>`
     : `<span class="test-item-name">${esc(t.name)}</span>`;
-
   const showBadge = currentUnit !== 'all' && t.unit && t.unit.trim();
   const unitBadgeHtml = showBadge ? `<span class="test-unit-badge">${esc(t.unit.trim())}</span>` : '';
-
   return `<div class="test-item" data-test-id="${t.id}" data-cat-id="${t.catId}">
     <div class="test-item-main">
       ${dragHandle}
@@ -1461,6 +1445,7 @@ function buildTestItem(t) {
       </div>
       <div class="test-item-right">
         ${typeSelectOrBadge}
+        ${variantSelectOrBadge}
         ${editBtn}
         ${delBtn}
       </div>
@@ -1468,7 +1453,6 @@ function buildTestItem(t) {
     ${fileLinksHtml}
   </div>`;
 }
-
 // ── INLINE CAT RENAME ──
 function startCatRename(el, field) {
   const catId = el.dataset.catId;
@@ -1483,7 +1467,6 @@ function startCatRename(el, field) {
   el.replaceWith(input);
   input.focus();
   input.select();
-
   async function commit() {
     const val = input.value.trim();
     if (val && val !== current) {
@@ -1498,20 +1481,15 @@ function startCatRename(el, field) {
     if (e.key === 'Escape') { input.value = current; input.blur(); }
   });
 }
-
 // ── INLINE SEMESTER EDIT ──
 function startSemesterEdit(el) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
   if (!cat) return;
-
   const current = (cat.semester || '').trim();
-
   const SEASONS = ['', 'Fall', 'Spring', 'Summer', 'Winter',
                    'Semester 1', 'Semester 2', 'Q1', 'Q2', 'Q3', 'Q4'];
   const currentYear = new Date().getFullYear();
-
-  // Parse existing "Season Year" back into parts
   let initSeason = '', initYear = String(currentYear);
   if (current) {
     const matched = SEASONS.filter(Boolean).find(s => current.startsWith(s));
@@ -1519,17 +1497,12 @@ function startSemesterEdit(el) {
       initSeason = matched;
       initYear   = current.slice(matched.length).trim() || String(currentYear);
     } else {
-      // It's just a year or something unrecognised — put it in year
       initYear = current;
     }
   }
-
   const years = ['', ...Array.from({ length: 9 }, (_, i) => String(currentYear + 1 - i))];
-
-  // Build the inline wrapper
   const wrap = document.createElement('span');
   wrap.className = 'sem-inline-wrap';
-
   const makeSelect = (opts, val) => {
     const s = document.createElement('select');
     s.className = 'sem-inline-select';
@@ -1542,24 +1515,19 @@ function startSemesterEdit(el) {
     });
     return s;
   };
-
   const seasonSel = makeSelect(SEASONS, initSeason);
   const yearSel   = makeSelect(years, initYear);
-
   const saveBtn   = document.createElement('button');
   saveBtn.textContent = '✓';
   saveBtn.className   = 'sem-inline-btn confirm';
   saveBtn.title       = 'Save';
-
   const cancelBtn = document.createElement('button');
   cancelBtn.textContent = '✕';
   cancelBtn.className   = 'sem-inline-btn cancel';
   cancelBtn.title       = 'Cancel';
-
   wrap.append(seasonSel, yearSel, saveBtn, cancelBtn);
   el.replaceWith(wrap);
   seasonSel.focus();
-
   async function commit() {
     const season = seasonSel.value;
     const year   = yearSel.value;
@@ -1572,10 +1540,8 @@ function startSemesterEdit(el) {
     }
     renderAll();
   }
-
   saveBtn.addEventListener('click', commit);
   cancelBtn.addEventListener('click', () => renderAll());
-
   [seasonSel, yearSel].forEach(s => {
     s.addEventListener('keydown', e => {
       if (e.key === 'Enter')  commit();
@@ -1583,7 +1549,49 @@ function startSemesterEdit(el) {
     });
   });
 }
-
+// ── NEW: INLINE COURSE TYPE EDIT (A / B / C) ──
+function startCourseTypeEdit(el) {
+  const catId = el.dataset.catId;
+  const cat   = db.cats.find(c => c.id === catId);
+  if (!cat) return;
+  const current = cat.courseType || '';
+  const TYPES   = ['', 'A', 'B', 'C'];
+  const wrap = document.createElement('span');
+  wrap.className = 'sem-inline-wrap';
+  const sel = document.createElement('select');
+  sel.className = 'sem-inline-select';
+  TYPES.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value       = v;
+    opt.textContent = v ? `Type ${v}` : '— None —';
+    if (v === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+  const saveBtn = document.createElement('button');
+  saveBtn.textContent = '✓';
+  saveBtn.className   = 'sem-inline-btn confirm';
+  const cancelBtn = document.createElement('button');
+  cancelBtn.textContent = '✕';
+  cancelBtn.className   = 'sem-inline-btn cancel';
+  wrap.append(sel, saveBtn, cancelBtn);
+  el.replaceWith(wrap);
+  sel.focus();
+  async function commit() {
+    const val = sel.value;
+    if (val !== current) {
+      cat.courseType = val;
+      try { await saveDB(); }
+      catch { cat.courseType = current; }
+    }
+    renderAll();
+  }
+  saveBtn.addEventListener('click', commit);
+  cancelBtn.addEventListener('click', () => renderAll());
+  sel.addEventListener('keydown', e => {
+    if (e.key === 'Enter')  commit();
+    if (e.key === 'Escape') renderAll();
+  });
+}
 // ── INLINE TEST NAME EDIT ──
 function startTestNameEdit(el) {
   const testId = el.dataset.testId;
@@ -1597,7 +1605,6 @@ function startTestNameEdit(el) {
   el.replaceWith(input);
   input.focus();
   input.select();
-
   async function commit() {
     const val = input.value.trim();
     if (val && val !== current) {
@@ -1612,7 +1619,6 @@ function startTestNameEdit(el) {
     if (e.key === 'Escape') { input.value = current; input.blur(); }
   });
 }
-
 // ── INLINE TYPE CHANGE ──
 async function changeTestType(testId, newType) {
   const test = db.tests.find(t => t.id === testId);
@@ -1622,18 +1628,24 @@ async function changeTestType(testId, newType) {
   try { await saveDB(); renderAll(); }
   catch { test.type = prev; renderAll(); }
 }
-
+// ── NEW: INLINE VARIANT CHANGE (A / B / C) ──
+async function changeTestVariant(testId, newVariant) {
+  const test = db.tests.find(t => t.id === testId);
+  if (!test) return;
+  const prev   = test.variant;
+  test.variant = newVariant;
+  try { await saveDB(); renderAll(); }
+  catch { test.variant = prev; renderAll(); }
+}
 // ── DRAG AND DROP ──
 let dragSrcId  = null;
 let dragSrcCat = null;
-
 function setupDragDrop() {
   const lists = document.querySelectorAll('.test-list');
   lists.forEach(list => {
     list.querySelectorAll('.test-item').forEach(item => {
       const handle = item.querySelector('.drag-handle');
       if (!handle) return;
-
       handle.setAttribute('draggable', 'true');
       handle.addEventListener('dragstart', e => {
         dragSrcId  = item.dataset.testId;
@@ -1648,7 +1660,6 @@ function setupDragDrop() {
           el.classList.remove('drag-over-top','drag-over-bottom');
         });
       });
-
       item.addEventListener('dragover', e => {
         e.preventDefault();
         if (item.dataset.testId === dragSrcId) return;
@@ -1659,46 +1670,37 @@ function setupDragDrop() {
         item.classList.remove('drag-over-top','drag-over-bottom');
         item.classList.add(e.clientY < midY ? 'drag-over-top' : 'drag-over-bottom');
       });
-
       item.addEventListener('dragleave', () => {
         item.classList.remove('drag-over-top','drag-over-bottom');
       });
-
       item.addEventListener('drop', async e => {
         e.preventDefault();
         if (item.dataset.testId === dragSrcId) return;
         if (item.dataset.catId !== dragSrcCat) return;
         item.classList.remove('drag-over-top','drag-over-bottom');
-
         const rect   = item.getBoundingClientRect();
         const after  = e.clientY >= rect.top + rect.height / 2;
         const catId  = dragSrcCat;
-
         const srcTest = db.tests.find(t => t.id === dragSrcId);
         const tgtTest = db.tests.find(t => t.id === item.dataset.testId);
         if (!srcTest || !tgtTest) return;
         if (srcTest.unit !== tgtTest.unit) return;
-
         let catTests = db.tests
           .filter(t => t.catId === catId && (t.unit || '') === (srcTest.unit || ''))
           .sort((a,b) => (a.order??0) - (b.order??0));
-
         const srcIdx = catTests.findIndex(t => t.id === dragSrcId);
         const tgtIdx = catTests.findIndex(t => t.id === item.dataset.testId);
         if (srcIdx < 0 || tgtIdx < 0) return;
-
         const [moved]  = catTests.splice(srcIdx, 1);
         const insertAt = after ? tgtIdx + (srcIdx < tgtIdx ? 0 : 1) : tgtIdx - (srcIdx < tgtIdx ? 1 : 0);
         catTests.splice(Math.max(0, insertAt), 0, moved);
         catTests.forEach((t, i) => { t.order = i; });
-
         try { await saveDB(); renderAll(); }
         catch { renderAll(); }
       });
     });
   });
 }
-
 // ── FILE SLOT QUICK-ADD ──
 function setupFileSlotToggles() {
   document.querySelectorAll('[data-slot-add]').forEach(btn => {
@@ -1707,23 +1709,21 @@ function setupFileSlotToggles() {
     });
   });
 }
-
 function openEditTestFiles(testId, focusSlot) {
   openEditTest(testId, focusSlot);
 }
-
 // ── FILE SLOTS UI BUILDER ──
+// NEW: added 'assign' slot
 const SLOT_CONFIG = {
-  pdf:  { label: 'PDF Version',  icon: '📄', accept: '.pdf,.PDF' },
-  orig: { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
-  key:  { label: 'Answer Key',   icon: '🔑', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+  pdf:    { label: 'PDF Version',   icon: '📄', accept: '.pdf,.PDF' },
+  orig:   { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+  key:    { label: 'Answer Key',    icon: '🔑', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
+  assign: { label: 'Assignment',    icon: '📝', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png,.zip' },
 };
-
 function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
   const container = document.getElementById('file-slots-container');
   container.innerHTML = '';
-  pendingSlots = { pdf: null, orig: null, key: null };
-
+  pendingSlots = { pdf: null, orig: null, key: null, assign: null };
   Object.entries(SLOT_CONFIG).forEach(([slotKey, cfg]) => {
     const existing = existingFiles[slotKey];
     const slotEl   = document.createElement('div');
@@ -1740,7 +1740,7 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
       </div>
       <div class="file-slot-body ${focusSlot === slotKey ? 'open' : ''}">
         ${existing ? `<div style="margin-bottom:.5rem;">
-          <a class="file-link-btn ${slotKey}" href="${esc(existing.url)}" target="_blank" rel="noopener" style="display:inline-flex;">
+          <a class="file-link-btn ${slotKey === 'assign' ? 'assign' : slotKey}" href="${esc(existing.url)}" target="_blank" rel="noopener" style="display:inline-flex;">
             ↗ View current file: ${esc(existing.name || 'file')}
           </a>
         </div>` : ''}
@@ -1752,17 +1752,14 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
         ${existing ? `<button class="slot-clear-btn" data-slot-clear="${slotKey}" style="display:block;">Remove this file</button>` : ''}
       </div>`;
     container.appendChild(slotEl);
-
     slotEl.querySelector('.file-slot-header').addEventListener('click', () => {
       const body = slotEl.querySelector('.file-slot-body');
       body.classList.toggle('open');
     });
-
     const dropZone  = slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
     const fileInput = slotEl.querySelector(`[data-file-input="${slotKey}"]`);
     const selLabel  = slotEl.querySelector(`[data-slot-selected="${slotKey}"]`);
     const statusEl  = slotEl.querySelector('.file-slot-status');
-
     dropZone.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', () => {
       const f = fileInput.files[0];
@@ -1785,7 +1782,6 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
         statusEl.className    = 'file-slot-status slot-status-ready';
       }
     });
-
     const clearBtn = slotEl.querySelector(`[data-slot-clear="${slotKey}"]`);
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
@@ -1798,7 +1794,6 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null) {
     }
   });
 }
-
 // ── UNIT DATALIST ──
 function populateUnitSuggestions() {
   const dl    = document.getElementById('unit-suggestions');
@@ -1806,11 +1801,9 @@ function populateUnitSuggestions() {
     .sort((a,b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
   dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
 }
-
 // ── ADD TEST MODAL ──
 document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
 document.getElementById('test-save-btn').onclick = saveTest;
-
 function openAddTest(preselCatId) {
   editingTestId = null;
   clearTestForm(preselCatId);
@@ -1818,10 +1811,9 @@ function openAddTest(preselCatId) {
   document.getElementById('test-modal-title').textContent   = 'Upload Test';
   document.getElementById('test-save-btn').textContent      = 'Add to Archive';
   document.getElementById('test-cat-group').style.display   = 'block';
-
   const sel = document.getElementById('test-cat-select');
   sel.innerHTML = db.cats.map(c =>
-    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}${c.semester ? ' — ' + esc(c.semester) : ''}</option>`
+    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}${c.semester ? ' — ' + esc(c.semester) : ''}${c.courseType ? ' [' + esc(c.courseType) + ']' : ''}</option>`
   ).join('');
   if (!sel.innerHTML) {
     document.getElementById('test-error').textContent = 'Create a category first.';
@@ -1831,65 +1823,58 @@ function openAddTest(preselCatId) {
   populateUnitSuggestions();
   openModal('test-overlay');
 }
-
 // ── EDIT TEST MODAL ──
 function openEditTest(testId, focusSlot = null) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
   editingTestId = testId;
-
   document.getElementById('test-modal-eyebrow').textContent = 'Admin · Edit Test';
   document.getElementById('test-modal-title').textContent   = 'Edit Test';
   document.getElementById('test-save-btn').textContent      = 'Save Changes';
   document.getElementById('test-cat-group').style.display   = 'none';
-
-  document.getElementById('test-name').value  = test.name;
-  document.getElementById('test-type').value  = test.type;
-  document.getElementById('test-unit').value  = test.unit || '';
-  document.getElementById('test-notes').value = test.notes || '';
+  document.getElementById('test-name').value    = test.name;
+  document.getElementById('test-type').value    = test.type;
+  document.getElementById('test-variant').value = test.variant || '';
+  document.getElementById('test-unit').value    = test.unit || '';
+  document.getElementById('test-notes').value   = test.notes || '';
   document.getElementById('test-error').textContent = '';
-
   buildFileSlotsUI(test.files || {}, focusSlot);
   populateUnitSuggestions();
   openModal('test-overlay');
 }
-
 function clearTestForm() {
   ['test-name','test-notes','test-unit'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('test-error').textContent = '';
-  document.getElementById('test-type').value = 'quiz';
-  pendingSlots = { pdf: null, orig: null, key: null };
+  document.getElementById('test-type').value    = 'quiz';
+  document.getElementById('test-variant').value = '';
+  pendingSlots = { pdf: null, orig: null, key: null, assign: null };
 }
-
 async function saveTest() {
-  const isEdit = !!editingTestId;
-  const name   = document.getElementById('test-name').value.trim();
-  const type   = document.getElementById('test-type').value;
-  const unit   = document.getElementById('test-unit').value.trim();
-  const notes  = document.getElementById('test-notes').value.trim();
-  const errEl  = document.getElementById('test-error');
-  const btn    = document.getElementById('test-save-btn');
-
+  const isEdit  = !!editingTestId;
+  const name    = document.getElementById('test-name').value.trim();
+  const type    = document.getElementById('test-type').value;
+  const variant = document.getElementById('test-variant').value;
+  const unit    = document.getElementById('test-unit').value.trim();
+  const notes   = document.getElementById('test-notes').value.trim();
+  const errEl   = document.getElementById('test-error');
+  const btn     = document.getElementById('test-save-btn');
   if (!name) { errEl.textContent = 'Test name is required.'; return; }
-
   let catId;
   if (!isEdit) {
     catId = document.getElementById('test-cat-select').value;
     if (!catId) { errEl.textContent = 'Category is required.'; return; }
   }
-
   btn.textContent = 'Saving…'; btn.disabled = true; errEl.textContent = '';
-
   try {
     if (isEdit) {
       const test = db.tests.find(t => t.id === editingTestId);
       if (!test) throw new Error('Test not found');
-      test.name  = name;
-      test.type  = type;
-      test.unit  = unit;
-      test.notes = notes;
+      test.name    = name;
+      test.type    = type;
+      test.variant = variant;
+      test.unit    = unit;
+      test.notes   = notes;
       if (!test.files) test.files = {};
-
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending) continue;
         if (pending.clear) {
@@ -1904,10 +1889,9 @@ async function saveTest() {
       }
     } else {
       const entry = {
-        id: uid(), catId, name, type, unit, notes, files: {},
+        id: uid(), catId, name, type, variant, unit, notes, files: {},
         order: db.tests.filter(t => t.catId === catId && (t.unit||'') === unit).length
       };
-
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending || !pending.file) continue;
         btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
@@ -1916,10 +1900,8 @@ async function saveTest() {
         const url      = await getDownloadURL(snapshot.ref);
         entry.files[slotKey] = { url, name: pending.file.name };
       }
-
       db.tests.push(entry);
     }
-
     await saveDB();
     closeModal('test-overlay');
     renderAll();
@@ -1932,11 +1914,9 @@ async function saveTest() {
     btn.disabled = false;
   }
 }
-
 // ── ADMIN CATEGORIES ──
 document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterYears(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
-
 function populateSemesterYears() {
   const sel = document.getElementById('cat-sem-year');
   const currentYear = new Date().getFullYear();
@@ -1946,33 +1926,32 @@ function populateSemesterYears() {
   }
   sel.value = currentYear;
 }
-
 function clearCatForm() {
   ['cat-name','cat-teacher'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('cat-error').textContent = '';
-  document.getElementById('cat-subject').value = 'other';
-  document.getElementById('cat-sem-season').value = '';
+  document.getElementById('cat-error').textContent   = '';
+  document.getElementById('cat-subject').value       = 'other';
+  document.getElementById('cat-sem-season').value    = '';
+  document.getElementById('cat-course-type').value   = '';
 }
-
 async function saveCategory() {
-  const name    = document.getElementById('cat-name').value.trim();
-  const teacher = document.getElementById('cat-teacher').value.trim();
-  const subject = document.getElementById('cat-subject').value;
-  const season  = document.getElementById('cat-sem-season').value;
-  const year    = document.getElementById('cat-sem-year').value;
-  const semester = (season && year) ? `${season} ${year}` : (season || year || '');
+  const name       = document.getElementById('cat-name').value.trim();
+  const teacher    = document.getElementById('cat-teacher').value.trim();
+  const subject    = document.getElementById('cat-subject').value;
+  const courseType = document.getElementById('cat-course-type').value;
+  const season     = document.getElementById('cat-sem-season').value;
+  const year       = document.getElementById('cat-sem-year').value;
+  const semester   = (season && year) ? `${season} ${year}` : (season || year || '');
   if (!name || !teacher) { document.getElementById('cat-error').textContent = 'Course name and teacher are required.'; return; }
   const btn = document.getElementById('cat-save-btn');
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
-    db.cats.push({ id: uid(), name, teacher, subject, semester });
+    db.cats.push({ id: uid(), name, teacher, subject, semester, courseType });
     await saveDB();
     closeModal('cat-overlay');
     renderAll();
   } catch { db.cats.pop(); }
   finally { btn.textContent = 'Create Category'; btn.disabled = false; }
 }
-
 // ── DELETE ──
 function confirmDelCat(id) {
   document.getElementById('del-msg').textContent = 'Delete this course and all its tests? This cannot be undone.';
@@ -1985,7 +1964,6 @@ function confirmDelCat(id) {
   };
   openModal('del-overlay');
 }
-
 function confirmDelTest(id) {
   document.getElementById('del-msg').textContent = 'Delete this test? This cannot be undone.';
   document.getElementById('del-confirm').onclick = async () => {
@@ -1996,7 +1974,6 @@ function confirmDelTest(id) {
   };
   openModal('del-overlay');
 }
-
 document.getElementById('btn-clear-all').onclick = () => {
   document.getElementById('del-msg').textContent = 'Delete ALL courses and tests? This cannot be undone.';
   document.getElementById('del-confirm').onclick = async () => {
@@ -2007,7 +1984,6 @@ document.getElementById('btn-clear-all').onclick = () => {
   };
   openModal('del-overlay');
 };
-
 // ── UTILITY ──
 function uid() { return Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
 function esc(s) {
