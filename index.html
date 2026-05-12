@@ -317,6 +317,12 @@
   .filter-row.teacher .filter-btn:hover:not(.active) { border-color:var(--moss); color:var(--moss); }
   .filter-row.unit .filter-btn.active { background:#6a5a8a; border-color:#6a5a8a; }
   .filter-row.unit .filter-btn:hover:not(.active) { border-color:#6a5a8a; color:#6a5a8a; }
+  /* NEW: course-type filter row */
+  .filter-row.ctype .filter-btn.active { background:#8a5a2a; border-color:#8a5a2a; color:var(--cream); }
+  .filter-row.ctype .filter-btn:hover:not(.active) { border-color:#8a5a2a; color:#8a5a2a; }
+  /* NEW: test-type filter row */
+  .filter-row.ttype .filter-btn.active { background:#3a5a7a; border-color:#3a5a7a; color:var(--cream); }
+  .filter-row.ttype .filter-btn:hover:not(.active) { border-color:#3a5a7a; color:#3a5a7a; }
   /* ── COURSE SECTIONS ── */
   .course-section { margin-bottom:2.5rem; }
   .course-header { display:flex; align-items:center; justify-content:space-between; gap:1rem;
@@ -387,7 +393,7 @@
     padding:.15rem .5rem; border-radius:2px; background:rgba(90,110,74,.12); color:var(--moss);
     border:1px solid rgba(90,110,74,.2); white-space:nowrap;
   }
-  /* ── TEST VARIANT BADGE (A/B/C) ── */
+  /* ── TEST VARIANT BADGE (A/B/C/D/E) ── */
   .test-variant-badge {
     font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.14em; font-weight:500;
     text-transform:uppercase; padding:.15rem .55rem; border-radius:2px;
@@ -790,13 +796,15 @@
       <input type="text" id="cat-name" placeholder="e.g. AP Chemistry"></div>
     <div class="form-group"><label>Teacher Name</label>
       <input type="text" id="cat-teacher" placeholder="e.g. Ms. Okafor"></div>
-    <!-- NEW: Course Type A / B / C -->
-    <div class="form-group"><label>Course Type <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. A, B, C stream)</span></label>
+    <!-- UPDATED: Course Type A / B / C / D / E -->
+    <div class="form-group"><label>Course Type <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. A, B, C, D, E stream)</span></label>
       <select id="cat-course-type">
         <option value="">— None —</option>
         <option value="A">Type A</option>
         <option value="B">Type B</option>
         <option value="C">Type C</option>
+        <option value="D">Type D</option>
+        <option value="E">Type E</option>
       </select>
     </div>
     <div class="form-group"><label>Subject (for filter bar)</label>
@@ -860,15 +868,17 @@
         </select>
       </div>
     </div>
-    <!-- NEW: Test Variant A / B / C -->
+    <!-- UPDATED: Test Variant A / B / C / D / E -->
     <div class="form-row">
       <div class="form-group">
-        <label>Test Variant <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — A, B, or C form)</span></label>
+        <label>Test Variant <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — A, B, C, D, or E form)</span></label>
         <select id="test-variant">
           <option value="">— None —</option>
           <option value="A">Variant A</option>
           <option value="B">Variant B</option>
           <option value="C">Variant C</option>
+          <option value="D">Variant D</option>
+          <option value="E">Variant E</option>
         </select>
       </div>
       <div class="form-group">
@@ -920,7 +930,7 @@
         <button class="admin-btn" id="btn-clear-all">🗑 Clear All Data</button>
       </div>
     </div>
-    <!-- Combined filter panel -->
+    <!-- Combined filter panel — now includes Course Type and Test Type rows -->
     <div class="filter-section" id="filter-section">
       <div class="filter-row" id="subject-filter-row">
         <span class="filter-label">Subject</span>
@@ -938,9 +948,19 @@
         <span class="filter-label">Course</span>
         <button class="filter-btn active" data-course="all">All</button>
       </div>
+      <!-- NEW: Course Type filter row -->
+      <div class="filter-row ctype" id="course-type-filter-row" style="display:none">
+        <span class="filter-label">Course Type</span>
+        <button class="filter-btn active" data-ctype="all">All</button>
+      </div>
       <div class="filter-row unit" id="unit-filter-row" style="display:none">
         <span class="filter-label">Unit</span>
         <button class="filter-btn active" data-unit="all">All</button>
+      </div>
+      <!-- NEW: Test Type filter row -->
+      <div class="filter-row ttype" id="test-type-filter-row" style="display:none">
+        <span class="filter-label">Test Type</span>
+        <button class="filter-btn active" data-ttype="all">All</button>
       </div>
     </div>
     <div id="courses-container">
@@ -989,11 +1009,13 @@ const auth        = getAuth(app);
 // ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
-let currentFilter  = 'all';
-let currentSem     = 'all';
-let currentTeacher = 'all';
-let currentCourse  = 'all';
-let currentUnit    = 'all';
+let currentFilter      = 'all';
+let currentSem         = 'all';
+let currentTeacher     = 'all';
+let currentCourse      = 'all';
+let currentCourseType  = 'all';  // NEW
+let currentUnit        = 'all';
+let currentTestType    = 'all';  // NEW
 let dbLoaded      = false;
 let archiveOpen   = false;
 let pendingSlots  = { pdf: null, orig: null, key: null, assign: null };
@@ -1119,10 +1141,19 @@ document.getElementById('back-btn').onclick = () => {
 // ── FILTER HELPERS ──
 function getFilteredCats() {
   return db.cats.filter(c => {
-    if (currentFilter  !== 'all' && c.subject  !== currentFilter)  return false;
-    if (currentSem     !== 'all' && (c.semester||'').trim() !== currentSem) return false;
-    if (currentTeacher !== 'all' && c.teacher   !== currentTeacher) return false;
-    if (currentCourse  !== 'all' && c.id        !== currentCourse)  return false;
+    if (currentFilter     !== 'all' && c.subject    !== currentFilter)     return false;
+    if (currentSem        !== 'all' && (c.semester||'').trim() !== currentSem) return false;
+    if (currentTeacher    !== 'all' && c.teacher    !== currentTeacher)    return false;
+    if (currentCourse     !== 'all' && c.id         !== currentCourse)     return false;
+    if (currentCourseType !== 'all' && (c.courseType||'') !== currentCourseType) return false; // NEW
+    return true;
+  });
+}
+function getVisibleTests(visibleCatIds) {
+  return db.tests.filter(t => {
+    if (!visibleCatIds.includes(t.catId)) return false;
+    if (currentUnit     !== 'all' && (t.unit||'').trim() !== currentUnit) return false;
+    if (currentTestType !== 'all' && t.type !== currentTestType) return false; // NEW
     return true;
   });
 }
@@ -1142,6 +1173,9 @@ const SUBJ_LABELS = {
   all:'All', math:'Math', sci:'Science', eng:'English',
   hist:'History', lang:'Language', art:'Arts', tech:'Technology', other:'Other'
 };
+const TEST_TYPE_LABELS = {
+  quiz: 'Quiz', test: 'Test', midterm: 'Midterm', final: 'Final', assignment: 'Assignment'
+};
 function renderFilters() {
   const subjects = [...new Set(db.cats.map(c => c.subject).filter(Boolean))];
   const subjRow  = document.getElementById('subject-filter-row');
@@ -1157,12 +1191,13 @@ function renderFilters() {
   subjRow.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentFilter = btn.dataset.filter;
-      currentSem = currentTeacher = currentCourse = currentUnit = 'all';
+      currentSem = currentTeacher = currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
       renderAll();
     });
   });
   const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
-  const semesters   = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
+  // ── Semester ──
+  const semesters = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
     .sort((a,b) => b.localeCompare(a));
   const semRow = document.getElementById('semester-filter-row');
   if (semesters.length > 0) {
@@ -1176,7 +1211,7 @@ function renderFilters() {
     semRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentSem = btn.dataset.sem;
-        currentTeacher = currentCourse = currentUnit = 'all';
+        currentTeacher = currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
     });
@@ -1184,6 +1219,7 @@ function renderFilters() {
     semRow.style.display = 'none';
   }
   const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
+  // ── Teacher ──
   const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
   const teacherRow = document.getElementById('teacher-filter-row');
   if (teachers.length > 1) {
@@ -1197,7 +1233,7 @@ function renderFilters() {
     teacherRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentTeacher = btn.dataset.teacher;
-        currentCourse = currentUnit = 'all';
+        currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
     });
@@ -1205,6 +1241,7 @@ function renderFilters() {
     teacherRow.style.display = 'none';
   }
   const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
+  // ── Course ──
   const courseRow   = document.getElementById('course-filter-row');
   if (teacherCats.length > 1) {
     let cHtml = `<span class="filter-label">Course</span>
@@ -1217,13 +1254,37 @@ function renderFilters() {
     courseRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentCourse = btn.dataset.course;
-        currentUnit = 'all';
+        currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
     });
   } else {
     courseRow.style.display = 'none';
   }
+  // ── NEW: Course Type filter ──
+  const courseCats  = teacherCats.filter(c => currentCourse === 'all' || c.id === currentCourse);
+  const courseTypes = [...new Set(courseCats.map(c => (c.courseType||'').trim()).filter(Boolean))].sort();
+  const ctypeRow    = document.getElementById('course-type-filter-row');
+  if (courseTypes.length > 0) {
+    let ctHtml = `<span class="filter-label">Course Type</span>
+      <button class="filter-btn ${currentCourseType==='all'?'active':''}" data-ctype="all">All</button>`;
+    courseTypes.forEach(ct => {
+      ctHtml += `<button class="filter-btn ${currentCourseType===ct?'active':''}" data-ctype="${esc(ct)}">Type ${esc(ct)}</button>`;
+    });
+    ctypeRow.innerHTML = ctHtml;
+    ctypeRow.style.display = 'flex';
+    ctypeRow.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentCourseType = btn.dataset.ctype;
+        currentUnit = currentTestType = 'all';
+        renderAll();
+      });
+    });
+  } else {
+    ctypeRow.style.display = 'none';
+    if (currentCourseType !== 'all') currentCourseType = 'all';
+  }
+  // ── Unit filter ──
   const visibleCatIds = getFilteredCats().map(c => c.id);
   const units    = getVisibleUnits(visibleCatIds);
   const unitRow  = document.getElementById('unit-filter-row');
@@ -1236,11 +1297,37 @@ function renderFilters() {
     unitRow.innerHTML = uHtml;
     unitRow.style.display = 'flex';
     unitRow.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => { currentUnit = btn.dataset.unit; renderAll(); });
+      btn.addEventListener('click', () => { currentUnit = btn.dataset.unit; currentTestType = 'all'; renderAll(); });
     });
   } else {
     unitRow.style.display = 'none';
     if (currentUnit !== 'all') currentUnit = 'all';
+  }
+  // ── NEW: Test Type filter ──
+  const testTypes = [...new Set(
+    db.tests
+      .filter(t => visibleCatIds.includes(t.catId))
+      .map(t => t.type)
+      .filter(Boolean)
+  )].sort((a, b) => {
+    const order = ['quiz','test','midterm','final','assignment'];
+    return order.indexOf(a) - order.indexOf(b);
+  });
+  const ttypeRow = document.getElementById('test-type-filter-row');
+  if (testTypes.length > 1) {
+    let ttHtml = `<span class="filter-label">Test Type</span>
+      <button class="filter-btn ${currentTestType==='all'?'active':''}" data-ttype="all">All</button>`;
+    testTypes.forEach(tt => {
+      ttHtml += `<button class="filter-btn ${currentTestType===tt?'active':''}" data-ttype="${esc(tt)}">${esc(TEST_TYPE_LABELS[tt] || tt)}</button>`;
+    });
+    ttypeRow.innerHTML = ttHtml;
+    ttypeRow.style.display = 'flex';
+    ttypeRow.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => { currentTestType = btn.dataset.ttype; renderAll(); });
+    });
+  } else {
+    ttypeRow.style.display = 'none';
+    if (currentTestType !== 'all') currentTestType = 'all';
   }
 }
 function renderCourses() {
@@ -1257,15 +1344,15 @@ function renderCourses() {
     return;
   }
   cont.innerHTML = visible.map(cat => {
-    let tests = [...db.tests.filter(t => t.catId === cat.id)]
-      .sort((a, b) => {
-        const ua = unitSortKey(a.unit), ub = unitSortKey(b.unit);
-        if (ua !== ub) return ua.localeCompare(ub, undefined, { numeric: true, sensitivity: 'base' });
-        return (a.order ?? 0) - (b.order ?? 0);
-      });
-    if (currentUnit !== 'all') {
-      tests = tests.filter(t => (t.unit || '').trim() === currentUnit);
-    }
+    // Apply unit + test-type filters to this cat's tests
+    let tests = [...db.tests.filter(t => t.catId === cat.id)];
+    if (currentUnit     !== 'all') tests = tests.filter(t => (t.unit||'').trim() === currentUnit);
+    if (currentTestType !== 'all') tests = tests.filter(t => t.type === currentTestType); // NEW
+    tests.sort((a, b) => {
+      const ua = unitSortKey(a.unit), ub = unitSortKey(b.unit);
+      if (ua !== ub) return ua.localeCompare(ub, undefined, { numeric: true, sensitivity: 'base' });
+      return (a.order ?? 0) - (b.order ?? 0);
+    });
     const adminBtns = isAdmin ? `
       <div class="course-actions">
         <button class="btn-sm" data-add-test="${cat.id}">+ Test</button>
@@ -1277,7 +1364,7 @@ function renderCourses() {
       ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to edit semester">${esc(semLabel)}</span>`
       : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
 
-    // ── NEW: Course type badge (A/B/C) ──
+    // ── Course type badge (A/B/C/D/E) ──
     const ctLabel = cat.courseType ? `Type ${esc(cat.courseType)}` : '+ Type';
     const courseTypeBadge = isAdmin
       ? `<span class="course-type-badge editable-course-type" data-cat-id="${cat.id}" title="Click to edit course type">${ctLabel}</span>`
@@ -1296,9 +1383,10 @@ function renderCourses() {
          ${cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : ''}
          ${cat.courseType ? `<span class="course-type-badge">Type ${esc(cat.courseType)}</span>` : ''}`;
     let testsHtml = '';
+    const isFiltered = currentUnit !== 'all' || currentTestType !== 'all';
     if (tests.length === 0) {
-      testsHtml = `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests${currentUnit !== 'all' ? ' in this unit' : ''} uploaded yet.</p>`;
-    } else if (currentUnit !== 'all') {
+      testsHtml = `<p style="font-size:.8rem; opacity:.5; padding:1rem 0;">No tests${isFiltered ? ' matching current filters' : ''} uploaded yet.</p>`;
+    } else if (isFiltered) {
       testsHtml = tests.map(t => buildTestItem(t)).join('');
     } else {
       const groups = groupByUnit(tests);
@@ -1314,7 +1402,7 @@ function renderCourses() {
         testsHtml = `<div>${testsHtml}</div>`;
       }
     }
-    const listWrapper = (currentUnit !== 'all' || !hasAnyUnits(tests))
+    const listWrapper = (isFiltered || !hasAnyUnits(tests))
       ? `<div class="test-list" data-list-cat="${cat.id}">${testsHtml}</div>`
       : testsHtml;
     return `<div class="course-section" data-cat-id="${cat.id}">
@@ -1342,7 +1430,6 @@ function renderCourses() {
     cont.querySelectorAll('.editable-semester').forEach(el => {
       el.addEventListener('click', () => startSemesterEdit(el));
     });
-    // NEW: inline course type edit
     cont.querySelectorAll('.editable-course-type').forEach(el => {
       el.addEventListener('click', () => startCourseTypeEdit(el));
     });
@@ -1352,7 +1439,6 @@ function renderCourses() {
     cont.querySelectorAll('.inline-type-select').forEach(sel => {
       sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
     });
-    // NEW: inline test variant select
     cont.querySelectorAll('.inline-variant-select').forEach(sel => {
       sel.addEventListener('change', () => changeTestVariant(sel.dataset.testId, sel.value));
     });
@@ -1400,7 +1486,6 @@ function buildTestItem(t) {
     } else if (isAdmin) {
       links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
     }
-    // NEW: Assignment slot
     if (slots.assign?.url) {
       links += `<a class="file-link-btn assign" href="${esc(slots.assign.url)}" target="_blank" rel="noopener">📝 Assignment</a>`;
     } else if (isAdmin) {
@@ -1422,13 +1507,15 @@ function buildTestItem(t) {
          <option value="assignment" ${t.type==='assignment' ?'selected':''}>assignment</option>
        </select>`
     : `<span style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;" class="${typeClass}">${esc(t.type)}</span>`;
-  // NEW: Variant select (admin) or badge (student/always shown if set)
+  // Variant select (admin) or badge (student) — A/B/C/D/E
   const variantSelectOrBadge = isAdmin
     ? `<select class="test-type-select inline-variant-select" data-test-id="${t.id}" title="Test variant" style="color:var(--amber);">
          <option value=""  ${!t.variant ?'selected':''}>—</option>
          <option value="A" ${t.variant==='A'?'selected':''}>A</option>
          <option value="B" ${t.variant==='B'?'selected':''}>B</option>
          <option value="C" ${t.variant==='C'?'selected':''}>C</option>
+         <option value="D" ${t.variant==='D'?'selected':''}>D</option>
+         <option value="E" ${t.variant==='E'?'selected':''}>E</option>
        </select>`
     : (t.variant ? `<span class="test-variant-badge">${esc(t.variant)}</span>` : '');
   const nameEl = isAdmin
@@ -1549,13 +1636,13 @@ function startSemesterEdit(el) {
     });
   });
 }
-// ── NEW: INLINE COURSE TYPE EDIT (A / B / C) ──
+// ── INLINE COURSE TYPE EDIT (A / B / C / D / E) ──
 function startCourseTypeEdit(el) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
   if (!cat) return;
   const current = cat.courseType || '';
-  const TYPES   = ['', 'A', 'B', 'C'];
+  const TYPES   = ['', 'A', 'B', 'C', 'D', 'E'];
   const wrap = document.createElement('span');
   wrap.className = 'sem-inline-wrap';
   const sel = document.createElement('select');
@@ -1628,7 +1715,7 @@ async function changeTestType(testId, newType) {
   try { await saveDB(); renderAll(); }
   catch { test.type = prev; renderAll(); }
 }
-// ── NEW: INLINE VARIANT CHANGE (A / B / C) ──
+// ── INLINE VARIANT CHANGE (A / B / C / D / E) ──
 async function changeTestVariant(testId, newVariant) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
@@ -1713,7 +1800,6 @@ function openEditTestFiles(testId, focusSlot) {
   openEditTest(testId, focusSlot);
 }
 // ── FILE SLOTS UI BUILDER ──
-// NEW: added 'assign' slot
 const SLOT_CONFIG = {
   pdf:    { label: 'PDF Version',   icon: '📄', accept: '.pdf,.PDF' },
   orig:   { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
