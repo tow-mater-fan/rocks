@@ -1291,8 +1291,10 @@ function renderCourses() {
         <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
       </div>` : '';
 
-    const semBadge = cat.semester
-      ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '';
+    const semLabel = cat.semester || '+ Semester';
+    const semBadge = isAdmin
+      ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to change semester">${esc(semLabel)}</span>`
+      : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
 
     const titleBlock = isAdmin
       ? `<div class="course-title-wrap">
@@ -1300,10 +1302,10 @@ function renderCourses() {
            <span class="rename-hint">click to rename</span>
          </div>
          <span class="course-teacher editable-cat-teacher" data-cat-id="${cat.id}">${esc(cat.teacher)}</span>
-         ${semBadge}`
+         <span class="sem-badge-wrap" style="position:relative;display:inline-block;">${semBadge}</span>`
       : `<span class="course-title">${esc(cat.name)}</span>
          <span class="course-teacher">${esc(cat.teacher)}</span>
-         ${semBadge}`;
+         ${cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : ''}`;
 
     let testsHtml = '';
     if (tests.length === 0) {
@@ -1352,6 +1354,9 @@ function renderCourses() {
     cont.querySelectorAll('.editable-cat-teacher').forEach(el => {
       el.style.cursor = 'text';
       el.addEventListener('click', () => startCatRename(el, 'teacher'));
+    });
+    cont.querySelectorAll('.editable-semester').forEach(el => {
+      el.addEventListener('click', () => startSemesterEdit(el));
     });
     cont.querySelectorAll('.editable-test-name').forEach(el => {
       el.addEventListener('click', () => startTestNameEdit(el));
