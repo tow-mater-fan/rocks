@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>RockSolid — Geology & Mineralogy Reference</title>
-  <script id="aclib" type="text/javascript" src="//acscdn.com/script/aclib.js"></script>
-
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -969,9 +967,7 @@
   </div>
 </div>
 <!-- ═══════════════ SCRIPTS ═══════════════ -->
-
 <script>
-
   const navToggle = document.getElementById('nav-toggle');
   const navLinks  = document.getElementById('nav-links');
   navToggle.addEventListener('click', () => {
@@ -985,6 +981,7 @@
   document.addEventListener('click', (e) => {
     if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) closeNav();
   });
+</script>
 <script type="module">
 const STUDENT_CODE = 'geology42';
 import { initializeApp }
@@ -1446,14 +1443,6 @@ function renderCourses() {
   }
   setupFileSlotToggles();
 }
-
-  <script type="text/javascript">
-    aclib.runAutoTag({
-        zoneId: '0uq9zzgjnw',
-    });
-</script>
-
-  
 // ── GROUP BY UNIT ──
 function groupByUnit(tests) {
   const map = new Map();
