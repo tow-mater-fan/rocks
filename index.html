@@ -59,7 +59,6 @@
   .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,7vw,6.5rem);
     color:var(--cream); line-height:1.05; max-width:750px; position:relative; }
   .hero h1 em { color:var(--sand); font-style:italic; }
-  .hero h1 .strike { position:relative; display:inline-block; }
   .hero-sub { font-size:1.05rem; color:rgba(232,221,208,.55); max-width:520px; margin-top:1.75rem;
     line-height:1.8; position:relative; font-weight:300; }
   .hero-cta-row { display:flex; gap:1rem; margin-top:2.5rem; flex-wrap:wrap; position:relative; }
@@ -86,7 +85,6 @@
     display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center;
     border-bottom:1px solid rgba(196,168,130,.1);
   }
-  .intro-strip-left { }
   .intro-strip-left h2 { font-family:'Playfair Display',serif; font-size:clamp(1.6rem,3vw,2.4rem);
     color:var(--cream); line-height:1.3; margin-bottom:1.25rem; }
   .intro-strip-left p { color:rgba(232,221,208,.5); font-size:.95rem; line-height:1.8; font-weight:300; }
@@ -163,8 +161,75 @@
   .timeline-content { padding-left:1rem; }
   .timeline-content h4 { font-family:'Playfair Display',serif; font-size:1.1rem; margin-bottom:.4rem; }
   .timeline-content p { font-size:.875rem; color:var(--slate); line-height:1.7; }
-  /* ── ARTICLES ── */
+  /* ── ARTICLES SECTION ── */
+  .section.articles-section { padding:6rem 3rem; }
   .articles-grid { display:grid; grid-template-columns:2fr 1fr; gap:3rem; align-items:start; }
+  /* Article cards list */
+  .article-card-list { display:flex; flex-direction:column; gap:2rem; }
+  .article-card {
+    background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:3px;
+    overflow:hidden; transition:box-shadow .25s;
+  }
+  .article-card:hover { box-shadow:0 8px 30px rgba(44,36,22,.1); }
+  .article-card-header {
+    padding:1.75rem 2rem 1.5rem; cursor:pointer;
+    display:flex; align-items:flex-start; justify-content:space-between; gap:1rem;
+  }
+  .article-card-header-left { flex:1; }
+  .article-card .article-tag {
+    font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:.6rem; display:block;
+  }
+  .article-card h3 {
+    font-family:'Playfair Display',serif; font-size:1.35rem; line-height:1.3;
+    color:var(--stone); margin-bottom:.6rem;
+  }
+  .article-card .article-preview {
+    font-size:.875rem; color:var(--slate); line-height:1.7;
+  }
+  .article-toggle-btn {
+    flex-shrink:0; width:32px; height:32px; border-radius:50%;
+    border:1.5px solid rgba(100,80,60,.25); background:transparent;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .2s; margin-top:.25rem;
+  }
+  .article-toggle-btn svg { transition:transform .3s; }
+  .article-card.open .article-toggle-btn { background:var(--rust); border-color:var(--rust); }
+  .article-card.open .article-toggle-btn svg { transform:rotate(180deg); }
+  .article-card.open .article-toggle-btn svg path { stroke:#fff; }
+  /* Expandable body */
+  .article-body-wrap {
+    max-height:0; overflow:hidden;
+    transition:max-height .45s cubic-bezier(.4,0,.2,1);
+  }
+  .article-card.open .article-body-wrap { max-height:2000px; }
+  .article-body {
+    padding:0 2rem 2rem; border-top:1px solid rgba(100,80,60,.12);
+    padding-top:1.5rem;
+  }
+  .article-body p { font-size:.925rem; color:var(--slate); line-height:1.85; margin-bottom:1.1rem; }
+  .article-body p:last-child { margin-bottom:0; }
+  .article-body h4 {
+    font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--stone);
+    margin:1.5rem 0 .6rem;
+  }
+  .article-body .article-pullquote {
+    border-left:3px solid var(--rust); padding:.75rem 1.25rem;
+    margin:1.5rem 0; font-family:'Playfair Display',serif; font-style:italic;
+    font-size:1rem; color:var(--granite); background:rgba(184,92,56,.04);
+  }
+  .article-body .article-fact-box {
+    background:var(--quartz); border-radius:3px; padding:1rem 1.25rem;
+    margin:1.25rem 0;
+  }
+  .article-body .article-fact-box p {
+    font-size:.82rem; color:var(--granite); margin-bottom:0;
+  }
+  .article-body .article-fact-box strong {
+    font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--rust); display:block; margin-bottom:.4rem;
+  }
+  /* Sidebar */
   .article-main h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1rem; line-height:1.3; }
   .article-main .article-tag { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; display:block; }
@@ -448,6 +513,7 @@
     .intro-strip { grid-template-columns:1fr; }
     .process-grid { grid-template-columns:1fr; }
     .footer-top { grid-template-columns:1fr 1fr; }
+    .articles-grid { grid-template-columns:1fr; }
   }
   @media(max-width:768px){
     nav { padding:0 1.25rem; }
@@ -458,11 +524,11 @@
     .nav-toggle { display:flex; }
     .hero { padding:7rem 1.25rem 4rem; }
     .section { padding:4rem 1.25rem; }
+    .section.articles-section { padding:4rem 1.25rem; }
     .timeline-section { padding:4rem 1.25rem; }
     .timeline-entry { grid-template-columns:80px 1px 1fr; gap:0 1rem; }
     .form-row { grid-template-columns:1fr; }
     .form-row-3 { grid-template-columns:1fr; }
-    .articles-grid { grid-template-columns:1fr; }
     footer { padding:2rem 1.25rem; }
     .footer-top { grid-template-columns:1fr; gap:2rem; }
     .archive-header { padding:4.5rem 1.25rem 2rem; }
@@ -478,6 +544,8 @@
     .quote-section { padding:3.5rem 1.25rem; }
     .filter-row { gap:.5rem; }
     .filter-label { min-width:60px; }
+    .article-card-header { padding:1.25rem 1.25rem 1rem; }
+    .article-body { padding:1.25rem; }
   }
   @media(max-width:480px){
     .facts-strip { grid-template-columns:1fr 1fr; gap:2rem; }
@@ -485,15 +553,8 @@
     .intro-strip-right { grid-template-columns:1fr 1fr; }
   }
 </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2016536931117014"
-     crossorigin="anonymous"></script>
 </head>
 <body>
-  <script type="text/javascript">
-    aclib.runAutoTag({
-        zoneId: '0uq9zzgjnw',
-    });
-</script>
 
 <!-- ═══════════════ MAIN SITE ═══════════════ -->
 <div id="main-site">
@@ -509,6 +570,7 @@
       <li><a href="#learn" onclick="closeNav()">Articles</a></li>
     </ul>
   </nav>
+
   <section class="hero">
     <div class="hero-line"></div>
     <div class="hero-bg-text">Geology</div>
@@ -521,6 +583,7 @@
     </div>
     <div class="hero-scroll">Scroll</div>
   </section>
+
   <div class="intro-strip">
     <div class="intro-strip-left">
       <h2>The Science of<br>Stone &amp; Mineral</h2>
@@ -542,6 +605,7 @@
       <div class="mini-stat"><div class="mini-stat-num">40km</div><div class="mini-stat-label">Crust thickness</div></div>
     </div>
   </div>
+
   <section class="section" id="types">
     <div class="section-label">Classification</div>
     <h2>Rock Types &amp; Formation</h2>
@@ -614,6 +678,7 @@
       </div>
     </div>
   </section>
+
   <div class="process-section" id="process">
     <div style="max-width:1200px; margin:0 auto;">
       <div class="section-label">Formation Processes</div>
@@ -640,6 +705,7 @@
       </div>
     </div>
   </div>
+
   <div class="facts-strip" id="facts">
     <div class="fact"><div class="fact-num">4.5B</div><div class="fact-label">Years of Earth's Age</div></div>
     <div class="fact"><div class="fact-num">4,000+</div><div class="fact-label">Known Mineral Species</div></div>
@@ -647,6 +713,7 @@
     <div class="fact"><div class="fact-num">40km</div><div class="fact-label">Avg. Continental Crust Depth</div></div>
     <div class="fact"><div class="fact-num">700+</div><div class="fact-label">Active Volcanoes on Earth</div></div>
   </div>
+
   <div class="timeline-section" id="timeline">
     <div class="section-label">Deep Time</div>
     <h2>Geological Time Scale</h2>
@@ -693,18 +760,219 @@
       </div>
     </div>
   </div>
-  <section class="section" id="learn">
+
+  <!-- ═══ ARTICLES SECTION ═══ -->
+  <section class="section articles-section" id="learn">
     <div class="section-label">Featured Articles</div>
     <h2>Deeper Reading</h2>
     <div class="articles-grid">
-      <div class="article-main">
-        <span class="article-tag">Rock Cycle · Petrology</span>
-        <h3>Understanding the Rock Cycle: How Rocks Transform Over Geological Time</h3>
-        <p>The rock cycle is one of geology's most elegant concepts — a continuous system by which rocks are created, altered, destroyed, and reformed through the action of internal earth processes and surface weathering.</p>
-        <p>No rock type is permanent. Granite may be uplifted, weathered into sediment, compressed into sandstone, and eventually subducted back into the mantle where it melts into magma once more. The timescales involved — millions to hundreds of millions of years — are almost impossible to comprehend on a human scale.</p>
-        <p>Geologists use radioactive isotope dating to trace these transformations across billions of years, revealing a planet in constant, slow-motion flux. Uranium-lead, potassium-argon, and rubidium-strontium systems each unlock a different chapter of Earth's history written in the chemical signatures of its rocks.</p>
-        <a href="#" class="read-more">Continue reading →</a>
-      </div>
+      <!-- LEFT: expandable article cards -->
+      <div class="article-card-list">
+
+        <!-- Article 1 -->
+        <div class="article-card" id="article-1">
+          <div class="article-card-header" onclick="toggleArticle('article-1')">
+            <div class="article-card-header-left">
+              <span class="article-tag">Rock Cycle · Petrology</span>
+              <h3>Understanding the Rock Cycle: How Rocks Transform Over Geological Time</h3>
+              <p class="article-preview">The rock cycle is one of geology's most elegant concepts — a continuous system by which rocks are created, altered, destroyed, and reformed.</p>
+            </div>
+            <button class="article-toggle-btn" aria-label="Expand article">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="article-body-wrap">
+            <div class="article-body">
+              <p>The rock cycle is one of geology's most elegant concepts — a continuous, dynamic system by which rocks are created, altered, destroyed, and reformed through the interplay of internal earth processes and surface weathering. No rock type is permanent; each exists only as a temporary arrangement of matter within an ongoing planetary cycle.</p>
+
+              <h4>The Three Pathways</h4>
+              <p>Granite, a familiar igneous rock, may be uplifted by tectonic forces, exposed at the surface, and broken down over millennia by rain, frost, and wind. The resulting sediment is carried by rivers to ocean basins, where it accumulates in layers, compacts under its own weight, and slowly lithifies into sandstone or shale. Should tectonic forces drive that sedimentary rock back into the crust, intense heat and pressure transform it into metamorphic schist or gneiss. If temperatures rise high enough, it melts entirely — rejoining the magma reservoir from which new igneous rock will eventually form.</p>
+
+              <div class="article-pullquote">
+                "Every rock is a record of a journey through the earth's interior — a letter written in mineral and time."
+              </div>
+
+              <h4>Radiometric Dating: Reading the Clock in Stone</h4>
+              <p>Geologists use radioactive isotope dating to trace these transformations across billions of years. When magma crystallises, certain minerals incorporate radioactive parent isotopes (such as uranium-238 or potassium-40) into their lattice structure. These decay at known, constant rates into stable daughter isotopes. By measuring the ratio of parent to daughter in a sample, geologists can calculate the precise time elapsed since the rock formed.</p>
+              <p>Uranium-lead dating is suited for very ancient rocks — it can reliably date samples billions of years old, including the oldest known terrestrial zircons from Western Australia, which date to 4.4 billion years. Potassium-argon dating is used for volcanic rocks as young as 100,000 years, while rubidium-strontium systems unlock evidence from the deepest Precambrian. Together these systems provide an overlapping chronological framework that has allowed geologists to build the geological time scale with remarkable precision.</p>
+
+              <div class="article-fact-box">
+                <strong>Key Fact</strong>
+                <p>The oldest mineral grains ever discovered — Jack Hills zircons from Western Australia — are approximately 4.404 billion years old, just 150 million years younger than Earth itself.</p>
+              </div>
+
+              <h4>Why the Cycle Matters</h4>
+              <p>Understanding the rock cycle is foundational not just to geology but to climate science, resource extraction, and even planetary science. The cycling of carbon between rocks, ocean, and atmosphere over millions of years regulates Earth's long-term climate. The concentration of metallic ores in certain rock types and geological settings — a product of magmatic differentiation and hydrothermal activity — determines where valuable mineral deposits are found. And by comparing Earth's rock record with surface features on Mars, the Moon, and other bodies, planetary geologists can infer which of these worlds have active or extinct rock cycles of their own.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 2 -->
+        <div class="article-card" id="article-2">
+          <div class="article-card-header" onclick="toggleArticle('article-2')">
+            <div class="article-card-header-left">
+              <span class="article-tag">Mineralogy · Crystal Structure</span>
+              <h3>The Mohs Scale and the Physics of Mineral Hardness</h3>
+              <p class="article-preview">Friedrich Mohs' 1812 ranking of ten minerals by scratch resistance remains one of the most practically useful tools in geological fieldwork — but what does hardness actually measure?</p>
+            </div>
+            <button class="article-toggle-btn" aria-label="Expand article">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="article-body-wrap">
+            <div class="article-body">
+              <p>Friedrich Mohs was a German mineralogist working in Vienna in the early nineteenth century when he published his famous hardness scale — a deceptively simple ranking of ten reference minerals from softest to hardest. Two centuries later, his scale remains a standard tool in geological fieldwork, though its underlying physics are more nuanced than the ordinal numbers suggest.</p>
+
+              <h4>What the Scale Actually Measures</h4>
+              <p>Hardness in the Mohs sense refers specifically to scratch resistance — the ability of a mineral's surface to resist being abraded by another material. A mineral rated higher on the scale will scratch one rated lower; two minerals of equal hardness will leave no mark on each other. Mohs' ten reference points, from talc (1) through gypsum, calcite, fluorite, apatite, feldspar, quartz, topaz, and corundum, to diamond (10), provide a practical field comparison set.</p>
+              <p>Importantly, the Mohs scale is ordinal, not linear. The physical difference between corundum (9) and diamond (10) is vastly greater than between, say, calcite (3) and fluorite (4). Diamond is roughly 1,500 times harder than corundum by absolute hardness measures such as the Vickers or Knoop indentation tests used in materials science. Mohs' scale compresses this enormous range into a convenient 1–10 format intended for field use, not precision engineering.</p>
+
+              <div class="article-pullquote">
+                "Diamond does not merely scratch corundum — it is in a class so far removed that the gap dwarfs all others on the scale combined."
+              </div>
+
+              <h4>The Crystal Chemistry Behind Hardness</h4>
+              <p>Hardness is ultimately an expression of bond strength within a mineral's crystal lattice. Diamond — pure carbon arranged in a tetrahedral covalent lattice — achieves its extraordinary hardness because every carbon atom forms four strong covalent bonds in all directions, creating an isotropic three-dimensional network of exceptional strength. Graphite, also pure carbon but arranged in hexagonal sheets bonded only weakly between layers, registers just 1–2 on the Mohs scale.</p>
+              <p>This illustrates a key principle: chemical composition alone does not determine hardness — crystal structure is equally critical. Kyanite offers a striking example of anisotropic hardness: it measures approximately 5.5 along its length but 7 across it, due to the directional nature of bonding in its aluminosilicate crystal structure. Any mineral identification that relies on hardness must account for the direction of the scratch test.</p>
+
+              <div class="article-fact-box">
+                <strong>Field Tip</strong>
+                <p>A fingernail (~2.5), a copper coin (~3.5), a steel knife blade (~5.5), and a glass plate (~5.5) make practical field substitutes for Mohs reference minerals. A quartz crystal carried as a field tool will scratch anything below 7.</p>
+              </div>
+
+              <h4>Beyond Mohs: Modern Hardness Measurement</h4>
+              <p>For industrial applications — abrasives, cutting tools, wear-resistant coatings — the Mohs scale lacks the precision required. The Vickers hardness test, which measures the indentation left by a pyramid-shaped diamond indenter under a known load, gives quantitative values in megapascals. Synthetic materials such as cubic boron nitride and wurtzite boron nitride have now been engineered to approach or even briefly exceed diamond in hardness under certain loading conditions, pushing the frontier of materials science into territory Mohs could not have anticipated.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 3 -->
+        <div class="article-card" id="article-3">
+          <div class="article-card-header" onclick="toggleArticle('article-3')">
+            <div class="article-card-header-left">
+              <span class="article-tag">Plate Tectonics · Geodynamics</span>
+              <h3>Plate Tectonics: The Engine Driving Earth's Geological Activity</h3>
+              <p class="article-preview">The theory of plate tectonics, consolidated in the 1960s, unified decades of puzzling observations — continental shapes, fossil distributions, volcanic patterns — into a single coherent framework.</p>
+            </div>
+            <button class="article-toggle-btn" aria-label="Expand article">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="article-body-wrap">
+            <div class="article-body">
+              <p>The theory of plate tectonics stands as one of the great unifying frameworks of Earth science. Consolidated from the work of Alfred Wegener, Harry Hess, and dozens of other geoscientists through the mid-twentieth century, it explains the distribution of earthquakes and volcanoes, the shapes of ocean basins, the building of mountain ranges, and the long-term cycling of elements between the crust, mantle, oceans, and atmosphere.</p>
+
+              <h4>The Lithospheric Plates</h4>
+              <p>Earth's outermost rigid layer — the lithosphere, comprising the crust and the uppermost mantle — is broken into roughly fifteen major plates and several smaller ones. These plates, between 100 and 250 kilometres thick, ride atop the asthenosphere: a zone of the upper mantle that is hot enough to flow plastically over geological timescales, despite being solid rock. The driving forces for plate motion include convection currents in the mantle, the gravitational pull of dense, cold oceanic crust descending at subduction zones (slab pull), and the push of newly formed crust at mid-ocean ridges (ridge push).</p>
+
+              <div class="article-pullquote">
+                "The continents do not drift through the ocean floor — they are carried upon it, passengers on vast slabs of lithosphere in slow but relentless motion."
+              </div>
+
+              <h4>Three Types of Plate Boundary</h4>
+              <p>Where plates meet, three distinct boundary types produce markedly different geological outcomes. At divergent boundaries, such as the Mid-Atlantic Ridge, plates move apart and new oceanic crust forms continuously from upwelling basaltic magma — a process called seafloor spreading. Iceland sits atop this boundary and is being literally pulled apart at a rate of roughly 2.5 centimetres per year.</p>
+              <p>At convergent boundaries, one plate descends beneath another in the process of subduction. Where oceanic crust meets continental crust, the denser oceanic plate invariably subducts, generating chains of volcanoes (like the Cascades or the Andes), deep oceanic trenches, and powerful earthquakes. Where two continental plates collide — as India has been doing with Asia for the past 50 million years — neither subducts easily, and the result is the crumpling and thickening of crust that built the Himalayas, the highest mountain range on Earth.</p>
+              <p>At transform boundaries, plates slide horizontally past each other without creating or destroying crust. The San Andreas Fault in California is the most studied example — a right-lateral strike-slip fault along which the Pacific Plate moves northwest relative to the North American Plate at about 46 millimetres per year, accumulating elastic strain that periodically releases in major earthquakes.</p>
+
+              <div class="article-fact-box">
+                <strong>Scale of Motion</strong>
+                <p>Tectonic plates move at roughly the same rate fingernails grow — between 1 and 10 centimetres per year. Over 200 million years, this motion has moved continents thousands of kilometres from their original positions.</p>
+              </div>
+
+              <h4>The Wilson Cycle and Supercontinents</h4>
+              <p>On timescales of hundreds of millions of years, the opening and closing of ocean basins follows a pattern known as the Wilson Cycle. Oceans open at rifts, expand via seafloor spreading, then close as subduction consumes their floor, eventually colliding the flanking continents together into a supercontinent. Pangaea — the last such supercontinent — assembled roughly 300 million years ago and began breaking apart around 180 million years ago, producing the Atlantic Ocean and the geography we recognise today. The geological evidence suggests at least two earlier supercontinents, Rodinia and Nuna, in Earth's deep past, and models predict a future supercontinent — sometimes called Pangaea Proxima — will assemble in approximately 250 million years.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 4 -->
+        <div class="article-card" id="article-4">
+          <div class="article-card-header" onclick="toggleArticle('article-4')">
+            <div class="article-card-header-left">
+              <span class="article-tag">Stratigraphy · Deep Time</span>
+              <h3>Reading the Stratigraphic Record: Earth's History in Layers</h3>
+              <p class="article-preview">Stratigraphy — the study of rock strata — allows geologists to reconstruct billions of years of Earth history from the sequence, composition, and fossils of layered rocks.</p>
+            </div>
+            <button class="article-toggle-btn" aria-label="Expand article">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="article-body-wrap">
+            <div class="article-body">
+              <p>If the rock cycle describes how rocks transform, stratigraphy describes how they accumulate in sequence — and in that sequence lies a record of Earth's history that geologists have been decoding for over two centuries. The principle is deceptively simple: in any undisturbed series of sedimentary layers, the oldest beds lie at the bottom and the youngest at the top. This law of superposition, formalised by Nicolas Steno in the seventeenth century, is the cornerstone of historical geology.</p>
+
+              <h4>Relative and Absolute Time</h4>
+              <p>Stratigraphy originally produced only relative timescales — rock unit A is older than unit B, which predates unit C — without assigning any numerical ages. The development of biostratigraphy in the nineteenth century improved resolution enormously: certain fossil species (index fossils) have known, restricted time ranges, and their presence in a rock layer constrains when that layer was deposited. The global stratigraphic column — the idealised sequence of all rock units from oldest to youngest — was largely assembled from relative methods before radiometric dating provided the absolute age calibration that underpins the modern geological time scale.</p>
+
+              <div class="article-pullquote">
+                "The strata of the earth are a history written in stone — but it is a history with many pages torn out, chapters missing, and margins annotated by time."
+              </div>
+
+              <h4>Unconformities: The Missing Pages</h4>
+              <p>One of stratigraphy's most important concepts is the unconformity — a surface that represents a gap in the geological record, where erosion or non-deposition has removed or prevented the accumulation of sediment for a period of time. When James Hutton examined the angular unconformity at Siccar Point in Scotland in 1788, he recognised that the tilted rocks below the contact had been deposited, lithified, tilted by mountain building, eroded flat, then buried under new horizontal sediments above — a sequence requiring vast amounts of time. His insight led to the foundational geological concept of deep time: the Earth must be incomprehensibly old for such processes to operate.</p>
+              <p>Angular unconformities (where beds below and above meet at an angle), disconformities (where both are parallel but a gap exists), and nonconformities (where sedimentary rocks overlie igneous or metamorphic basement) each provide different evidence of the tectonic and depositional history of a region.</p>
+
+              <div class="article-fact-box">
+                <strong>The Global Boundary Stratotype</strong>
+                <p>Major divisions of the geological time scale are formally defined by Global Boundary Stratotype Sections and Points (GSSPs) — physical locations in rock outcrops worldwide that mark a precise boundary in the stratigraphic record. There are currently over 70 ratified GSSPs.</p>
+              </div>
+
+              <h4>Sequence Stratigraphy and Sea Level Change</h4>
+              <p>Modern sequence stratigraphy, developed largely in the context of petroleum exploration in the second half of the twentieth century, interprets sedimentary packages in terms of relative sea level change. As sea level rises and falls in response to glaciation, tectonics, and thermal subsidence, characteristic packages of sediment — called systems tracts — form on continental shelves and slopes. Recognising these packages in subsurface drill cores and seismic reflection profiles has allowed geologists to reconstruct detailed records of past climate and ocean history, as well as to predict the locations of hydrocarbon reservoirs.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Article 5 -->
+        <div class="article-card" id="article-5">
+          <div class="article-card-header" onclick="toggleArticle('article-5')">
+            <div class="article-card-header-left">
+              <span class="article-tag">Volcanology · Igneous Petrology</span>
+              <h3>Volcanoes and Magma: The Surface Expression of Earth's Interior Heat</h3>
+              <p class="article-preview">Volcanoes are among the most dramatic surface expressions of the planet's internal heat engine — but the diversity of volcanic styles, from gentle Hawaiian effusion to catastrophic Plinian eruption, reflects an equally diverse range of magma compositions.</p>
+            </div>
+            <button class="article-toggle-btn" aria-label="Expand article">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M2 5L7 10L12 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+          <div class="article-body-wrap">
+            <div class="article-body">
+              <p>Volcanoes are windows into the interior of our planet — conduits through which material from depths of 50 kilometres or more is delivered directly to the surface. The more than 1,500 potentially active volcanoes on Earth today are concentrated overwhelmingly along plate boundaries, with a secondary population at hotspots like Hawaii and Yellowstone where mantle plumes punch through the overlying plate from below.</p>
+
+              <h4>Magma Composition and Eruption Style</h4>
+              <p>Not all magma is alike, and the chemistry of a magma largely determines how its host volcano will behave. The most fundamental variable is silica (SiO₂) content. Low-silica basaltic magmas, which dominate at mid-ocean ridges and hotspot volcanoes, have low viscosity — they flow readily and tend to erupt effusively, producing broad, gently sloping shield volcanoes like Mauna Loa or lava tube systems that carry lava tens of kilometres from the vent. High-silica rhyolitic and andesitic magmas, typical of subduction zone volcanoes, are far more viscous. Gas (mainly water vapour, CO₂, and SO₂) cannot escape easily from thick, sticky magma, and pressure builds until explosive eruption fragments the magma into pyroclastic material — ash, pumice, and volcanic bombs.</p>
+
+              <div class="article-pullquote">
+                "Magma is not simply molten rock — it is a complex mixture of silicate melt, dissolved gases, and suspended crystals, each fraction influencing how the volcano above will behave."
+              </div>
+
+              <h4>The Products of Volcanism</h4>
+              <p>Effusive volcanism produces lava flows that solidify into basalt (fine-grained, rapid surface cooling) or gabbro if cooled slowly at depth. The surfaces of basaltic flows take two characteristic forms: smooth, ropy pahoehoe forms where lava moves slowly, while rough, jagged a'a forms where lava moves faster and its surface solidifies while the interior continues flowing. Explosive volcanism produces a far more varied product suite: fine volcanic ash that can travel globally in the stratosphere; pumice — a glassy foam of rapidly vesiculated magma light enough to float on water; and ignimbrites, sheets of welded tuff deposited by pyroclastic density currents (fast-moving avalanches of hot gas and rock) that can travel hundreds of kilometres from the eruption site.</p>
+
+              <div class="article-fact-box">
+                <strong>The VEI Scale</strong>
+                <p>Volcanic eruptions are ranked on the Volcanic Explosivity Index (VEI), a logarithmic scale from 0 to 8. The 1980 Mount St. Helens eruption rated VEI 5. The Toba supervolcano eruption 74,000 years ago rated VEI 8 — roughly 1,000 times more energetic — and may have caused a global volcanic winter that reduced the human population to as few as 10,000 individuals.</p>
+              </div>
+
+              <h4>Volcanic Hazards and Monitoring</h4>
+              <p>Modern volcanology employs a sophisticated array of tools to monitor active systems. Seismographs detect the micro-earthquakes generated as magma forces its way through rock fractures toward the surface. Ground deformation measured by GPS and InSAR satellite radar reveals when a volcano is inflating as its magma chamber fills. Gas monitoring detects increasing SO₂ emissions — a reliable precursor to eruptive activity. Combining these signals, volcanologists at well-monitored volcanoes like Kilauea or Etna can often provide days to weeks of warning before an eruption begins, time that has proven critical for civilian evacuations and the protection of infrastructure.</p>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end .article-card-list -->
+
+      <!-- RIGHT: sidebar reference -->
       <div class="article-sidebar">
         <div class="sidebar-item"><div class="sidebar-num">01</div><h4>Mohs Hardness Scale</h4><p>Ranges from talc (1) to diamond (10). The standard comparative scale for mineral hardness identification in the field.</p></div>
         <div class="sidebar-item"><div class="sidebar-num">02</div><h4>Plate Tectonics</h4><p>Explains how crustal plates move, collide, and subduct — driving volcanic activity, mountain building, and seismic events globally.</p></div>
@@ -714,10 +982,12 @@
       </div>
     </div>
   </section>
+
   <div class="quote-section">
     <p class="big-quote">"The book of nature is written in the language of geology — every stratum a sentence, every mineral a word, every fossil a signature of life that once was."</p>
     <div class="quote-attr">— Charles Lyell, Principles of Geology, 1830</div>
   </div>
+
   <footer>
     <div class="footer-top">
       <div class="footer-brand">
@@ -751,6 +1021,7 @@
     </div>
   </footer>
 </div>
+
 <!-- ═══════════════ MODALS ═══════════════ -->
 <div class="modal-overlay" id="login-overlay">
   <div class="modal">
@@ -905,6 +1176,7 @@
     <button class="modal-btn secondary" id="del-cancel">Cancel</button>
   </div>
 </div>
+
 <!-- ═══════════════ ARCHIVE PAGE ═══════════════ -->
 <div id="archive-page">
   <div class="archive-header">
@@ -943,6 +1215,7 @@
         <span class="filter-label">Teacher</span>
         <button class="filter-btn active" data-teacher="all">All</button>
       </div>
+      <!-- Course filter now deduplicates by name -->
       <div class="filter-row" id="course-filter-row" style="display:none">
         <span class="filter-label">Course</span>
         <button class="filter-btn active" data-course="all">All</button>
@@ -955,7 +1228,6 @@
         <span class="filter-label">Unit</span>
         <button class="filter-btn active" data-unit="all">All</button>
       </div>
-      <!-- Item Type filter row (was "Test Type") -->
       <div class="filter-row ttype" id="test-type-filter-row" style="display:none">
         <span class="filter-label">Item Type</span>
         <button class="filter-btn active" data-ttype="all">All</button>
@@ -966,8 +1238,16 @@
     </div>
   </div>
 </div>
+
 <!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
+  // ── Article expand/collapse ──
+  function toggleArticle(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+
+  // ── Nav toggle ──
   const navToggle = document.getElementById('nav-toggle');
   const navLinks  = document.getElementById('nav-links');
   navToggle.addEventListener('click', () => {
@@ -982,6 +1262,7 @@
     if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) closeNav();
   });
 </script>
+
 <script type="module">
 const STUDENT_CODE = 'geology42';
 import { initializeApp }
@@ -992,6 +1273,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-storage.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut }
   from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+
 const firebaseConfig = {
   apiKey:            "AIzaSyCI51C3FjWCA_S9ngvIOfSsa9jFDjipEzw",
   authDomain:        "rocks-2ee57.firebaseapp.com",
@@ -1004,13 +1286,15 @@ const app         = initializeApp(firebaseConfig);
 const firestoreDB = getFirestore(app);
 const storage     = getStorage(app);
 const auth        = getAuth(app);
+
 // ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
 let currentFilter      = 'all';
 let currentSem         = 'all';
 let currentTeacher     = 'all';
-let currentCourse      = 'all';
+// NOTE: currentCourse now stores a COURSE NAME (not an id) for deduplication
+let currentCourseName  = 'all';
 let currentCourseType  = 'all';
 let currentUnit        = 'all';
 let currentTestType    = 'all';
@@ -1018,6 +1302,7 @@ let dbLoaded      = false;
 let archiveOpen   = false;
 let pendingSlots  = { pdf: null, orig: null, key: null, assign: null };
 let editingTestId = null;
+
 // ── DATABASE ──
 async function loadDB() {
   try {
@@ -1054,6 +1339,7 @@ async function saveDB() {
     throw err;
   }
 }
+
 // ── AUTH ──
 onAuthStateChanged(auth, (user) => {
   isAdmin = !!user;
@@ -1063,6 +1349,7 @@ onAuthStateChanged(auth, (user) => {
   if (archiveOpen && dbLoaded) renderAll();
 });
 loadDB();
+
 // ── MODALS ──
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -1075,6 +1362,7 @@ document.getElementById('login-close').onclick  = () => closeModal('login-overla
 document.getElementById('cat-close').onclick    = () => closeModal('cat-overlay');
 document.getElementById('test-close').onclick   = () => closeModal('test-overlay');
 document.getElementById('del-cancel').onclick   = () => closeModal('del-overlay');
+
 // ── SECRET TRIGGER ──
 let clicks = 0, clickTimer = null;
 document.getElementById('secret-trigger').addEventListener('click', e => {
@@ -1083,6 +1371,7 @@ document.getElementById('secret-trigger').addEventListener('click', e => {
   if (clicks >= 3) { clicks = 0; openModal('login-overlay'); }
   else { clickTimer = setTimeout(() => clicks = 0, 800); }
 });
+
 // ── LOGIN ──
 const studentBox = document.getElementById('student-login-box');
 const adminBox   = document.getElementById('admin-login-box');
@@ -1120,6 +1409,7 @@ document.getElementById('logout-btn').onclick = async () => {
   document.getElementById('main-site').style.display = 'block';
   window.scrollTo(0, 0);
 };
+
 // ── SHOW / HIDE ARCHIVE ──
 function showArchive() {
   archiveOpen = true;
@@ -1136,17 +1426,27 @@ document.getElementById('back-btn').onclick = () => {
   document.getElementById('main-site').style.display = 'block';
   window.scrollTo(0, 0);
 };
+
 // ── FILTER HELPERS ──
+// Returns cats matching all current filters.
+// For the course name filter, we match any cat whose normalised name equals currentCourseName.
 function getFilteredCats() {
   return db.cats.filter(c => {
     if (currentFilter     !== 'all' && c.subject    !== currentFilter)     return false;
     if (currentSem        !== 'all' && (c.semester||'').trim() !== currentSem) return false;
     if (currentTeacher    !== 'all' && c.teacher    !== currentTeacher)    return false;
-    if (currentCourse     !== 'all' && c.id         !== currentCourse)     return false;
+    // Course filter: match by normalised name (case-insensitive trim) instead of by id
+    if (currentCourseName !== 'all' && normaliseName(c.name) !== currentCourseName) return false;
     if (currentCourseType !== 'all' && (c.courseType||'') !== currentCourseType) return false;
     return true;
   });
 }
+
+// Normalise a course name for deduplication purposes
+function normaliseName(name) {
+  return (name || '').trim().toLowerCase();
+}
+
 function getVisibleTests(visibleCatIds) {
   return db.tests.filter(t => {
     if (!visibleCatIds.includes(t.catId)) return false;
@@ -1165,8 +1465,10 @@ function getVisibleUnits(visibleCatIds) {
   return [...units].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 }
 function unitSortKey(unit) { return unit ? unit.trim() : '\uffff'; }
+
 // ── RENDER ──
 function renderAll() { renderFilters(); renderCourses(); }
+
 const SUBJ_LABELS = {
   all:'All', math:'Math', sci:'Science', eng:'English',
   hist:'History', lang:'Language', art:'Arts', tech:'Technology', other:'Other'
@@ -1174,6 +1476,7 @@ const SUBJ_LABELS = {
 const ITEM_TYPE_LABELS = {
   quiz: 'Quiz', test: 'Test', midterm: 'Midterm', final: 'Final', assignment: 'Assignment'
 };
+
 function renderFilters() {
   const subjects = [...new Set(db.cats.map(c => c.subject).filter(Boolean))];
   const subjRow  = document.getElementById('subject-filter-row');
@@ -1189,11 +1492,13 @@ function renderFilters() {
   subjRow.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       currentFilter = btn.dataset.filter;
-      currentSem = currentTeacher = currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
+      currentSem = currentTeacher = currentCourseName = currentCourseType = currentUnit = currentTestType = 'all';
       renderAll();
     });
   });
+
   const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
+
   // ── Semester ──
   const semesters = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
     .sort((a,b) => b.localeCompare(a));
@@ -1209,14 +1514,16 @@ function renderFilters() {
     semRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentSem = btn.dataset.sem;
-        currentTeacher = currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
+        currentTeacher = currentCourseName = currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
     });
   } else {
     semRow.style.display = 'none';
   }
+
   const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
+
   // ── Teacher ──
   const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
   const teacherRow = document.getElementById('teacher-filter-row');
@@ -1231,27 +1538,35 @@ function renderFilters() {
     teacherRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         currentTeacher = btn.dataset.teacher;
-        currentCourse = currentCourseType = currentUnit = currentTestType = 'all';
+        currentCourseName = currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
     });
   } else {
     teacherRow.style.display = 'none';
   }
+
   const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
-  // ── Course ──
-  const courseRow   = document.getElementById('course-filter-row');
-  if (teacherCats.length > 1) {
+
+  // ── Course filter — deduplicated by name ──
+  // Build a map: normalisedName -> display name (use first occurrence's original casing)
+  const courseNameMap = new Map();
+  teacherCats.forEach(c => {
+    const key = normaliseName(c.name);
+    if (!courseNameMap.has(key)) courseNameMap.set(key, c.name);
+  });
+  const courseRow = document.getElementById('course-filter-row');
+  if (courseNameMap.size > 1) {
     let cHtml = `<span class="filter-label">Course</span>
-      <button class="filter-btn ${currentCourse==='all'?'active':''}" data-course="all">All</button>`;
-    teacherCats.forEach(c => {
-      cHtml += `<button class="filter-btn ${currentCourse===c.id?'active':''}" data-course="${c.id}">${esc(c.name)}</button>`;
+      <button class="filter-btn ${currentCourseName==='all'?'active':''}" data-course="all">All</button>`;
+    courseNameMap.forEach((displayName, normKey) => {
+      cHtml += `<button class="filter-btn ${currentCourseName===normKey?'active':''}" data-course="${esc(normKey)}">${esc(displayName)}</button>`;
     });
     courseRow.innerHTML = cHtml;
     courseRow.style.display = 'flex';
     courseRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        currentCourse = btn.dataset.course;
+        currentCourseName = btn.dataset.course;
         currentCourseType = currentUnit = currentTestType = 'all';
         renderAll();
       });
@@ -1259,8 +1574,12 @@ function renderFilters() {
   } else {
     courseRow.style.display = 'none';
   }
+
   // ── Course Type filter ──
-  const courseCats  = teacherCats.filter(c => currentCourse === 'all' || c.id === currentCourse);
+  // Use the already-filtered cats (teacherCats narrowed further by currentCourseName)
+  const courseCats = teacherCats.filter(c =>
+    currentCourseName === 'all' || normaliseName(c.name) === currentCourseName
+  );
   const courseTypes = [...new Set(courseCats.map(c => (c.courseType||'').trim()).filter(Boolean))].sort();
   const ctypeRow    = document.getElementById('course-type-filter-row');
   if (courseTypes.length > 0) {
@@ -1282,6 +1601,7 @@ function renderFilters() {
     ctypeRow.style.display = 'none';
     if (currentCourseType !== 'all') currentCourseType = 'all';
   }
+
   // ── Unit filter ──
   const visibleCatIds = getFilteredCats().map(c => c.id);
   const units    = getVisibleUnits(visibleCatIds);
@@ -1301,6 +1621,7 @@ function renderFilters() {
     unitRow.style.display = 'none';
     if (currentUnit !== 'all') currentUnit = 'all';
   }
+
   // ── Item Type filter ──
   const itemTypes = [...new Set(
     db.tests
@@ -1328,6 +1649,7 @@ function renderFilters() {
     if (currentTestType !== 'all') currentTestType = 'all';
   }
 }
+
 function renderCourses() {
   const cont    = document.getElementById('courses-container');
   const visible = getFilteredCats();
@@ -1360,13 +1682,11 @@ function renderCourses() {
     const semBadge = isAdmin
       ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to edit semester">${esc(semLabel)}</span>`
       : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
-
     // ── Course type badge ──
     const ctLabel = cat.courseType ? `Type ${esc(cat.courseType)}` : '+ Type';
     const courseTypeBadge = isAdmin
       ? `<span class="course-type-badge editable-course-type" data-cat-id="${cat.id}" title="Click to edit course type">${ctLabel}</span>`
       : (cat.courseType ? `<span class="course-type-badge">Type ${esc(cat.courseType)}</span>` : '');
-
     const titleBlock = isAdmin
       ? `<div class="course-title-wrap">
            <span class="course-title editable-cat-name" data-cat-id="${cat.id}">${esc(cat.name)}</span>
@@ -1410,6 +1730,7 @@ function renderCourses() {
       ${listWrapper}
     </div>`;
   }).join('');
+
   // Attach events
   cont.querySelectorAll('[data-add-test]').forEach(btn  => btn.onclick = () => openAddTest(btn.dataset.addTest));
   cont.querySelectorAll('[data-del-cat]').forEach(btn   => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
@@ -1443,6 +1764,7 @@ function renderCourses() {
   }
   setupFileSlotToggles();
 }
+
 // ── GROUP BY UNIT ──
 function groupByUnit(tests) {
   const map = new Map();
@@ -1462,12 +1784,11 @@ function groupByUnit(tests) {
 function hasAnyUnits(tests) {
   return tests.some(t => t.unit && t.unit.trim());
 }
+
 function buildTestItem(t) {
   const slots = t.files || {};
   const isAssignment = t.type === 'assignment';
   let fileLinksHtml = '';
-  // For non-assignments: only show pdf, orig, key slots
-  // For assignments: show pdf, orig, key, assign slots
   const hasAnyFile = slots.pdf || slots.orig || slots.key || (isAssignment && slots.assign);
   if (isAdmin || hasAnyFile) {
     let links = '';
@@ -1486,7 +1807,6 @@ function buildTestItem(t) {
     } else if (isAdmin) {
       links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
     }
-    // Assignment file slot — ONLY for assignment type
     if (isAssignment) {
       if (slots.assign?.url) {
         links += `<a class="file-link-btn assign" href="${esc(slots.assign.url)}" target="_blank" rel="noopener">📝 Assignment</a>`;
@@ -1500,7 +1820,6 @@ function buildTestItem(t) {
   const editBtn    = isAdmin ? `<button class="btn-sm" data-edit-test="${t.id}">Edit</button>` : '';
   const delBtn     = isAdmin ? `<button class="test-delete" data-del-test="${t.id}" title="Delete">✕</button>` : '';
   const typeClass = `type-${esc(t.type)}`;
-  // Type select (admin) or label (student)
   const typeSelectOrBadge = isAdmin
     ? `<select class="test-type-select ${typeClass} inline-type-select" data-test-id="${t.id}">
          <option value="quiz"       ${t.type==='quiz'       ?'selected':''}>quiz</option>
@@ -1510,7 +1829,6 @@ function buildTestItem(t) {
          <option value="assignment" ${t.type==='assignment' ?'selected':''}>assignment</option>
        </select>`
     : `<span style="font-family:'DM Mono',monospace;font-size:.63rem;letter-spacing:.08em;text-transform:uppercase;" class="${typeClass}">${esc(t.type)}</span>`;
-  // Variant select (admin) or badge (student)
   const variantSelectOrBadge = isAdmin
     ? `<select class="test-type-select inline-variant-select" data-test-id="${t.id}" title="Variant" style="color:var(--amber);">
          <option value=""  ${!t.variant ?'selected':''}>—</option>
@@ -1543,6 +1861,7 @@ function buildTestItem(t) {
     ${fileLinksHtml}
   </div>`;
 }
+
 // ── INLINE CAT RENAME ──
 function startCatRename(el, field) {
   const catId = el.dataset.catId;
@@ -1555,8 +1874,7 @@ function startCatRename(el, field) {
   input.value     = current;
   input.className = 'inline-edit-input' + (isTeacher ? ' teacher' : '');
   el.replaceWith(input);
-  input.focus();
-  input.select();
+  input.focus(); input.select();
   async function commit() {
     const val = input.value.trim();
     if (val && val !== current) {
@@ -1571,6 +1889,7 @@ function startCatRename(el, field) {
     if (e.key === 'Escape') { input.value = current; input.blur(); }
   });
 }
+
 // ── INLINE SEMESTER EDIT ──
 function startSemesterEdit(el) {
   const catId = el.dataset.catId;
@@ -1583,12 +1902,8 @@ function startSemesterEdit(el) {
   let initSeason = '', initYear = String(currentYear);
   if (current) {
     const matched = SEASONS.filter(Boolean).find(s => current.startsWith(s));
-    if (matched) {
-      initSeason = matched;
-      initYear   = current.slice(matched.length).trim() || String(currentYear);
-    } else {
-      initYear = current;
-    }
+    if (matched) { initSeason = matched; initYear = current.slice(matched.length).trim() || String(currentYear); }
+    else { initYear = current; }
   }
   const years = ['', ...Array.from({ length: 9 }, (_, i) => String(currentYear + 1 - i))];
   const wrap = document.createElement('span');
@@ -1598,8 +1913,7 @@ function startSemesterEdit(el) {
     s.className = 'sem-inline-select';
     opts.forEach(o => {
       const opt = document.createElement('option');
-      opt.value = o;
-      opt.textContent = o || '— None —';
+      opt.value = o; opt.textContent = o || '— None —';
       if (o === val) opt.selected = true;
       s.appendChild(opt);
     });
@@ -1608,37 +1922,27 @@ function startSemesterEdit(el) {
   const seasonSel = makeSelect(SEASONS, initSeason);
   const yearSel   = makeSelect(years, initYear);
   const saveBtn   = document.createElement('button');
-  saveBtn.textContent = '✓';
-  saveBtn.className   = 'sem-inline-btn confirm';
-  saveBtn.title       = 'Save';
+  saveBtn.textContent = '✓'; saveBtn.className = 'sem-inline-btn confirm'; saveBtn.title = 'Save';
   const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = '✕';
-  cancelBtn.className   = 'sem-inline-btn cancel';
-  cancelBtn.title       = 'Cancel';
+  cancelBtn.textContent = '✕'; cancelBtn.className = 'sem-inline-btn cancel'; cancelBtn.title = 'Cancel';
   wrap.append(seasonSel, yearSel, saveBtn, cancelBtn);
-  el.replaceWith(wrap);
-  seasonSel.focus();
+  el.replaceWith(wrap); seasonSel.focus();
   async function commit() {
-    const season = seasonSel.value;
-    const year   = yearSel.value;
-    const newSem = (season && year) ? `${season} ${year}`
-                 : (season || year || '');
+    const season = seasonSel.value, year = yearSel.value;
+    const newSem = (season && year) ? `${season} ${year}` : (season || year || '');
     if (newSem !== current) {
       cat.semester = newSem;
-      try { await saveDB(); }
-      catch { cat.semester = current; }
+      try { await saveDB(); } catch { cat.semester = current; }
     }
     renderAll();
   }
   saveBtn.addEventListener('click', commit);
   cancelBtn.addEventListener('click', () => renderAll());
   [seasonSel, yearSel].forEach(s => {
-    s.addEventListener('keydown', e => {
-      if (e.key === 'Enter')  commit();
-      if (e.key === 'Escape') renderAll();
-    });
+    s.addEventListener('keydown', e => { if (e.key==='Enter') commit(); if (e.key==='Escape') renderAll(); });
   });
 }
+
 // ── INLINE COURSE TYPE EDIT ──
 function startCourseTypeEdit(el) {
   const catId = el.dataset.catId;
@@ -1652,36 +1956,29 @@ function startCourseTypeEdit(el) {
   sel.className = 'sem-inline-select';
   TYPES.forEach(v => {
     const opt = document.createElement('option');
-    opt.value       = v;
-    opt.textContent = v ? `Type ${v}` : '— None —';
+    opt.value = v; opt.textContent = v ? `Type ${v}` : '— None —';
     if (v === current) opt.selected = true;
     sel.appendChild(opt);
   });
   const saveBtn = document.createElement('button');
-  saveBtn.textContent = '✓';
-  saveBtn.className   = 'sem-inline-btn confirm';
+  saveBtn.textContent = '✓'; saveBtn.className = 'sem-inline-btn confirm';
   const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = '✕';
-  cancelBtn.className   = 'sem-inline-btn cancel';
+  cancelBtn.textContent = '✕'; cancelBtn.className = 'sem-inline-btn cancel';
   wrap.append(sel, saveBtn, cancelBtn);
-  el.replaceWith(wrap);
-  sel.focus();
+  el.replaceWith(wrap); sel.focus();
   async function commit() {
     const val = sel.value;
     if (val !== current) {
       cat.courseType = val;
-      try { await saveDB(); }
-      catch { cat.courseType = current; }
+      try { await saveDB(); } catch { cat.courseType = current; }
     }
     renderAll();
   }
   saveBtn.addEventListener('click', commit);
   cancelBtn.addEventListener('click', () => renderAll());
-  sel.addEventListener('keydown', e => {
-    if (e.key === 'Enter')  commit();
-    if (e.key === 'Escape') renderAll();
-  });
+  sel.addEventListener('keydown', e => { if (e.key==='Enter') commit(); if (e.key==='Escape') renderAll(); });
 }
+
 // ── INLINE ITEM NAME EDIT ──
 function startTestNameEdit(el) {
   const testId = el.dataset.testId;
@@ -1689,12 +1986,8 @@ function startTestNameEdit(el) {
   if (!test) return;
   const current = test.name;
   const input   = document.createElement('input');
-  input.type    = 'text';
-  input.value   = current;
-  input.className = 'test-name-input';
-  el.replaceWith(input);
-  input.focus();
-  input.select();
+  input.type = 'text'; input.value = current; input.className = 'test-name-input';
+  el.replaceWith(input); input.focus(); input.select();
   async function commit() {
     const val = input.value.trim();
     if (val && val !== current) {
@@ -1709,24 +2002,23 @@ function startTestNameEdit(el) {
     if (e.key === 'Escape') { input.value = current; input.blur(); }
   });
 }
+
 // ── INLINE TYPE CHANGE ──
 async function changeTestType(testId, newType) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
-  const prev = test.type;
-  test.type  = newType;
-  try { await saveDB(); renderAll(); }
-  catch { test.type = prev; renderAll(); }
+  const prev = test.type; test.type = newType;
+  try { await saveDB(); renderAll(); } catch { test.type = prev; renderAll(); }
 }
+
 // ── INLINE VARIANT CHANGE ──
 async function changeTestVariant(testId, newVariant) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
-  const prev   = test.variant;
-  test.variant = newVariant;
-  try { await saveDB(); renderAll(); }
-  catch { test.variant = prev; renderAll(); }
+  const prev = test.variant; test.variant = newVariant;
+  try { await saveDB(); renderAll(); } catch { test.variant = prev; renderAll(); }
 }
+
 // ── DRAG AND DROP ──
 let dragSrcId  = null;
 let dragSrcCat = null;
@@ -1753,7 +2045,7 @@ function setupDragDrop() {
       item.addEventListener('dragover', e => {
         e.preventDefault();
         if (item.dataset.testId === dragSrcId) return;
-        if (item.dataset.catId !== dragSrcCat) return;
+        if (item.dataset.catId  !== dragSrcCat) return;
         e.dataTransfer.dropEffect = 'move';
         const rect = item.getBoundingClientRect();
         const midY = rect.top + rect.height / 2;
@@ -1766,7 +2058,7 @@ function setupDragDrop() {
       item.addEventListener('drop', async e => {
         e.preventDefault();
         if (item.dataset.testId === dragSrcId) return;
-        if (item.dataset.catId !== dragSrcCat) return;
+        if (item.dataset.catId  !== dragSrcCat) return;
         item.classList.remove('drag-over-top','drag-over-bottom');
         const rect   = item.getBoundingClientRect();
         const after  = e.clientY >= rect.top + rect.height / 2;
@@ -1785,12 +2077,12 @@ function setupDragDrop() {
         const insertAt = after ? tgtIdx + (srcIdx < tgtIdx ? 0 : 1) : tgtIdx - (srcIdx < tgtIdx ? 1 : 0);
         catTests.splice(Math.max(0, insertAt), 0, moved);
         catTests.forEach((t, i) => { t.order = i; });
-        try { await saveDB(); renderAll(); }
-        catch { renderAll(); }
+        try { await saveDB(); renderAll(); } catch { renderAll(); }
       });
     });
   });
 }
+
 // ── FILE SLOT QUICK-ADD ──
 function setupFileSlotToggles() {
   document.querySelectorAll('[data-slot-add]').forEach(btn => {
@@ -1799,11 +2091,9 @@ function setupFileSlotToggles() {
     });
   });
 }
-function openEditTestFiles(testId, focusSlot) {
-  openEditTest(testId, focusSlot);
-}
+function openEditTestFiles(testId, focusSlot) { openEditTest(testId, focusSlot); }
+
 // ── FILE SLOTS UI BUILDER ──
-// All slot configs — assign slot is conditionally included based on item type
 const SLOT_CONFIG = {
   pdf:    { label: 'PDF Version',   icon: '📄', accept: '.pdf,.PDF' },
   orig:   { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
@@ -1814,11 +2104,8 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null, itemType = '') {
   const container = document.getElementById('file-slots-container');
   container.innerHTML = '';
   pendingSlots = { pdf: null, orig: null, key: null, assign: null };
-  // Only include assign slot for assignment type
-  const isAssignment = itemType === 'assignment';
-  const slotsToRender = isAssignment
-    ? ['pdf', 'orig', 'key', 'assign']
-    : ['pdf', 'orig', 'key'];
+  const isAssignment   = itemType === 'assignment';
+  const slotsToRender  = isAssignment ? ['pdf', 'orig', 'key', 'assign'] : ['pdf', 'orig', 'key'];
   slotsToRender.forEach(slotKey => {
     const cfg      = SLOT_CONFIG[slotKey];
     const existing = existingFiles[slotKey];
@@ -1849,8 +2136,7 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null, itemType = '') {
       </div>`;
     container.appendChild(slotEl);
     slotEl.querySelector('.file-slot-header').addEventListener('click', () => {
-      const body = slotEl.querySelector('.file-slot-body');
-      body.classList.toggle('open');
+      slotEl.querySelector('.file-slot-body').classList.toggle('open');
     });
     const dropZone  = slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
     const fileInput = slotEl.querySelector(`[data-file-input="${slotKey}"]`);
@@ -1890,14 +2176,13 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null, itemType = '') {
     }
   });
 }
-// ── Update file slots when type changes in modal ──
+
 function refreshFileSlotsForType() {
-  const type = document.getElementById('test-type').value;
-  const existing = editingTestId
-    ? (db.tests.find(t => t.id === editingTestId)?.files || {})
-    : {};
+  const type     = document.getElementById('test-type').value;
+  const existing = editingTestId ? (db.tests.find(t => t.id === editingTestId)?.files || {}) : {};
   buildFileSlotsUI(existing, null, type);
 }
+
 // ── UNIT DATALIST ──
 function populateUnitSuggestions() {
   const dl    = document.getElementById('unit-suggestions');
@@ -1905,11 +2190,12 @@ function populateUnitSuggestions() {
     .sort((a,b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
   dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
 }
+
 // ── ADD ITEM MODAL ──
 document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
 document.getElementById('test-save-btn').onclick = saveTest;
-// Re-render file slots when type changes in modal
 document.getElementById('test-type').addEventListener('change', refreshFileSlotsForType);
+
 function openAddTest(preselCatId) {
   editingTestId = null;
   clearTestForm(preselCatId);
@@ -1921,14 +2207,12 @@ function openAddTest(preselCatId) {
   sel.innerHTML = db.cats.map(c =>
     `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}${c.semester ? ' — ' + esc(c.semester) : ''}${c.courseType ? ' [' + esc(c.courseType) + ']' : ''}</option>`
   ).join('');
-  if (!sel.innerHTML) {
-    document.getElementById('test-error').textContent = 'Create a category first.';
-    return;
-  }
+  if (!sel.innerHTML) { document.getElementById('test-error').textContent = 'Create a category first.'; return; }
   buildFileSlotsUI({}, null, document.getElementById('test-type').value);
   populateUnitSuggestions();
   openModal('test-overlay');
 }
+
 // ── EDIT ITEM MODAL ──
 function openEditTest(testId, focusSlot = null) {
   const test = db.tests.find(t => t.id === testId);
@@ -1948,6 +2232,7 @@ function openEditTest(testId, focusSlot = null) {
   populateUnitSuggestions();
   openModal('test-overlay');
 }
+
 function clearTestForm() {
   ['test-name','test-notes','test-unit'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('test-error').textContent = '';
@@ -1955,6 +2240,7 @@ function clearTestForm() {
   document.getElementById('test-variant').value = '';
   pendingSlots = { pdf: null, orig: null, key: null, assign: null };
 }
+
 async function saveTest() {
   const isEdit  = !!editingTestId;
   const name    = document.getElementById('test-name').value.trim();
@@ -1975,19 +2261,11 @@ async function saveTest() {
     if (isEdit) {
       const test = db.tests.find(t => t.id === editingTestId);
       if (!test) throw new Error('Item not found');
-      test.name    = name;
-      test.type    = type;
-      test.variant = variant;
-      test.unit    = unit;
-      test.notes   = notes;
+      test.name = name; test.type = type; test.variant = variant; test.unit = unit; test.notes = notes;
       if (!test.files) test.files = {};
-      // If type changed away from assignment, clear the assign file slot
-      if (type !== 'assignment' && test.files.assign) {
-        delete test.files.assign;
-      }
+      if (type !== 'assignment' && test.files.assign) delete test.files.assign;
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending) continue;
-        // Skip assign slot if not assignment type
         if (slotKey === 'assign' && type !== 'assignment') continue;
         if (pending.clear) {
           delete test.files[slotKey];
@@ -2006,7 +2284,6 @@ async function saveTest() {
       };
       for (const [slotKey, pending] of Object.entries(pendingSlots)) {
         if (!pending || !pending.file) continue;
-        // Skip assign slot if not assignment type
         if (slotKey === 'assign' && type !== 'assignment') continue;
         btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
         const fileRef  = ref(storage, `archive_files/${Date.now()}_${pending.file.name}`);
@@ -2028,6 +2305,7 @@ async function saveTest() {
     btn.disabled = false;
   }
 }
+
 // ── ADMIN CATEGORIES ──
 document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterYears(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
@@ -2060,12 +2338,11 @@ async function saveCategory() {
   btn.textContent = 'Saving…'; btn.disabled = true;
   try {
     db.cats.push({ id: uid(), name, teacher, subject, semester, courseType });
-    await saveDB();
-    closeModal('cat-overlay');
-    renderAll();
+    await saveDB(); closeModal('cat-overlay'); renderAll();
   } catch { db.cats.pop(); }
   finally { btn.textContent = 'Create Category'; btn.disabled = false; }
 }
+
 // ── DELETE ──
 function confirmDelCat(id) {
   document.getElementById('del-msg').textContent = 'Delete this course and all its items? This cannot be undone.';
@@ -2098,6 +2375,7 @@ document.getElementById('btn-clear-all').onclick = () => {
   };
   openModal('del-overlay');
 };
+
 // ── UTILITY ──
 function uid() { return Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
 function esc(s) {
