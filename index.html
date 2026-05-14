@@ -20,11 +20,11 @@
     display:flex; align-items:center; justify-content:space-between;
     padding:0 3rem; height:64px; border-bottom:1px solid rgba(196,168,130,.15);
   }
-  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--sand); letter-spacing:.05em; flex-shrink:0; }
+  .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--sand); letter-spacing:.05em; flex-shrink:0; cursor:pointer; }
   .nav-logo span { color:var(--rust); font-style:italic; }
   .nav-links { display:flex; gap:2.5rem; list-style:none; }
   .nav-links a { font-family:'DM Mono',monospace; font-size:.78rem; color:var(--quartz); text-decoration:none;
-    letter-spacing:.12em; text-transform:uppercase; transition:color .2s; }
+    letter-spacing:.12em; text-transform:uppercase; transition:color .2s; cursor:pointer; }
   .nav-links a:hover { color:var(--sand); }
   .nav-toggle { display:none; flex-direction:column; gap:5px; background:none; border:none; cursor:pointer; padding:4px; }
   .nav-toggle span { display:block; width:22px; height:2px; background:var(--quartz); border-radius:2px; transition:all .25s; }
@@ -164,7 +164,6 @@
   /* ── ARTICLES SECTION ── */
   .section.articles-section { padding:6rem 3rem; }
   .articles-grid { display:grid; grid-template-columns:2fr 1fr; gap:3rem; align-items:start; }
-  /* Article cards list */
   .article-card-list { display:flex; flex-direction:column; gap:2rem; }
   .article-card {
     background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:3px;
@@ -197,7 +196,6 @@
   .article-card.open .article-toggle-btn { background:var(--rust); border-color:var(--rust); }
   .article-card.open .article-toggle-btn svg { transform:rotate(180deg); }
   .article-card.open .article-toggle-btn svg path { stroke:#fff; }
-  /* Expandable body */
   .article-body-wrap {
     max-height:0; overflow:hidden;
     transition:max-height .45s cubic-bezier(.4,0,.2,1);
@@ -229,7 +227,6 @@
     font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.12em;
     text-transform:uppercase; color:var(--rust); display:block; margin-bottom:.4rem;
   }
-  /* Sidebar */
   .article-main h3 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1rem; line-height:1.3; }
   .article-main .article-tag { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.15em;
     text-transform:uppercase; color:var(--rust); margin-bottom:.75rem; display:block; }
@@ -258,7 +255,7 @@
     color:var(--sand); margin-bottom:1rem; }
   .footer-col ul { list-style:none; }
   .footer-col ul li { margin-bottom:.5rem; }
-  .footer-col ul li a { font-size:.85rem; color:var(--slate); text-decoration:none; transition:color .2s; }
+  .footer-col ul li a { font-size:.85rem; color:var(--slate); text-decoration:none; transition:color .2s; cursor:pointer; }
   .footer-col ul li a:hover { color:var(--sand); }
   .footer-bottom { border-top:1px solid rgba(196,168,130,.08); padding-top:1.5rem;
     display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.75rem; }
@@ -508,12 +505,164 @@
   .sem-inline-btn.confirm:hover { background:rgba(90,110,74,.12); }
   .sem-inline-btn.cancel  { border-color:rgba(100,80,60,.3); color:var(--slate); }
   .sem-inline-btn.cancel:hover  { background:rgba(100,80,60,.06); }
+
+  /* ── ABOUT PAGE ── */
+  #about-page { display:none; min-height:100vh; flex-direction:column; background:var(--cream); }
+  #about-page.visible { display:flex; }
+  .about-hero {
+    background:var(--deep); padding:8rem 3rem 5rem; position:relative; overflow:hidden;
+    border-bottom:1px solid rgba(196,168,130,.1);
+  }
+  .about-hero::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 60% 70% at 80% 50%, rgba(184,92,56,.08) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 50% at 10% 30%, rgba(90,110,74,.06) 0%, transparent 50%);
+  }
+  .about-hero-bg { position:absolute; right:-1rem; top:50%; transform:translateY(-50%);
+    font-family:'Playfair Display',serif; font-size:clamp(6rem,18vw,15rem); font-weight:700;
+    color:rgba(196,168,130,.04); line-height:1; pointer-events:none; user-select:none; white-space:nowrap; }
+  .about-hero-inner { position:relative; max-width:800px; }
+  .about-hero .section-label { color:var(--rust); margin-bottom:1rem; }
+  .about-hero .section-label::after { background:var(--rust); }
+  .about-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,6vw,5rem);
+    color:var(--cream); line-height:1.1; margin-bottom:1.5rem; }
+  .about-hero h1 em { color:var(--sand); font-style:italic; }
+  .about-hero p { font-size:1.05rem; color:rgba(232,221,208,.6); line-height:1.8; font-weight:300; max-width:580px; }
+  .about-body { padding:5rem 3rem; flex:1; }
+  .about-grid { display:grid; grid-template-columns:1fr 1.4fr; gap:5rem; align-items:start; max-width:1100px; }
+  /* Profile card */
+  .profile-card {
+    background:var(--obsidian); border:1px solid rgba(196,168,130,.12); border-radius:4px;
+    overflow:hidden; position:sticky; top:84px;
+  }
+  .profile-card-accent { height:5px; background:linear-gradient(90deg, var(--rust), var(--amber)); }
+  .profile-card-body { padding:2rem; }
+  .profile-avatar {
+    width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, var(--granite), var(--stone));
+    border:2px solid rgba(196,168,130,.2); display:flex; align-items:center; justify-content:center;
+    font-size:2rem; margin-bottom:1.5rem;
+  }
+  .profile-name { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--cream); margin-bottom:.25rem; }
+  .profile-title { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:1.75rem; }
+  .profile-divider { height:1px; background:rgba(196,168,130,.1); margin-bottom:1.5rem; }
+  .profile-detail { display:flex; align-items:flex-start; gap:.85rem; margin-bottom:1.1rem; }
+  .profile-detail-icon { font-size:1rem; flex-shrink:0; margin-top:.1rem; opacity:.7; }
+  .profile-detail-content { flex:1; }
+  .profile-detail-label { font-family:'DM Mono',monospace; font-size:.6rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--slate); margin-bottom:.2rem; }
+  .profile-detail-value { font-size:.875rem; color:rgba(232,221,208,.75); line-height:1.5; }
+  .profile-detail-value a { color:var(--sand); text-decoration:none; transition:color .2s; }
+  .profile-detail-value a:hover { color:var(--rust); }
+  /* About content */
+  .about-content .section-label { margin-bottom:.75rem; }
+  .about-content h2 { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3.5vw,2.6rem);
+    line-height:1.2; margin-bottom:1.75rem; color:var(--stone); }
+  .about-content p { font-size:.975rem; color:var(--slate); line-height:1.85; margin-bottom:1.25rem; }
+  .about-content p:last-of-type { margin-bottom:0; }
+  .about-values { margin-top:3rem; }
+  .about-values h3 { font-family:'Playfair Display',serif; font-size:1.4rem; margin-bottom:1.5rem; color:var(--stone); }
+  .values-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.25rem; }
+  .value-item { background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:3px; padding:1.25rem; }
+  .value-icon { font-size:1.4rem; margin-bottom:.6rem; }
+  .value-title { font-family:'DM Mono',monospace; font-size:.7rem; letter-spacing:.15em; text-transform:uppercase;
+    color:var(--rust); margin-bottom:.4rem; }
+  .value-desc { font-size:.82rem; color:var(--slate); line-height:1.65; }
+
+  /* ── CONTACT PAGE ── */
+  #contact-page { display:none; min-height:100vh; flex-direction:column; background:var(--cream); }
+  #contact-page.visible { display:flex; }
+  .contact-hero {
+    background:var(--stone); padding:8rem 3rem 5rem; position:relative; overflow:hidden;
+    border-bottom:1px solid rgba(196,168,130,.1);
+  }
+  .contact-hero::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse 50% 60% at 90% 60%, rgba(184,92,56,.1) 0%, transparent 55%),
+                radial-gradient(ellipse 35% 45% at 5% 20%, rgba(196,168,130,.05) 0%, transparent 50%);
+  }
+  .contact-hero-bg { position:absolute; right:-1rem; top:50%; transform:translateY(-50%);
+    font-family:'Playfair Display',serif; font-size:clamp(6rem,18vw,15rem); font-weight:700;
+    color:rgba(196,168,130,.04); line-height:1; pointer-events:none; user-select:none; white-space:nowrap; }
+  .contact-hero-inner { position:relative; max-width:700px; }
+  .contact-hero .section-label { color:var(--sand); margin-bottom:1rem; }
+  .contact-hero .section-label::after { background:var(--sand); opacity:.5; }
+  .contact-hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,6vw,5rem);
+    color:var(--cream); line-height:1.1; margin-bottom:1.5rem; }
+  .contact-hero h1 em { color:var(--sand); font-style:italic; }
+  .contact-hero p { font-size:1.05rem; color:rgba(232,221,208,.55); line-height:1.8; font-weight:300; max-width:520px; }
+  .contact-body { padding:5rem 3rem; flex:1; }
+  .contact-layout { display:grid; grid-template-columns:1fr 1.6fr; gap:5rem; align-items:start; max-width:1100px; }
+  /* Contact info panel */
+  .contact-info-panel { position:sticky; top:84px; }
+  .contact-info-panel h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone); margin-bottom:1.75rem; }
+  .contact-method {
+    display:flex; align-items:flex-start; gap:1rem; padding:1.25rem;
+    background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:3px;
+    margin-bottom:1rem; transition:box-shadow .2s, transform .2s;
+  }
+  .contact-method:hover { box-shadow:0 6px 24px rgba(44,36,22,.1); transform:translateY(-2px); }
+  .contact-method-icon {
+    width:42px; height:42px; border-radius:3px; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; flex-shrink:0;
+  }
+  .icon-phone { background:rgba(90,110,74,.12); }
+  .icon-address { background:rgba(184,92,56,.1); }
+  .icon-mail { background:rgba(74,110,154,.1); }
+  .contact-method-text {}
+  .contact-method-label { font-family:'DM Mono',monospace; font-size:.62rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--slate); margin-bottom:.3rem; }
+  .contact-method-value { font-size:.925rem; color:var(--stone); line-height:1.5; font-weight:500; }
+  .contact-method-value a { color:var(--stone); text-decoration:none; transition:color .2s; }
+  .contact-method-value a:hover { color:var(--rust); }
+  .contact-availability {
+    margin-top:1.75rem; padding:1.25rem; background:var(--obsidian); border-radius:3px;
+    border:1px solid rgba(196,168,130,.08);
+  }
+  .contact-availability-title { font-family:'DM Mono',monospace; font-size:.65rem; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--sand); margin-bottom:.75rem; }
+  .availability-row { display:flex; justify-content:space-between; margin-bottom:.45rem;
+    font-size:.82rem; color:rgba(232,221,208,.6); font-family:'DM Mono',monospace; font-size:.72rem; }
+  .availability-row:last-child { margin-bottom:0; }
+  .availability-day { color:rgba(232,221,208,.5); letter-spacing:.04em; }
+  .availability-time { color:var(--sand); }
+  /* Contact form */
+  .contact-form-wrap {}
+  .contact-form-wrap h3 { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--stone); margin-bottom:1.75rem; }
+  .contact-form { background:var(--parchment); border:1px solid rgba(100,80,60,.15); border-radius:4px; padding:2rem; }
+  .contact-form .form-group { margin-bottom:1.1rem; }
+  .contact-form .form-group label { display:block; font-family:'DM Mono',monospace; font-size:.68rem;
+    letter-spacing:.15em; text-transform:uppercase; color:var(--granite); margin-bottom:.4rem; }
+  .contact-form input[type=text],
+  .contact-form input[type=email],
+  .contact-form textarea {
+    width:100%; padding:.75rem 1rem; border:1.5px solid rgba(100,80,60,.25); border-radius:3px;
+    background:var(--cream); font-family:'DM Sans',sans-serif; font-size:.9rem;
+    color:var(--stone); outline:none; transition:border-color .2s;
+  }
+  .contact-form input:focus, .contact-form textarea:focus { border-color:var(--rust); }
+  .contact-form textarea { resize:vertical; min-height:130px; }
+  .contact-submit {
+    width:100%; padding:.9rem; background:var(--stone); color:var(--cream); border:none;
+    border-radius:3px; font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.2em;
+    text-transform:uppercase; cursor:pointer; transition:background .2s; margin-top:.5rem;
+  }
+  .contact-submit:hover { background:var(--rust); }
+  .form-success { display:none; text-align:center; padding:2.5rem 1rem; }
+  .form-success-icon { font-size:2.5rem; margin-bottom:1rem; }
+  .form-success h4 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--stone); margin-bottom:.5rem; }
+  .form-success p { font-size:.875rem; color:var(--slate); }
+
   /* ── RESPONSIVE ── */
   @media(max-width:900px) {
     .intro-strip { grid-template-columns:1fr; }
     .process-grid { grid-template-columns:1fr; }
     .footer-top { grid-template-columns:1fr 1fr; }
     .articles-grid { grid-template-columns:1fr; }
+    .about-grid { grid-template-columns:1fr; gap:2.5rem; }
+    .profile-card { position:static; }
+    .contact-layout { grid-template-columns:1fr; gap:2.5rem; }
+    .contact-info-panel { position:static; }
   }
   @media(max-width:768px){
     nav { padding:0 1.25rem; }
@@ -546,6 +695,11 @@
     .filter-label { min-width:60px; }
     .article-card-header { padding:1.25rem 1.25rem 1rem; }
     .article-body { padding:1.25rem; }
+    .about-hero { padding:6rem 1.25rem 3.5rem; }
+    .about-body { padding:3rem 1.25rem; }
+    .contact-hero { padding:6rem 1.25rem 3.5rem; }
+    .contact-body { padding:3rem 1.25rem; }
+    .values-grid { grid-template-columns:1fr; }
   }
   @media(max-width:480px){
     .facts-strip { grid-template-columns:1fr 1fr; gap:2rem; }
@@ -559,7 +713,7 @@
 <!-- ═══════════════ MAIN SITE ═══════════════ -->
 <div id="main-site">
   <nav>
-    <div class="nav-logo">Rock<span>Solid</span></div>
+    <div class="nav-logo" onclick="showPage('main')">Rock<span>Solid</span></div>
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
@@ -568,6 +722,8 @@
       <li><a href="#process" onclick="closeNav()">Rock Cycle</a></li>
       <li><a href="#timeline" onclick="closeNav()">Geological Time</a></li>
       <li><a href="#learn" onclick="closeNav()">Articles</a></li>
+      <li><a onclick="showPage('about');closeNav()">About</a></li>
+      <li><a onclick="showPage('contact');closeNav()">Contact</a></li>
     </ul>
   </nav>
 
@@ -766,10 +922,8 @@
     <div class="section-label">Featured Articles</div>
     <h2>Deeper Reading</h2>
     <div class="articles-grid">
-      <!-- LEFT: expandable article cards -->
       <div class="article-card-list">
 
-        <!-- Article 1 -->
         <div class="article-card" id="article-1">
           <div class="article-card-header" onclick="toggleArticle('article-1')">
             <div class="article-card-header-left">
@@ -786,30 +940,22 @@
           <div class="article-body-wrap">
             <div class="article-body">
               <p>The rock cycle is one of geology's most elegant concepts — a continuous, dynamic system by which rocks are created, altered, destroyed, and reformed through the interplay of internal earth processes and surface weathering. No rock type is permanent; each exists only as a temporary arrangement of matter within an ongoing planetary cycle.</p>
-
               <h4>The Three Pathways</h4>
               <p>Granite, a familiar igneous rock, may be uplifted by tectonic forces, exposed at the surface, and broken down over millennia by rain, frost, and wind. The resulting sediment is carried by rivers to ocean basins, where it accumulates in layers, compacts under its own weight, and slowly lithifies into sandstone or shale. Should tectonic forces drive that sedimentary rock back into the crust, intense heat and pressure transform it into metamorphic schist or gneiss. If temperatures rise high enough, it melts entirely — rejoining the magma reservoir from which new igneous rock will eventually form.</p>
-
-              <div class="article-pullquote">
-                "Every rock is a record of a journey through the earth's interior — a letter written in mineral and time."
-              </div>
-
+              <div class="article-pullquote">"Every rock is a record of a journey through the earth's interior — a letter written in mineral and time."</div>
               <h4>Radiometric Dating: Reading the Clock in Stone</h4>
               <p>Geologists use radioactive isotope dating to trace these transformations across billions of years. When magma crystallises, certain minerals incorporate radioactive parent isotopes (such as uranium-238 or potassium-40) into their lattice structure. These decay at known, constant rates into stable daughter isotopes. By measuring the ratio of parent to daughter in a sample, geologists can calculate the precise time elapsed since the rock formed.</p>
-              <p>Uranium-lead dating is suited for very ancient rocks — it can reliably date samples billions of years old, including the oldest known terrestrial zircons from Western Australia, which date to 4.4 billion years. Potassium-argon dating is used for volcanic rocks as young as 100,000 years, while rubidium-strontium systems unlock evidence from the deepest Precambrian. Together these systems provide an overlapping chronological framework that has allowed geologists to build the geological time scale with remarkable precision.</p>
-
+              <p>Uranium-lead dating is suited for very ancient rocks — it can reliably date samples billions of years old, including the oldest known terrestrial zircons from Western Australia, which date to 4.4 billion years. Potassium-argon dating is used for volcanic rocks as young as 100,000 years, while rubidium-strontium systems unlock evidence from the deepest Precambrian.</p>
               <div class="article-fact-box">
                 <strong>Key Fact</strong>
                 <p>The oldest mineral grains ever discovered — Jack Hills zircons from Western Australia — are approximately 4.404 billion years old, just 150 million years younger than Earth itself.</p>
               </div>
-
               <h4>Why the Cycle Matters</h4>
-              <p>Understanding the rock cycle is foundational not just to geology but to climate science, resource extraction, and even planetary science. The cycling of carbon between rocks, ocean, and atmosphere over millions of years regulates Earth's long-term climate. The concentration of metallic ores in certain rock types and geological settings — a product of magmatic differentiation and hydrothermal activity — determines where valuable mineral deposits are found. And by comparing Earth's rock record with surface features on Mars, the Moon, and other bodies, planetary geologists can infer which of these worlds have active or extinct rock cycles of their own.</p>
+              <p>Understanding the rock cycle is foundational not just to geology but to climate science, resource extraction, and even planetary science. The cycling of carbon between rocks, ocean, and atmosphere over millions of years regulates Earth's long-term climate.</p>
             </div>
           </div>
         </div>
 
-        <!-- Article 2 -->
         <div class="article-card" id="article-2">
           <div class="article-card-header" onclick="toggleArticle('article-2')">
             <div class="article-card-header-left">
@@ -825,38 +971,26 @@
           </div>
           <div class="article-body-wrap">
             <div class="article-body">
-              <p>Friedrich Mohs was a German mineralogist working in Vienna in the early nineteenth century when he published his famous hardness scale — a deceptively simple ranking of ten reference minerals from softest to hardest. Two centuries later, his scale remains a standard tool in geological fieldwork, though its underlying physics are more nuanced than the ordinal numbers suggest.</p>
-
+              <p>Friedrich Mohs was a German mineralogist working in Vienna in the early nineteenth century when he published his famous hardness scale — a deceptively simple ranking of ten reference minerals from softest to hardest. Two centuries later, his scale remains a standard tool in geological fieldwork.</p>
               <h4>What the Scale Actually Measures</h4>
-              <p>Hardness in the Mohs sense refers specifically to scratch resistance — the ability of a mineral's surface to resist being abraded by another material. A mineral rated higher on the scale will scratch one rated lower; two minerals of equal hardness will leave no mark on each other. Mohs' ten reference points, from talc (1) through gypsum, calcite, fluorite, apatite, feldspar, quartz, topaz, and corundum, to diamond (10), provide a practical field comparison set.</p>
-              <p>Importantly, the Mohs scale is ordinal, not linear. The physical difference between corundum (9) and diamond (10) is vastly greater than between, say, calcite (3) and fluorite (4). Diamond is roughly 1,500 times harder than corundum by absolute hardness measures such as the Vickers or Knoop indentation tests used in materials science. Mohs' scale compresses this enormous range into a convenient 1–10 format intended for field use, not precision engineering.</p>
-
-              <div class="article-pullquote">
-                "Diamond does not merely scratch corundum — it is in a class so far removed that the gap dwarfs all others on the scale combined."
-              </div>
-
+              <p>Hardness in the Mohs sense refers specifically to scratch resistance — the ability of a mineral's surface to resist being abraded by another material. Mohs' ten reference points, from talc (1) through gypsum, calcite, fluorite, apatite, feldspar, quartz, topaz, and corundum, to diamond (10), provide a practical field comparison set.</p>
+              <div class="article-pullquote">"Diamond does not merely scratch corundum — it is in a class so far removed that the gap dwarfs all others on the scale combined."</div>
               <h4>The Crystal Chemistry Behind Hardness</h4>
-              <p>Hardness is ultimately an expression of bond strength within a mineral's crystal lattice. Diamond — pure carbon arranged in a tetrahedral covalent lattice — achieves its extraordinary hardness because every carbon atom forms four strong covalent bonds in all directions, creating an isotropic three-dimensional network of exceptional strength. Graphite, also pure carbon but arranged in hexagonal sheets bonded only weakly between layers, registers just 1–2 on the Mohs scale.</p>
-              <p>This illustrates a key principle: chemical composition alone does not determine hardness — crystal structure is equally critical. Kyanite offers a striking example of anisotropic hardness: it measures approximately 5.5 along its length but 7 across it, due to the directional nature of bonding in its aluminosilicate crystal structure. Any mineral identification that relies on hardness must account for the direction of the scratch test.</p>
-
+              <p>Hardness is ultimately an expression of bond strength within a mineral's crystal lattice. Diamond — pure carbon arranged in a tetrahedral covalent lattice — achieves its extraordinary hardness because every carbon atom forms four strong covalent bonds in all directions.</p>
               <div class="article-fact-box">
                 <strong>Field Tip</strong>
-                <p>A fingernail (~2.5), a copper coin (~3.5), a steel knife blade (~5.5), and a glass plate (~5.5) make practical field substitutes for Mohs reference minerals. A quartz crystal carried as a field tool will scratch anything below 7.</p>
+                <p>A fingernail (~2.5), a copper coin (~3.5), a steel knife blade (~5.5), and a glass plate (~5.5) make practical field substitutes for Mohs reference minerals.</p>
               </div>
-
-              <h4>Beyond Mohs: Modern Hardness Measurement</h4>
-              <p>For industrial applications — abrasives, cutting tools, wear-resistant coatings — the Mohs scale lacks the precision required. The Vickers hardness test, which measures the indentation left by a pyramid-shaped diamond indenter under a known load, gives quantitative values in megapascals. Synthetic materials such as cubic boron nitride and wurtzite boron nitride have now been engineered to approach or even briefly exceed diamond in hardness under certain loading conditions, pushing the frontier of materials science into territory Mohs could not have anticipated.</p>
             </div>
           </div>
         </div>
 
-        <!-- Article 3 -->
         <div class="article-card" id="article-3">
           <div class="article-card-header" onclick="toggleArticle('article-3')">
             <div class="article-card-header-left">
               <span class="article-tag">Plate Tectonics · Geodynamics</span>
               <h3>Plate Tectonics: The Engine Driving Earth's Geological Activity</h3>
-              <p class="article-preview">The theory of plate tectonics, consolidated in the 1960s, unified decades of puzzling observations — continental shapes, fossil distributions, volcanic patterns — into a single coherent framework.</p>
+              <p class="article-preview">The theory of plate tectonics, consolidated in the 1960s, unified decades of puzzling observations into a single coherent framework.</p>
             </div>
             <button class="article-toggle-btn" aria-label="Expand article">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -866,38 +1000,22 @@
           </div>
           <div class="article-body-wrap">
             <div class="article-body">
-              <p>The theory of plate tectonics stands as one of the great unifying frameworks of Earth science. Consolidated from the work of Alfred Wegener, Harry Hess, and dozens of other geoscientists through the mid-twentieth century, it explains the distribution of earthquakes and volcanoes, the shapes of ocean basins, the building of mountain ranges, and the long-term cycling of elements between the crust, mantle, oceans, and atmosphere.</p>
-
-              <h4>The Lithospheric Plates</h4>
-              <p>Earth's outermost rigid layer — the lithosphere, comprising the crust and the uppermost mantle — is broken into roughly fifteen major plates and several smaller ones. These plates, between 100 and 250 kilometres thick, ride atop the asthenosphere: a zone of the upper mantle that is hot enough to flow plastically over geological timescales, despite being solid rock. The driving forces for plate motion include convection currents in the mantle, the gravitational pull of dense, cold oceanic crust descending at subduction zones (slab pull), and the push of newly formed crust at mid-ocean ridges (ridge push).</p>
-
-              <div class="article-pullquote">
-                "The continents do not drift through the ocean floor — they are carried upon it, passengers on vast slabs of lithosphere in slow but relentless motion."
-              </div>
-
-              <h4>Three Types of Plate Boundary</h4>
-              <p>Where plates meet, three distinct boundary types produce markedly different geological outcomes. At divergent boundaries, such as the Mid-Atlantic Ridge, plates move apart and new oceanic crust forms continuously from upwelling basaltic magma — a process called seafloor spreading. Iceland sits atop this boundary and is being literally pulled apart at a rate of roughly 2.5 centimetres per year.</p>
-              <p>At convergent boundaries, one plate descends beneath another in the process of subduction. Where oceanic crust meets continental crust, the denser oceanic plate invariably subducts, generating chains of volcanoes (like the Cascades or the Andes), deep oceanic trenches, and powerful earthquakes. Where two continental plates collide — as India has been doing with Asia for the past 50 million years — neither subducts easily, and the result is the crumpling and thickening of crust that built the Himalayas, the highest mountain range on Earth.</p>
-              <p>At transform boundaries, plates slide horizontally past each other without creating or destroying crust. The San Andreas Fault in California is the most studied example — a right-lateral strike-slip fault along which the Pacific Plate moves northwest relative to the North American Plate at about 46 millimetres per year, accumulating elastic strain that periodically releases in major earthquakes.</p>
-
+              <p>The theory of plate tectonics stands as one of the great unifying frameworks of Earth science, explaining the distribution of earthquakes and volcanoes, the shapes of ocean basins, and the building of mountain ranges.</p>
+              <div class="article-pullquote">"The continents do not drift through the ocean floor — they are carried upon it, passengers on vast slabs of lithosphere in slow but relentless motion."</div>
               <div class="article-fact-box">
                 <strong>Scale of Motion</strong>
-                <p>Tectonic plates move at roughly the same rate fingernails grow — between 1 and 10 centimetres per year. Over 200 million years, this motion has moved continents thousands of kilometres from their original positions.</p>
+                <p>Tectonic plates move at roughly the same rate fingernails grow — between 1 and 10 centimetres per year. Over 200 million years, this motion has moved continents thousands of kilometres.</p>
               </div>
-
-              <h4>The Wilson Cycle and Supercontinents</h4>
-              <p>On timescales of hundreds of millions of years, the opening and closing of ocean basins follows a pattern known as the Wilson Cycle. Oceans open at rifts, expand via seafloor spreading, then close as subduction consumes their floor, eventually colliding the flanking continents together into a supercontinent. Pangaea — the last such supercontinent — assembled roughly 300 million years ago and began breaking apart around 180 million years ago, producing the Atlantic Ocean and the geography we recognise today. The geological evidence suggests at least two earlier supercontinents, Rodinia and Nuna, in Earth's deep past, and models predict a future supercontinent — sometimes called Pangaea Proxima — will assemble in approximately 250 million years.</p>
             </div>
           </div>
         </div>
 
-        <!-- Article 4 -->
         <div class="article-card" id="article-4">
           <div class="article-card-header" onclick="toggleArticle('article-4')">
             <div class="article-card-header-left">
               <span class="article-tag">Stratigraphy · Deep Time</span>
               <h3>Reading the Stratigraphic Record: Earth's History in Layers</h3>
-              <p class="article-preview">Stratigraphy — the study of rock strata — allows geologists to reconstruct billions of years of Earth history from the sequence, composition, and fossils of layered rocks.</p>
+              <p class="article-preview">Stratigraphy allows geologists to reconstruct billions of years of Earth history from the sequence, composition, and fossils of layered rocks.</p>
             </div>
             <button class="article-toggle-btn" aria-label="Expand article">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -907,37 +1025,22 @@
           </div>
           <div class="article-body-wrap">
             <div class="article-body">
-              <p>If the rock cycle describes how rocks transform, stratigraphy describes how they accumulate in sequence — and in that sequence lies a record of Earth's history that geologists have been decoding for over two centuries. The principle is deceptively simple: in any undisturbed series of sedimentary layers, the oldest beds lie at the bottom and the youngest at the top. This law of superposition, formalised by Nicolas Steno in the seventeenth century, is the cornerstone of historical geology.</p>
-
-              <h4>Relative and Absolute Time</h4>
-              <p>Stratigraphy originally produced only relative timescales — rock unit A is older than unit B, which predates unit C — without assigning any numerical ages. The development of biostratigraphy in the nineteenth century improved resolution enormously: certain fossil species (index fossils) have known, restricted time ranges, and their presence in a rock layer constrains when that layer was deposited. The global stratigraphic column — the idealised sequence of all rock units from oldest to youngest — was largely assembled from relative methods before radiometric dating provided the absolute age calibration that underpins the modern geological time scale.</p>
-
-              <div class="article-pullquote">
-                "The strata of the earth are a history written in stone — but it is a history with many pages torn out, chapters missing, and margins annotated by time."
-              </div>
-
-              <h4>Unconformities: The Missing Pages</h4>
-              <p>One of stratigraphy's most important concepts is the unconformity — a surface that represents a gap in the geological record, where erosion or non-deposition has removed or prevented the accumulation of sediment for a period of time. When James Hutton examined the angular unconformity at Siccar Point in Scotland in 1788, he recognised that the tilted rocks below the contact had been deposited, lithified, tilted by mountain building, eroded flat, then buried under new horizontal sediments above — a sequence requiring vast amounts of time. His insight led to the foundational geological concept of deep time: the Earth must be incomprehensibly old for such processes to operate.</p>
-              <p>Angular unconformities (where beds below and above meet at an angle), disconformities (where both are parallel but a gap exists), and nonconformities (where sedimentary rocks overlie igneous or metamorphic basement) each provide different evidence of the tectonic and depositional history of a region.</p>
-
+              <p>If the rock cycle describes how rocks transform, stratigraphy describes how they accumulate in sequence. The principle is deceptively simple: in any undisturbed series of sedimentary layers, the oldest beds lie at the bottom and the youngest at the top.</p>
+              <div class="article-pullquote">"The strata of the earth are a history written in stone — but it is a history with many pages torn out, chapters missing, and margins annotated by time."</div>
               <div class="article-fact-box">
                 <strong>The Global Boundary Stratotype</strong>
-                <p>Major divisions of the geological time scale are formally defined by Global Boundary Stratotype Sections and Points (GSSPs) — physical locations in rock outcrops worldwide that mark a precise boundary in the stratigraphic record. There are currently over 70 ratified GSSPs.</p>
+                <p>Major divisions of the geological time scale are formally defined by Global Boundary Stratotype Sections and Points (GSSPs) — physical locations in rock outcrops worldwide. There are currently over 70 ratified GSSPs.</p>
               </div>
-
-              <h4>Sequence Stratigraphy and Sea Level Change</h4>
-              <p>Modern sequence stratigraphy, developed largely in the context of petroleum exploration in the second half of the twentieth century, interprets sedimentary packages in terms of relative sea level change. As sea level rises and falls in response to glaciation, tectonics, and thermal subsidence, characteristic packages of sediment — called systems tracts — form on continental shelves and slopes. Recognising these packages in subsurface drill cores and seismic reflection profiles has allowed geologists to reconstruct detailed records of past climate and ocean history, as well as to predict the locations of hydrocarbon reservoirs.</p>
             </div>
           </div>
         </div>
 
-        <!-- Article 5 -->
         <div class="article-card" id="article-5">
           <div class="article-card-header" onclick="toggleArticle('article-5')">
             <div class="article-card-header-left">
               <span class="article-tag">Volcanology · Igneous Petrology</span>
               <h3>Volcanoes and Magma: The Surface Expression of Earth's Interior Heat</h3>
-              <p class="article-preview">Volcanoes are among the most dramatic surface expressions of the planet's internal heat engine — but the diversity of volcanic styles, from gentle Hawaiian effusion to catastrophic Plinian eruption, reflects an equally diverse range of magma compositions.</p>
+              <p class="article-preview">Volcanoes are among the most dramatic surface expressions of the planet's internal heat engine — the diversity of volcanic styles reflects the equally diverse range of magma compositions.</p>
             </div>
             <button class="article-toggle-btn" aria-label="Expand article">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -947,32 +1050,18 @@
           </div>
           <div class="article-body-wrap">
             <div class="article-body">
-              <p>Volcanoes are windows into the interior of our planet — conduits through which material from depths of 50 kilometres or more is delivered directly to the surface. The more than 1,500 potentially active volcanoes on Earth today are concentrated overwhelmingly along plate boundaries, with a secondary population at hotspots like Hawaii and Yellowstone where mantle plumes punch through the overlying plate from below.</p>
-
-              <h4>Magma Composition and Eruption Style</h4>
-              <p>Not all magma is alike, and the chemistry of a magma largely determines how its host volcano will behave. The most fundamental variable is silica (SiO₂) content. Low-silica basaltic magmas, which dominate at mid-ocean ridges and hotspot volcanoes, have low viscosity — they flow readily and tend to erupt effusively, producing broad, gently sloping shield volcanoes like Mauna Loa or lava tube systems that carry lava tens of kilometres from the vent. High-silica rhyolitic and andesitic magmas, typical of subduction zone volcanoes, are far more viscous. Gas (mainly water vapour, CO₂, and SO₂) cannot escape easily from thick, sticky magma, and pressure builds until explosive eruption fragments the magma into pyroclastic material — ash, pumice, and volcanic bombs.</p>
-
-              <div class="article-pullquote">
-                "Magma is not simply molten rock — it is a complex mixture of silicate melt, dissolved gases, and suspended crystals, each fraction influencing how the volcano above will behave."
-              </div>
-
-              <h4>The Products of Volcanism</h4>
-              <p>Effusive volcanism produces lava flows that solidify into basalt (fine-grained, rapid surface cooling) or gabbro if cooled slowly at depth. The surfaces of basaltic flows take two characteristic forms: smooth, ropy pahoehoe forms where lava moves slowly, while rough, jagged a'a forms where lava moves faster and its surface solidifies while the interior continues flowing. Explosive volcanism produces a far more varied product suite: fine volcanic ash that can travel globally in the stratosphere; pumice — a glassy foam of rapidly vesiculated magma light enough to float on water; and ignimbrites, sheets of welded tuff deposited by pyroclastic density currents (fast-moving avalanches of hot gas and rock) that can travel hundreds of kilometres from the eruption site.</p>
-
+              <p>Volcanoes are windows into the interior of our planet — conduits through which material from depths of 50 kilometres or more is delivered directly to the surface.</p>
+              <div class="article-pullquote">"Magma is not simply molten rock — it is a complex mixture of silicate melt, dissolved gases, and suspended crystals, each fraction influencing how the volcano above will behave."</div>
               <div class="article-fact-box">
                 <strong>The VEI Scale</strong>
-                <p>Volcanic eruptions are ranked on the Volcanic Explosivity Index (VEI), a logarithmic scale from 0 to 8. The 1980 Mount St. Helens eruption rated VEI 5. The Toba supervolcano eruption 74,000 years ago rated VEI 8 — roughly 1,000 times more energetic — and may have caused a global volcanic winter that reduced the human population to as few as 10,000 individuals.</p>
+                <p>Volcanic eruptions are ranked on the Volcanic Explosivity Index (VEI), a logarithmic scale from 0 to 8. The 1980 Mount St. Helens eruption rated VEI 5. The Toba supervolcano eruption 74,000 years ago rated VEI 8.</p>
               </div>
-
-              <h4>Volcanic Hazards and Monitoring</h4>
-              <p>Modern volcanology employs a sophisticated array of tools to monitor active systems. Seismographs detect the micro-earthquakes generated as magma forces its way through rock fractures toward the surface. Ground deformation measured by GPS and InSAR satellite radar reveals when a volcano is inflating as its magma chamber fills. Gas monitoring detects increasing SO₂ emissions — a reliable precursor to eruptive activity. Combining these signals, volcanologists at well-monitored volcanoes like Kilauea or Etna can often provide days to weeks of warning before an eruption begins, time that has proven critical for civilian evacuations and the protection of infrastructure.</p>
             </div>
           </div>
         </div>
 
-      </div><!-- end .article-card-list -->
+      </div>
 
-      <!-- RIGHT: sidebar reference -->
       <div class="article-sidebar">
         <div class="sidebar-item"><div class="sidebar-num">01</div><h4>Mohs Hardness Scale</h4><p>Ranges from talc (1) to diamond (10). The standard comparative scale for mineral hardness identification in the field.</p></div>
         <div class="sidebar-item"><div class="sidebar-num">02</div><h4>Plate Tectonics</h4><p>Explains how crustal plates move, collide, and subduct — driving volcanic activity, mountain building, and seismic events globally.</p></div>
@@ -1004,12 +1093,12 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h5>Topics</h5>
+        <h5>Site</h5>
         <ul>
+          <li><a onclick="showPage('about')">About</a></li>
+          <li><a onclick="showPage('contact')">Contact</a></li>
           <li><a href="#">Plate Tectonics</a></li>
           <li><a href="#">Mineralogy</a></li>
-          <li><a href="#">Stratigraphy</a></li>
-          <li><a href="#">Volcanology</a></li>
         </ul>
       </div>
     </div>
@@ -1020,6 +1109,217 @@
       </div>
     </div>
   </footer>
+</div>
+
+<!-- ═══════════════ ABOUT PAGE ═══════════════ -->
+<div id="about-page">
+  <nav>
+    <div class="nav-logo" onclick="showPage('main')">Rock<span>Solid</span></div>
+    <button class="nav-toggle" id="nav-toggle-about" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links-about">
+      <li><a onclick="showPage('main');closeNav()">Home</a></li>
+      <li><a onclick="showPage('main');closeNav()">Rock Types</a></li>
+      <li><a onclick="showPage('main');closeNav()">Articles</a></li>
+      <li><a onclick="showPage('about');closeNav()" style="color:var(--sand)">About</a></li>
+      <li><a onclick="showPage('contact');closeNav()">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="about-hero">
+    <div class="about-hero-bg">About</div>
+    <div class="about-hero-inner">
+      <div class="section-label">Who We Are</div>
+      <h1>The Mind<br>Behind <em>RockSolid</em></h1>
+      <p>A passion project born from years of fieldwork, classroom teaching, and a deep fascination with the mineral world beneath our feet.</p>
+    </div>
+  </div>
+
+  <div class="about-body">
+    <div class="about-grid">
+      <!-- Profile Card -->
+      <div>
+        <div class="profile-card">
+          <div class="profile-card-accent"></div>
+          <div class="profile-card-body">
+            <div class="profile-avatar">🪨</div>
+            <div class="profile-name">Noctis Vale</div>
+            <div class="profile-title">Geologist &amp; Educator</div>
+            <div class="profile-divider"></div>
+            <div class="profile-detail">
+              <div class="profile-detail-icon">📍</div>
+              <div class="profile-detail-content">
+                <div class="profile-detail-label">Address</div>
+                <div class="profile-detail-value">861 Sesame Street</div>
+              </div>
+            </div>
+            <div class="profile-detail">
+              <div class="profile-detail-icon">📞</div>
+              <div class="profile-detail-content">
+                <div class="profile-detail-label">Phone</div>
+                <div class="profile-detail-value"><a href="tel:5055034455">(505) 503-4455</a></div>
+              </div>
+            </div>
+            <div class="profile-detail">
+              <div class="profile-detail-icon">🌐</div>
+              <div class="profile-detail-content">
+                <div class="profile-detail-label">Website</div>
+                <div class="profile-detail-value">RockSolid Reference</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Content -->
+      <div class="about-content">
+        <div class="section-label">Background</div>
+        <h2>Geology as a<br>Lifelong Pursuit</h2>
+        <p>RockSolid was built out of a simple belief: that the science of the Earth deserves to be explained with the same care and precision that geologists apply in the field. Too much educational material is either too simplified to be useful or too technical to be accessible. This site tries to occupy the space in between.</p>
+        <p>With years of experience studying petrology, mineralogy, and geodynamics, the goal has always been to bring the same rigour of scientific inquiry to teaching. Every article here is written with students in mind — people who are encountering these ideas seriously for the first time and deserve clear, honest explanations.</p>
+        <p>The geological record is one of the most astonishing archives in existence. Every formation visited, every hand sample examined, and every stratigraphic section logged has deepened a conviction that the story of the Earth is worth telling well.</p>
+
+        <div class="about-values">
+          <h3>What Drives This Work</h3>
+          <div class="values-grid">
+            <div class="value-item">
+              <div class="value-icon">🔬</div>
+              <div class="value-title">Scientific Rigour</div>
+              <div class="value-desc">Every claim is grounded in peer-reviewed research and field-tested methodology. No shortcuts, no oversimplifications.</div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">📚</div>
+              <div class="value-title">Accessible Education</div>
+              <div class="value-desc">Complex ideas can be explained clearly. Accessibility and depth are not in conflict — they reinforce each other.</div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">🗺️</div>
+              <div class="value-title">Field Perspective</div>
+              <div class="value-desc">Understanding geology requires getting out into the landscape. The best learning happens at the outcrop, not the desk.</div>
+            </div>
+            <div class="value-item">
+              <div class="value-icon">⏳</div>
+              <div class="value-title">Deep Time Thinking</div>
+              <div class="value-desc">Geology teaches humility about human timescales. Developing an intuition for deep time is transformative for how we understand the world.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CONTACT PAGE ═══════════════ -->
+<div id="contact-page">
+  <nav>
+    <div class="nav-logo" onclick="showPage('main')">Rock<span>Solid</span></div>
+    <button class="nav-toggle" id="nav-toggle-contact" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links-contact">
+      <li><a onclick="showPage('main');closeNav()">Home</a></li>
+      <li><a onclick="showPage('main');closeNav()">Rock Types</a></li>
+      <li><a onclick="showPage('main');closeNav()">Articles</a></li>
+      <li><a onclick="showPage('about');closeNav()">About</a></li>
+      <li><a onclick="showPage('contact');closeNav()" style="color:var(--sand)">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="contact-hero">
+    <div class="contact-hero-bg">Contact</div>
+    <div class="contact-hero-inner">
+      <div class="section-label">Get in Touch</div>
+      <h1>Reach Out &amp;<br><em>Connect</em></h1>
+      <p>Questions about the reference material, field enquiries, or educational collaborations — all correspondence is welcome.</p>
+    </div>
+  </div>
+
+  <div class="contact-body">
+    <div class="contact-layout">
+      <!-- Contact Info -->
+      <div class="contact-info-panel">
+        <h3>Contact Information</h3>
+
+        <div class="contact-method">
+          <div class="contact-method-icon icon-phone">📞</div>
+          <div class="contact-method-text">
+            <div class="contact-method-label">Phone</div>
+            <div class="contact-method-value"><a href="tel:5055034455">(505) 503-4455</a></div>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-method-icon icon-address">📍</div>
+          <div class="contact-method-text">
+            <div class="contact-method-label">Address</div>
+            <div class="contact-method-value">861 Sesame Street</div>
+          </div>
+        </div>
+
+        <div class="contact-method">
+          <div class="contact-method-icon icon-mail">✉️</div>
+          <div class="contact-method-text">
+            <div class="contact-method-label">Curator</div>
+            <div class="contact-method-value">Noctis Vale</div>
+          </div>
+        </div>
+
+        <div class="contact-availability">
+          <div class="contact-availability-title">Availability</div>
+          <div class="availability-row">
+            <span class="availability-day">Monday – Friday</span>
+            <span class="availability-time">9:00 – 17:00</span>
+          </div>
+          <div class="availability-row">
+            <span class="availability-day">Saturday</span>
+            <span class="availability-time">By appointment</span>
+          </div>
+          <div class="availability-row">
+            <span class="availability-day">Sunday</span>
+            <span class="availability-time">Closed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="contact-form-wrap">
+        <h3>Send a Message</h3>
+        <div class="contact-form" id="contact-form-wrap">
+          <div id="contact-form-fields">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:.9rem;">
+              <div class="form-group">
+                <label>First Name</label>
+                <input type="text" id="cf-first" placeholder="Jane">
+              </div>
+              <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" id="cf-last" placeholder="Smith">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="cf-email" placeholder="jane@example.com">
+            </div>
+            <div class="form-group">
+              <label>Subject</label>
+              <input type="text" id="cf-subject" placeholder="e.g. Question about metamorphic petrology">
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="cf-message" placeholder="Your message here…"></textarea>
+            </div>
+            <button class="contact-submit" onclick="submitContactForm()">Send Message</button>
+          </div>
+          <div class="form-success" id="form-success">
+            <div class="form-success-icon">✉️</div>
+            <h4>Message Received</h4>
+            <p>Thank you for reaching out. Noctis will be in touch shortly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════ MODALS ═══════════════ -->
@@ -1068,7 +1368,7 @@
       <input type="text" id="cat-name" placeholder="e.g. AP Chemistry"></div>
     <div class="form-group"><label>Teacher Name</label>
       <input type="text" id="cat-teacher" placeholder="e.g. Ms. Okafor"></div>
-    <div class="form-group"><label>Course Type <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — e.g. A, B, C, D, E stream)</span></label>
+    <div class="form-group"><label>Course Type <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional)</span></label>
       <select id="cat-course-type">
         <option value="">— None —</option>
         <option value="A">Type A</option>
@@ -1141,7 +1441,7 @@
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Variant <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional — A, B, C, D, or E form)</span></label>
+        <label>Variant <span style="font-weight:300;opacity:.6;font-size:.62rem;">(optional)</span></label>
         <select id="test-variant">
           <option value="">— None —</option>
           <option value="A">Variant A</option>
@@ -1201,7 +1501,6 @@
         <button class="admin-btn" id="btn-clear-all">🗑 Clear All Data</button>
       </div>
     </div>
-    <!-- Filter panel -->
     <div class="filter-section" id="filter-section">
       <div class="filter-row" id="subject-filter-row">
         <span class="filter-label">Subject</span>
@@ -1215,7 +1514,6 @@
         <span class="filter-label">Teacher</span>
         <button class="filter-btn active" data-teacher="all">All</button>
       </div>
-      <!-- Course filter now deduplicates by name -->
       <div class="filter-row" id="course-filter-row" style="display:none">
         <span class="filter-label">Course</span>
         <button class="filter-btn active" data-course="all">All</button>
@@ -1241,25 +1539,79 @@
 
 <!-- ═══════════════ SCRIPTS ═══════════════ -->
 <script>
+  // ── Page switching ──
+  function showPage(page) {
+    document.getElementById('main-site').style.display    = 'none';
+    document.getElementById('about-page').classList.remove('visible');
+    document.getElementById('contact-page').classList.remove('visible');
+    document.getElementById('archive-page').classList.remove('visible');
+    if (page === 'main') {
+      document.getElementById('main-site').style.display = 'block';
+    } else if (page === 'about') {
+      document.getElementById('about-page').classList.add('visible');
+    } else if (page === 'contact') {
+      document.getElementById('contact-page').classList.add('visible');
+    }
+    window.scrollTo(0, 0);
+  }
+
+  // ── Contact form submit ──
+  function submitContactForm() {
+    const first   = document.getElementById('cf-first').value.trim();
+    const email   = document.getElementById('cf-email').value.trim();
+    const message = document.getElementById('cf-message').value.trim();
+    if (!first || !email || !message) {
+      alert('Please fill in your name, email, and message.');
+      return;
+    }
+    document.getElementById('contact-form-fields').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
   // ── Article expand/collapse ──
   function toggleArticle(id) {
     const card = document.getElementById(id);
     card.classList.toggle('open');
   }
 
-  // ── Nav toggle ──
+  // ── Nav toggle (main) ──
   const navToggle = document.getElementById('nav-toggle');
   const navLinks  = document.getElementById('nav-links');
   navToggle.addEventListener('click', () => {
     navToggle.classList.toggle('open');
     navLinks.classList.toggle('open');
   });
+
+  // ── Nav toggle (about) ──
+  const navToggleAbout = document.getElementById('nav-toggle-about');
+  const navLinksAbout  = document.getElementById('nav-links-about');
+  navToggleAbout.addEventListener('click', () => {
+    navToggleAbout.classList.toggle('open');
+    navLinksAbout.classList.toggle('open');
+  });
+
+  // ── Nav toggle (contact) ──
+  const navToggleContact = document.getElementById('nav-toggle-contact');
+  const navLinksContact  = document.getElementById('nav-links-contact');
+  navToggleContact.addEventListener('click', () => {
+    navToggleContact.classList.toggle('open');
+    navLinksContact.classList.toggle('open');
+  });
+
   function closeNav() {
     navToggle.classList.remove('open');
     navLinks.classList.remove('open');
+    navToggleAbout.classList.remove('open');
+    navLinksAbout.classList.remove('open');
+    navToggleContact.classList.remove('open');
+    navLinksContact.classList.remove('open');
   }
   document.addEventListener('click', (e) => {
-    if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) closeNav();
+    if (!navToggle.contains(e.target) && !navLinks.contains(e.target) &&
+        !navToggleAbout.contains(e.target) && !navLinksAbout.contains(e.target) &&
+        !navToggleContact.contains(e.target) && !navLinksContact.contains(e.target)) {
+      closeNav();
+    }
   });
 </script>
 
@@ -1287,13 +1639,11 @@ const firestoreDB = getFirestore(app);
 const storage     = getStorage(app);
 const auth        = getAuth(app);
 
-// ── STATE ──
 let db            = { cats: [], tests: [] };
 let isAdmin       = false;
 let currentFilter      = 'all';
 let currentSem         = 'all';
 let currentTeacher     = 'all';
-// NOTE: currentCourse now stores a COURSE NAME (not an id) for deduplication
 let currentCourseName  = 'all';
 let currentCourseType  = 'all';
 let currentUnit        = 'all';
@@ -1303,7 +1653,6 @@ let archiveOpen   = false;
 let pendingSlots  = { pdf: null, orig: null, key: null, assign: null };
 let editingTestId = null;
 
-// ── DATABASE ──
 async function loadDB() {
   try {
     const snap = await getDoc(doc(firestoreDB, "archive", "mainData"));
@@ -1340,7 +1689,6 @@ async function saveDB() {
   }
 }
 
-// ── AUTH ──
 onAuthStateChanged(auth, (user) => {
   isAdmin = !!user;
   document.getElementById('logout-btn').style.display  = isAdmin ? 'block' : 'none';
@@ -1350,7 +1698,6 @@ onAuthStateChanged(auth, (user) => {
 });
 loadDB();
 
-// ── MODALS ──
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 ['login-overlay','cat-overlay','test-overlay','del-overlay'].forEach(id => {
@@ -1363,7 +1710,6 @@ document.getElementById('cat-close').onclick    = () => closeModal('cat-overlay'
 document.getElementById('test-close').onclick   = () => closeModal('test-overlay');
 document.getElementById('del-cancel').onclick   = () => closeModal('del-overlay');
 
-// ── SECRET TRIGGER ──
 let clicks = 0, clickTimer = null;
 document.getElementById('secret-trigger').addEventListener('click', e => {
   e.stopPropagation(); clicks++;
@@ -1372,7 +1718,6 @@ document.getElementById('secret-trigger').addEventListener('click', e => {
   else { clickTimer = setTimeout(() => clicks = 0, 800); }
 });
 
-// ── LOGIN ──
 const studentBox = document.getElementById('student-login-box');
 const adminBox   = document.getElementById('admin-login-box');
 document.getElementById('toggle-admin-ui').onclick   = e => { e.preventDefault(); studentBox.style.display='none'; adminBox.style.display='block'; };
@@ -1410,10 +1755,11 @@ document.getElementById('logout-btn').onclick = async () => {
   window.scrollTo(0, 0);
 };
 
-// ── SHOW / HIDE ARCHIVE ──
 function showArchive() {
   archiveOpen = true;
   document.getElementById('main-site').style.display = 'none';
+  document.getElementById('about-page').classList.remove('visible');
+  document.getElementById('contact-page').classList.remove('visible');
   document.getElementById('archive-page').classList.add('visible');
   document.getElementById('admin-panel').style.display = isAdmin ? 'block' : 'none';
   document.getElementById('admin-badge').style.display = isAdmin ? 'inline-block' : 'none';
@@ -1427,46 +1773,27 @@ document.getElementById('back-btn').onclick = () => {
   window.scrollTo(0, 0);
 };
 
-// ── FILTER HELPERS ──
-// Returns cats matching all current filters.
-// For the course name filter, we match any cat whose normalised name equals currentCourseName.
+function normaliseName(name) { return (name || '').trim().toLowerCase(); }
+
 function getFilteredCats() {
   return db.cats.filter(c => {
     if (currentFilter     !== 'all' && c.subject    !== currentFilter)     return false;
     if (currentSem        !== 'all' && (c.semester||'').trim() !== currentSem) return false;
     if (currentTeacher    !== 'all' && c.teacher    !== currentTeacher)    return false;
-    // Course filter: match by normalised name (case-insensitive trim) instead of by id
     if (currentCourseName !== 'all' && normaliseName(c.name) !== currentCourseName) return false;
     if (currentCourseType !== 'all' && (c.courseType||'') !== currentCourseType) return false;
-    return true;
-  });
-}
-
-// Normalise a course name for deduplication purposes
-function normaliseName(name) {
-  return (name || '').trim().toLowerCase();
-}
-
-function getVisibleTests(visibleCatIds) {
-  return db.tests.filter(t => {
-    if (!visibleCatIds.includes(t.catId)) return false;
-    if (currentUnit     !== 'all' && (t.unit||'').trim() !== currentUnit) return false;
-    if (currentTestType !== 'all' && t.type !== currentTestType) return false;
     return true;
   });
 }
 function getVisibleUnits(visibleCatIds) {
   const units = new Set();
   db.tests.forEach(t => {
-    if (visibleCatIds.includes(t.catId) && t.unit && t.unit.trim()) {
-      units.add(t.unit.trim());
-    }
+    if (visibleCatIds.includes(t.catId) && t.unit && t.unit.trim()) units.add(t.unit.trim());
   });
   return [...units].sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
 }
 function unitSortKey(unit) { return unit ? unit.trim() : '\uffff'; }
 
-// ── RENDER ──
 function renderAll() { renderFilters(); renderCourses(); }
 
 const SUBJ_LABELS = {
@@ -1499,9 +1826,7 @@ function renderFilters() {
 
   const subjectCats = db.cats.filter(c => currentFilter === 'all' || c.subject === currentFilter);
 
-  // ── Semester ──
-  const semesters = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))]
-    .sort((a,b) => b.localeCompare(a));
+  const semesters = [...new Set(subjectCats.map(c => (c.semester||'').trim()).filter(Boolean))].sort((a,b) => b.localeCompare(a));
   const semRow = document.getElementById('semester-filter-row');
   if (semesters.length > 0) {
     let semHtml = `<span class="filter-label">Semester</span>
@@ -1518,13 +1843,9 @@ function renderFilters() {
         renderAll();
       });
     });
-  } else {
-    semRow.style.display = 'none';
-  }
+  } else { semRow.style.display = 'none'; }
 
   const semCats  = subjectCats.filter(c => currentSem === 'all' || (c.semester||'').trim() === currentSem);
-
-  // ── Teacher ──
   const teachers = [...new Set(semCats.map(c => c.teacher).filter(Boolean))].sort();
   const teacherRow = document.getElementById('teacher-filter-row');
   if (teachers.length > 1) {
@@ -1542,14 +1863,9 @@ function renderFilters() {
         renderAll();
       });
     });
-  } else {
-    teacherRow.style.display = 'none';
-  }
+  } else { teacherRow.style.display = 'none'; }
 
   const teacherCats = semCats.filter(c => currentTeacher === 'all' || c.teacher === currentTeacher);
-
-  // ── Course filter — deduplicated by name ──
-  // Build a map: normalisedName -> display name (use first occurrence's original casing)
   const courseNameMap = new Map();
   teacherCats.forEach(c => {
     const key = normaliseName(c.name);
@@ -1571,12 +1887,8 @@ function renderFilters() {
         renderAll();
       });
     });
-  } else {
-    courseRow.style.display = 'none';
-  }
+  } else { courseRow.style.display = 'none'; }
 
-  // ── Course Type filter ──
-  // Use the already-filtered cats (teacherCats narrowed further by currentCourseName)
   const courseCats = teacherCats.filter(c =>
     currentCourseName === 'all' || normaliseName(c.name) === currentCourseName
   );
@@ -1597,12 +1909,8 @@ function renderFilters() {
         renderAll();
       });
     });
-  } else {
-    ctypeRow.style.display = 'none';
-    if (currentCourseType !== 'all') currentCourseType = 'all';
-  }
+  } else { ctypeRow.style.display = 'none'; if (currentCourseType !== 'all') currentCourseType = 'all'; }
 
-  // ── Unit filter ──
   const visibleCatIds = getFilteredCats().map(c => c.id);
   const units    = getVisibleUnits(visibleCatIds);
   const unitRow  = document.getElementById('unit-filter-row');
@@ -1617,17 +1925,10 @@ function renderFilters() {
     unitRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => { currentUnit = btn.dataset.unit; currentTestType = 'all'; renderAll(); });
     });
-  } else {
-    unitRow.style.display = 'none';
-    if (currentUnit !== 'all') currentUnit = 'all';
-  }
+  } else { unitRow.style.display = 'none'; if (currentUnit !== 'all') currentUnit = 'all'; }
 
-  // ── Item Type filter ──
   const itemTypes = [...new Set(
-    db.tests
-      .filter(t => visibleCatIds.includes(t.catId))
-      .map(t => t.type)
-      .filter(Boolean)
+    db.tests.filter(t => visibleCatIds.includes(t.catId)).map(t => t.type).filter(Boolean)
   )].sort((a, b) => {
     const order = ['quiz','test','midterm','final','assignment'];
     return order.indexOf(a) - order.indexOf(b);
@@ -1644,10 +1945,7 @@ function renderFilters() {
     ttypeRow.querySelectorAll('.filter-btn').forEach(btn => {
       btn.addEventListener('click', () => { currentTestType = btn.dataset.ttype; renderAll(); });
     });
-  } else {
-    ttypeRow.style.display = 'none';
-    if (currentTestType !== 'all') currentTestType = 'all';
-  }
+  } else { ttypeRow.style.display = 'none'; if (currentTestType !== 'all') currentTestType = 'all'; }
 }
 
 function renderCourses() {
@@ -1677,12 +1975,10 @@ function renderCourses() {
         <button class="btn-sm" data-add-test="${cat.id}">+ Item</button>
         <button class="btn-sm danger" data-del-cat="${cat.id}">✕ Delete</button>
       </div>` : '';
-    // ── Semester badge ──
     const semLabel = cat.semester || '+ Semester';
     const semBadge = isAdmin
       ? `<span class="course-semester-badge editable-semester" data-cat-id="${cat.id}" title="Click to edit semester">${esc(semLabel)}</span>`
       : (cat.semester ? `<span class="course-semester-badge">${esc(cat.semester)}</span>` : '');
-    // ── Course type badge ──
     const ctLabel = cat.courseType ? `Type ${esc(cat.courseType)}` : '+ Type';
     const courseTypeBadge = isAdmin
       ? `<span class="course-type-badge editable-course-type" data-cat-id="${cat.id}" title="Click to edit course type">${ctLabel}</span>`
@@ -1731,7 +2027,6 @@ function renderCourses() {
     </div>`;
   }).join('');
 
-  // Attach events
   cont.querySelectorAll('[data-add-test]').forEach(btn  => btn.onclick = () => openAddTest(btn.dataset.addTest));
   cont.querySelectorAll('[data-del-cat]').forEach(btn   => btn.onclick = () => confirmDelCat(btn.dataset.delCat));
   cont.querySelectorAll('[data-del-test]').forEach(btn  => btn.onclick = () => confirmDelTest(btn.dataset.delTest));
@@ -1745,27 +2040,16 @@ function renderCourses() {
       el.style.cursor = 'text';
       el.addEventListener('click', () => startCatRename(el, 'teacher'));
     });
-    cont.querySelectorAll('.editable-semester').forEach(el => {
-      el.addEventListener('click', () => startSemesterEdit(el));
-    });
-    cont.querySelectorAll('.editable-course-type').forEach(el => {
-      el.addEventListener('click', () => startCourseTypeEdit(el));
-    });
-    cont.querySelectorAll('.editable-test-name').forEach(el => {
-      el.addEventListener('click', () => startTestNameEdit(el));
-    });
-    cont.querySelectorAll('.inline-type-select').forEach(sel => {
-      sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value));
-    });
-    cont.querySelectorAll('.inline-variant-select').forEach(sel => {
-      sel.addEventListener('change', () => changeTestVariant(sel.dataset.testId, sel.value));
-    });
+    cont.querySelectorAll('.editable-semester').forEach(el => el.addEventListener('click', () => startSemesterEdit(el)));
+    cont.querySelectorAll('.editable-course-type').forEach(el => el.addEventListener('click', () => startCourseTypeEdit(el)));
+    cont.querySelectorAll('.editable-test-name').forEach(el => el.addEventListener('click', () => startTestNameEdit(el)));
+    cont.querySelectorAll('.inline-type-select').forEach(sel => sel.addEventListener('change', () => changeTestType(sel.dataset.testId, sel.value)));
+    cont.querySelectorAll('.inline-variant-select').forEach(sel => sel.addEventListener('change', () => changeTestVariant(sel.dataset.testId, sel.value)));
     setupDragDrop();
   }
   setupFileSlotToggles();
 }
 
-// ── GROUP BY UNIT ──
 function groupByUnit(tests) {
   const map = new Map();
   tests.forEach(t => {
@@ -1775,15 +2059,12 @@ function groupByUnit(tests) {
   });
   return [...map.entries()]
     .sort(([a], [b]) => {
-      if (!a && b) return 1;
-      if (a && !b) return -1;
+      if (!a && b) return 1; if (a && !b) return -1;
       return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
     })
     .map(([unit, items]) => ({ unit, items }));
 }
-function hasAnyUnits(tests) {
-  return tests.some(t => t.unit && t.unit.trim());
-}
+function hasAnyUnits(tests) { return tests.some(t => t.unit && t.unit.trim()); }
 
 function buildTestItem(t) {
   const slots = t.files || {};
@@ -1792,27 +2073,15 @@ function buildTestItem(t) {
   const hasAnyFile = slots.pdf || slots.orig || slots.key || (isAssignment && slots.assign);
   if (isAdmin || hasAnyFile) {
     let links = '';
-    if (slots.pdf?.url) {
-      links += `<a class="file-link-btn pdf" href="${esc(slots.pdf.url)}" target="_blank" rel="noopener">📄 PDF Version</a>`;
-    } else if (isAdmin) {
-      links += `<button class="file-link-btn add" data-slot-add="pdf" data-test-id="${t.id}">+ PDF Version</button>`;
-    }
-    if (slots.orig?.url) {
-      links += `<a class="file-link-btn orig" href="${esc(slots.orig.url)}" target="_blank" rel="noopener">📁 Original</a>`;
-    } else if (isAdmin) {
-      links += `<button class="file-link-btn add" data-slot-add="orig" data-test-id="${t.id}">+ Original</button>`;
-    }
-    if (slots.key?.url) {
-      links += `<a class="file-link-btn key" href="${esc(slots.key.url)}" target="_blank" rel="noopener">🔑 Answer Key</a>`;
-    } else if (isAdmin) {
-      links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
-    }
+    if (slots.pdf?.url) links += `<a class="file-link-btn pdf" href="${esc(slots.pdf.url)}" target="_blank" rel="noopener">📄 PDF Version</a>`;
+    else if (isAdmin) links += `<button class="file-link-btn add" data-slot-add="pdf" data-test-id="${t.id}">+ PDF Version</button>`;
+    if (slots.orig?.url) links += `<a class="file-link-btn orig" href="${esc(slots.orig.url)}" target="_blank" rel="noopener">📁 Original</a>`;
+    else if (isAdmin) links += `<button class="file-link-btn add" data-slot-add="orig" data-test-id="${t.id}">+ Original</button>`;
+    if (slots.key?.url) links += `<a class="file-link-btn key" href="${esc(slots.key.url)}" target="_blank" rel="noopener">🔑 Answer Key</a>`;
+    else if (isAdmin) links += `<button class="file-link-btn add" data-slot-add="key" data-test-id="${t.id}">+ Answer Key</button>`;
     if (isAssignment) {
-      if (slots.assign?.url) {
-        links += `<a class="file-link-btn assign" href="${esc(slots.assign.url)}" target="_blank" rel="noopener">📝 Assignment</a>`;
-      } else if (isAdmin) {
-        links += `<button class="file-link-btn add" data-slot-add="assign" data-test-id="${t.id}">+ Assignment</button>`;
-      }
+      if (slots.assign?.url) links += `<a class="file-link-btn assign" href="${esc(slots.assign.url)}" target="_blank" rel="noopener">📝 Assignment</a>`;
+      else if (isAdmin) links += `<button class="file-link-btn add" data-slot-add="assign" data-test-id="${t.id}">+ Assignment</button>`;
     }
     if (links) fileLinksHtml = `<div class="test-files-row">${links}</div>`;
   }
@@ -1862,7 +2131,6 @@ function buildTestItem(t) {
   </div>`;
 }
 
-// ── INLINE CAT RENAME ──
 function startCatRename(el, field) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
@@ -1870,34 +2138,24 @@ function startCatRename(el, field) {
   const current   = field === 'name' ? cat.name : cat.teacher;
   const isTeacher = field === 'teacher';
   const input     = document.createElement('input');
-  input.type      = 'text';
-  input.value     = current;
+  input.type = 'text'; input.value = current;
   input.className = 'inline-edit-input' + (isTeacher ? ' teacher' : '');
-  el.replaceWith(input);
-  input.focus(); input.select();
+  el.replaceWith(input); input.focus(); input.select();
   async function commit() {
     const val = input.value.trim();
-    if (val && val !== current) {
-      cat[field] = val;
-      try { await saveDB(); } catch { cat[field] = current; }
-    }
+    if (val && val !== current) { cat[field] = val; try { await saveDB(); } catch { cat[field] = current; } }
     renderAll();
   }
   input.addEventListener('blur', commit);
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') { input.blur(); }
-    if (e.key === 'Escape') { input.value = current; input.blur(); }
-  });
+  input.addEventListener('keydown', e => { if (e.key==='Enter') input.blur(); if (e.key==='Escape') { input.value=current; input.blur(); } });
 }
 
-// ── INLINE SEMESTER EDIT ──
 function startSemesterEdit(el) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
   if (!cat) return;
   const current = (cat.semester || '').trim();
-  const SEASONS = ['', 'Fall', 'Spring', 'Summer', 'Winter',
-                   'Semester 1', 'Semester 2', 'Q1', 'Q2', 'Q3', 'Q4'];
+  const SEASONS = ['', 'Fall', 'Spring', 'Summer', 'Winter', 'Semester 1', 'Semester 2', 'Q1', 'Q2', 'Q3', 'Q4'];
   const currentYear = new Date().getFullYear();
   let initSeason = '', initYear = String(currentYear);
   if (current) {
@@ -1906,120 +2164,83 @@ function startSemesterEdit(el) {
     else { initYear = current; }
   }
   const years = ['', ...Array.from({ length: 9 }, (_, i) => String(currentYear + 1 - i))];
-  const wrap = document.createElement('span');
-  wrap.className = 'sem-inline-wrap';
+  const wrap = document.createElement('span'); wrap.className = 'sem-inline-wrap';
   const makeSelect = (opts, val) => {
-    const s = document.createElement('select');
-    s.className = 'sem-inline-select';
-    opts.forEach(o => {
-      const opt = document.createElement('option');
-      opt.value = o; opt.textContent = o || '— None —';
-      if (o === val) opt.selected = true;
-      s.appendChild(opt);
-    });
+    const s = document.createElement('select'); s.className = 'sem-inline-select';
+    opts.forEach(o => { const opt = document.createElement('option'); opt.value=o; opt.textContent=o||'— None —'; if(o===val) opt.selected=true; s.appendChild(opt); });
     return s;
   };
   const seasonSel = makeSelect(SEASONS, initSeason);
   const yearSel   = makeSelect(years, initYear);
-  const saveBtn   = document.createElement('button');
-  saveBtn.textContent = '✓'; saveBtn.className = 'sem-inline-btn confirm'; saveBtn.title = 'Save';
-  const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = '✕'; cancelBtn.className = 'sem-inline-btn cancel'; cancelBtn.title = 'Cancel';
+  const saveBtn = document.createElement('button'); saveBtn.textContent='✓'; saveBtn.className='sem-inline-btn confirm';
+  const cancelBtn = document.createElement('button'); cancelBtn.textContent='✕'; cancelBtn.className='sem-inline-btn cancel';
   wrap.append(seasonSel, yearSel, saveBtn, cancelBtn);
   el.replaceWith(wrap); seasonSel.focus();
   async function commit() {
     const season = seasonSel.value, year = yearSel.value;
     const newSem = (season && year) ? `${season} ${year}` : (season || year || '');
-    if (newSem !== current) {
-      cat.semester = newSem;
-      try { await saveDB(); } catch { cat.semester = current; }
-    }
+    if (newSem !== current) { cat.semester = newSem; try { await saveDB(); } catch { cat.semester = current; } }
     renderAll();
   }
   saveBtn.addEventListener('click', commit);
   cancelBtn.addEventListener('click', () => renderAll());
-  [seasonSel, yearSel].forEach(s => {
-    s.addEventListener('keydown', e => { if (e.key==='Enter') commit(); if (e.key==='Escape') renderAll(); });
-  });
+  [seasonSel, yearSel].forEach(s => s.addEventListener('keydown', e => { if(e.key==='Enter') commit(); if(e.key==='Escape') renderAll(); }));
 }
 
-// ── INLINE COURSE TYPE EDIT ──
 function startCourseTypeEdit(el) {
   const catId = el.dataset.catId;
   const cat   = db.cats.find(c => c.id === catId);
   if (!cat) return;
   const current = cat.courseType || '';
   const TYPES   = ['', 'A', 'B', 'C', 'D', 'E'];
-  const wrap = document.createElement('span');
-  wrap.className = 'sem-inline-wrap';
-  const sel = document.createElement('select');
-  sel.className = 'sem-inline-select';
-  TYPES.forEach(v => {
-    const opt = document.createElement('option');
-    opt.value = v; opt.textContent = v ? `Type ${v}` : '— None —';
-    if (v === current) opt.selected = true;
-    sel.appendChild(opt);
-  });
-  const saveBtn = document.createElement('button');
-  saveBtn.textContent = '✓'; saveBtn.className = 'sem-inline-btn confirm';
-  const cancelBtn = document.createElement('button');
-  cancelBtn.textContent = '✕'; cancelBtn.className = 'sem-inline-btn cancel';
+  const wrap = document.createElement('span'); wrap.className = 'sem-inline-wrap';
+  const sel = document.createElement('select'); sel.className = 'sem-inline-select';
+  TYPES.forEach(v => { const opt = document.createElement('option'); opt.value=v; opt.textContent=v?`Type ${v}`:'— None —'; if(v===current) opt.selected=true; sel.appendChild(opt); });
+  const saveBtn = document.createElement('button'); saveBtn.textContent='✓'; saveBtn.className='sem-inline-btn confirm';
+  const cancelBtn = document.createElement('button'); cancelBtn.textContent='✕'; cancelBtn.className='sem-inline-btn cancel';
   wrap.append(sel, saveBtn, cancelBtn);
   el.replaceWith(wrap); sel.focus();
   async function commit() {
     const val = sel.value;
-    if (val !== current) {
-      cat.courseType = val;
-      try { await saveDB(); } catch { cat.courseType = current; }
-    }
+    if (val !== current) { cat.courseType = val; try { await saveDB(); } catch { cat.courseType = current; } }
     renderAll();
   }
   saveBtn.addEventListener('click', commit);
   cancelBtn.addEventListener('click', () => renderAll());
-  sel.addEventListener('keydown', e => { if (e.key==='Enter') commit(); if (e.key==='Escape') renderAll(); });
+  sel.addEventListener('keydown', e => { if(e.key==='Enter') commit(); if(e.key==='Escape') renderAll(); });
 }
 
-// ── INLINE ITEM NAME EDIT ──
 function startTestNameEdit(el) {
   const testId = el.dataset.testId;
   const test   = db.tests.find(t => t.id === testId);
   if (!test) return;
   const current = test.name;
   const input   = document.createElement('input');
-  input.type = 'text'; input.value = current; input.className = 'test-name-input';
+  input.type='text'; input.value=current; input.className='test-name-input';
   el.replaceWith(input); input.focus(); input.select();
   async function commit() {
     const val = input.value.trim();
-    if (val && val !== current) {
-      test.name = val;
-      try { await saveDB(); } catch { test.name = current; }
-    }
+    if (val && val !== current) { test.name=val; try { await saveDB(); } catch { test.name=current; } }
     renderAll();
   }
   input.addEventListener('blur', commit);
-  input.addEventListener('keydown', e => {
-    if (e.key === 'Enter') input.blur();
-    if (e.key === 'Escape') { input.value = current; input.blur(); }
-  });
+  input.addEventListener('keydown', e => { if(e.key==='Enter') input.blur(); if(e.key==='Escape') { input.value=current; input.blur(); } });
 }
 
-// ── INLINE TYPE CHANGE ──
 async function changeTestType(testId, newType) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
   const prev = test.type; test.type = newType;
-  try { await saveDB(); renderAll(); } catch { test.type = prev; renderAll(); }
+  try { await saveDB(); renderAll(); } catch { test.type=prev; renderAll(); }
 }
 
-// ── INLINE VARIANT CHANGE ──
 async function changeTestVariant(testId, newVariant) {
   const test = db.tests.find(t => t.id === testId);
   if (!test) return;
   const prev = test.variant; test.variant = newVariant;
-  try { await saveDB(); renderAll(); } catch { test.variant = prev; renderAll(); }
+  try { await saveDB(); renderAll(); } catch { test.variant=prev; renderAll(); }
 }
 
-// ── DRAG AND DROP ──
 let dragSrcId  = null;
 let dragSrcCat = null;
 function setupDragDrop() {
@@ -2030,70 +2251,53 @@ function setupDragDrop() {
       if (!handle) return;
       handle.setAttribute('draggable', 'true');
       handle.addEventListener('dragstart', e => {
-        dragSrcId  = item.dataset.testId;
-        dragSrcCat = item.dataset.catId;
-        item.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
+        dragSrcId=item.dataset.testId; dragSrcCat=item.dataset.catId;
+        item.classList.add('dragging'); e.dataTransfer.effectAllowed='move';
         e.dataTransfer.setData('text/plain', dragSrcId);
       });
       handle.addEventListener('dragend', () => {
         item.classList.remove('dragging');
-        document.querySelectorAll('.drag-over-top,.drag-over-bottom').forEach(el => {
-          el.classList.remove('drag-over-top','drag-over-bottom');
-        });
+        document.querySelectorAll('.drag-over-top,.drag-over-bottom').forEach(el => el.classList.remove('drag-over-top','drag-over-bottom'));
       });
       item.addEventListener('dragover', e => {
         e.preventDefault();
-        if (item.dataset.testId === dragSrcId) return;
-        if (item.dataset.catId  !== dragSrcCat) return;
-        e.dataTransfer.dropEffect = 'move';
-        const rect = item.getBoundingClientRect();
-        const midY = rect.top + rect.height / 2;
+        if (item.dataset.testId===dragSrcId || item.dataset.catId!==dragSrcCat) return;
+        e.dataTransfer.dropEffect='move';
+        const rect=item.getBoundingClientRect(); const midY=rect.top+rect.height/2;
         item.classList.remove('drag-over-top','drag-over-bottom');
-        item.classList.add(e.clientY < midY ? 'drag-over-top' : 'drag-over-bottom');
+        item.classList.add(e.clientY<midY?'drag-over-top':'drag-over-bottom');
       });
-      item.addEventListener('dragleave', () => {
-        item.classList.remove('drag-over-top','drag-over-bottom');
-      });
+      item.addEventListener('dragleave', () => item.classList.remove('drag-over-top','drag-over-bottom'));
       item.addEventListener('drop', async e => {
         e.preventDefault();
-        if (item.dataset.testId === dragSrcId) return;
-        if (item.dataset.catId  !== dragSrcCat) return;
+        if (item.dataset.testId===dragSrcId || item.dataset.catId!==dragSrcCat) return;
         item.classList.remove('drag-over-top','drag-over-bottom');
-        const rect   = item.getBoundingClientRect();
-        const after  = e.clientY >= rect.top + rect.height / 2;
-        const catId  = dragSrcCat;
-        const srcTest = db.tests.find(t => t.id === dragSrcId);
-        const tgtTest = db.tests.find(t => t.id === item.dataset.testId);
-        if (!srcTest || !tgtTest) return;
-        if (srcTest.unit !== tgtTest.unit) return;
-        let catTests = db.tests
-          .filter(t => t.catId === catId && (t.unit || '') === (srcTest.unit || ''))
-          .sort((a,b) => (a.order??0) - (b.order??0));
-        const srcIdx = catTests.findIndex(t => t.id === dragSrcId);
-        const tgtIdx = catTests.findIndex(t => t.id === item.dataset.testId);
-        if (srcIdx < 0 || tgtIdx < 0) return;
-        const [moved]  = catTests.splice(srcIdx, 1);
-        const insertAt = after ? tgtIdx + (srcIdx < tgtIdx ? 0 : 1) : tgtIdx - (srcIdx < tgtIdx ? 1 : 0);
-        catTests.splice(Math.max(0, insertAt), 0, moved);
-        catTests.forEach((t, i) => { t.order = i; });
+        const rect=item.getBoundingClientRect(); const after=e.clientY>=rect.top+rect.height/2;
+        const catId=dragSrcCat;
+        const srcTest=db.tests.find(t=>t.id===dragSrcId);
+        const tgtTest=db.tests.find(t=>t.id===item.dataset.testId);
+        if (!srcTest||!tgtTest||srcTest.unit!==tgtTest.unit) return;
+        let catTests=db.tests.filter(t=>t.catId===catId&&(t.unit||'')===(srcTest.unit||'')).sort((a,b)=>(a.order??0)-(b.order??0));
+        const srcIdx=catTests.findIndex(t=>t.id===dragSrcId);
+        const tgtIdx=catTests.findIndex(t=>t.id===item.dataset.testId);
+        if (srcIdx<0||tgtIdx<0) return;
+        const [moved]=catTests.splice(srcIdx,1);
+        const insertAt=after?tgtIdx+(srcIdx<tgtIdx?0:1):tgtIdx-(srcIdx<tgtIdx?1:0);
+        catTests.splice(Math.max(0,insertAt),0,moved);
+        catTests.forEach((t,i)=>t.order=i);
         try { await saveDB(); renderAll(); } catch { renderAll(); }
       });
     });
   });
 }
 
-// ── FILE SLOT QUICK-ADD ──
 function setupFileSlotToggles() {
   document.querySelectorAll('[data-slot-add]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      openEditTestFiles(btn.dataset.testId, btn.dataset.slotAdd);
-    });
+    btn.addEventListener('click', () => openEditTestFiles(btn.dataset.testId, btn.dataset.slotAdd));
   });
 }
 function openEditTestFiles(testId, focusSlot) { openEditTest(testId, focusSlot); }
 
-// ── FILE SLOTS UI BUILDER ──
 const SLOT_CONFIG = {
   pdf:    { label: 'PDF Version',   icon: '📄', accept: '.pdf,.PDF' },
   orig:   { label: 'Original File', icon: '📁', accept: '.pdf,.doc,.docx,.jpg,.jpeg,.png' },
@@ -2104,283 +2308,217 @@ function buildFileSlotsUI(existingFiles = {}, focusSlot = null, itemType = '') {
   const container = document.getElementById('file-slots-container');
   container.innerHTML = '';
   pendingSlots = { pdf: null, orig: null, key: null, assign: null };
-  const isAssignment   = itemType === 'assignment';
-  const slotsToRender  = isAssignment ? ['pdf', 'orig', 'key', 'assign'] : ['pdf', 'orig', 'key'];
+  const isAssignment = itemType === 'assignment';
+  const slotsToRender = isAssignment ? ['pdf', 'orig', 'key', 'assign'] : ['pdf', 'orig', 'key'];
   slotsToRender.forEach(slotKey => {
-    const cfg      = SLOT_CONFIG[slotKey];
-    const existing = existingFiles[slotKey];
-    const slotEl   = document.createElement('div');
-    slotEl.className = 'file-slot';
-    slotEl.innerHTML = `
+    const cfg=SLOT_CONFIG[slotKey]; const existing=existingFiles[slotKey];
+    const slotEl=document.createElement('div'); slotEl.className='file-slot';
+    slotEl.innerHTML=`
       <div class="file-slot-header" data-slot-key="${slotKey}">
-        <div class="file-slot-label">
-          <span class="slot-icon">${cfg.icon}</span>
-          ${cfg.label}
-        </div>
-        <div class="file-slot-status ${existing ? 'slot-status-has' : 'slot-status-none'}">
-          ${existing ? '✓ ' + esc(existing.name || 'File attached') : 'No file'}
-        </div>
+        <div class="file-slot-label"><span class="slot-icon">${cfg.icon}</span>${cfg.label}</div>
+        <div class="file-slot-status ${existing?'slot-status-has':'slot-status-none'}">${existing?'✓ '+esc(existing.name||'File attached'):'No file'}</div>
       </div>
-      <div class="file-slot-body ${focusSlot === slotKey ? 'open' : ''}">
-        ${existing ? `<div style="margin-bottom:.5rem;">
-          <a class="file-link-btn ${slotKey === 'assign' ? 'assign' : slotKey}" href="${esc(existing.url)}" target="_blank" rel="noopener" style="display:inline-flex;">
-            ↗ View current file: ${esc(existing.name || 'file')}
-          </a>
-        </div>` : ''}
+      <div class="file-slot-body ${focusSlot===slotKey?'open':''}">
+        ${existing?`<div style="margin-bottom:.5rem;"><a class="file-link-btn ${slotKey==='assign'?'assign':slotKey}" href="${esc(existing.url)}" target="_blank" rel="noopener" style="display:inline-flex;">↗ View current file: ${esc(existing.name||'file')}</a></div>`:''}
         <div class="file-drop-mini" data-drop-zone="${slotKey}">
           <p>Drop file here or <strong>click to browse</strong></p>
           <input type="file" accept="${cfg.accept}" style="display:none" data-file-input="${slotKey}">
         </div>
         <div class="file-slot-selected" data-slot-selected="${slotKey}"></div>
-        ${existing ? `<button class="slot-clear-btn" data-slot-clear="${slotKey}" style="display:block;">Remove this file</button>` : ''}
+        ${existing?`<button class="slot-clear-btn" data-slot-clear="${slotKey}" style="display:block;">Remove this file</button>`:''}
       </div>`;
     container.appendChild(slotEl);
-    slotEl.querySelector('.file-slot-header').addEventListener('click', () => {
-      slotEl.querySelector('.file-slot-body').classList.toggle('open');
+    slotEl.querySelector('.file-slot-header').addEventListener('click',()=>slotEl.querySelector('.file-slot-body').classList.toggle('open'));
+    const dropZone=slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
+    const fileInput=slotEl.querySelector(`[data-file-input="${slotKey}"]`);
+    const selLabel=slotEl.querySelector(`[data-slot-selected="${slotKey}"]`);
+    const statusEl=slotEl.querySelector('.file-slot-status');
+    dropZone.addEventListener('click',()=>fileInput.click());
+    fileInput.addEventListener('change',()=>{
+      const f=fileInput.files[0];
+      if(f){pendingSlots[slotKey]={file:f};selLabel.textContent='✓ '+f.name;statusEl.textContent='✓ Ready to upload';statusEl.className='file-slot-status slot-status-ready';}
     });
-    const dropZone  = slotEl.querySelector(`[data-drop-zone="${slotKey}"]`);
-    const fileInput = slotEl.querySelector(`[data-file-input="${slotKey}"]`);
-    const selLabel  = slotEl.querySelector(`[data-slot-selected="${slotKey}"]`);
-    const statusEl  = slotEl.querySelector('.file-slot-status');
-    dropZone.addEventListener('click', () => fileInput.click());
-    fileInput.addEventListener('change', () => {
-      const f = fileInput.files[0];
-      if (f) {
-        pendingSlots[slotKey] = { file: f };
-        selLabel.textContent  = '✓ ' + f.name;
-        statusEl.textContent  = '✓ Ready to upload';
-        statusEl.className    = 'file-slot-status slot-status-ready';
-      }
+    dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('dragover');});
+    dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop',e=>{
+      e.preventDefault();dropZone.classList.remove('dragover');
+      const f=e.dataTransfer.files[0];
+      if(f){pendingSlots[slotKey]={file:f};selLabel.textContent='✓ '+f.name;statusEl.textContent='✓ Ready to upload';statusEl.className='file-slot-status slot-status-ready';}
     });
-    dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-    dropZone.addEventListener('drop', e => {
-      e.preventDefault(); dropZone.classList.remove('dragover');
-      const f = e.dataTransfer.files[0];
-      if (f) {
-        pendingSlots[slotKey] = { file: f };
-        selLabel.textContent  = '✓ ' + f.name;
-        statusEl.textContent  = '✓ Ready to upload';
-        statusEl.className    = 'file-slot-status slot-status-ready';
-      }
-    });
-    const clearBtn = slotEl.querySelector(`[data-slot-clear="${slotKey}"]`);
-    if (clearBtn) {
-      clearBtn.addEventListener('click', () => {
-        pendingSlots[slotKey] = { clear: true };
-        selLabel.textContent  = '(will be removed on save)';
-        statusEl.textContent  = '✗ Marked for removal';
-        statusEl.className    = 'file-slot-status slot-status-none';
-        clearBtn.style.display = 'none';
-      });
-    }
+    const clearBtn=slotEl.querySelector(`[data-slot-clear="${slotKey}"]`);
+    if(clearBtn){clearBtn.addEventListener('click',()=>{pendingSlots[slotKey]={clear:true};selLabel.textContent='(will be removed on save)';statusEl.textContent='✗ Marked for removal';statusEl.className='file-slot-status slot-status-none';clearBtn.style.display='none';});}
   });
 }
 
 function refreshFileSlotsForType() {
-  const type     = document.getElementById('test-type').value;
-  const existing = editingTestId ? (db.tests.find(t => t.id === editingTestId)?.files || {}) : {};
-  buildFileSlotsUI(existing, null, type);
+  const type=document.getElementById('test-type').value;
+  const existing=editingTestId?(db.tests.find(t=>t.id===editingTestId)?.files||{}):{};
+  buildFileSlotsUI(existing,null,type);
 }
 
-// ── UNIT DATALIST ──
 function populateUnitSuggestions() {
-  const dl    = document.getElementById('unit-suggestions');
-  const units = [...new Set(db.tests.map(t => (t.unit || '').trim()).filter(Boolean))]
-    .sort((a,b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
-  dl.innerHTML = units.map(u => `<option value="${esc(u)}">`).join('');
+  const dl=document.getElementById('unit-suggestions');
+  const units=[...new Set(db.tests.map(t=>(t.unit||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:'base'}));
+  dl.innerHTML=units.map(u=>`<option value="${esc(u)}">`).join('');
 }
 
-// ── ADD ITEM MODAL ──
 document.getElementById('btn-new-test').onclick  = () => openAddTest(null);
 document.getElementById('test-save-btn').onclick = saveTest;
 document.getElementById('test-type').addEventListener('change', refreshFileSlotsForType);
 
 function openAddTest(preselCatId) {
-  editingTestId = null;
-  clearTestForm(preselCatId);
-  document.getElementById('test-modal-eyebrow').textContent = 'Admin · Add Item';
-  document.getElementById('test-modal-title').textContent   = 'Upload Item';
-  document.getElementById('test-save-btn').textContent      = 'Add to Archive';
-  document.getElementById('test-cat-group').style.display   = 'block';
-  const sel = document.getElementById('test-cat-select');
-  sel.innerHTML = db.cats.map(c =>
-    `<option value="${c.id}"${c.id === preselCatId ? ' selected' : ''}>${esc(c.name)}${c.semester ? ' — ' + esc(c.semester) : ''}${c.courseType ? ' [' + esc(c.courseType) + ']' : ''}</option>`
-  ).join('');
-  if (!sel.innerHTML) { document.getElementById('test-error').textContent = 'Create a category first.'; return; }
-  buildFileSlotsUI({}, null, document.getElementById('test-type').value);
+  editingTestId=null; clearTestForm(preselCatId);
+  document.getElementById('test-modal-eyebrow').textContent='Admin · Add Item';
+  document.getElementById('test-modal-title').textContent='Upload Item';
+  document.getElementById('test-save-btn').textContent='Add to Archive';
+  document.getElementById('test-cat-group').style.display='block';
+  const sel=document.getElementById('test-cat-select');
+  sel.innerHTML=db.cats.map(c=>`<option value="${c.id}"${c.id===preselCatId?' selected':''}>${esc(c.name)}${c.semester?' — '+esc(c.semester):''}${c.courseType?' ['+esc(c.courseType)+']':''}</option>`).join('');
+  if(!sel.innerHTML){document.getElementById('test-error').textContent='Create a category first.';return;}
+  buildFileSlotsUI({},null,document.getElementById('test-type').value);
   populateUnitSuggestions();
   openModal('test-overlay');
 }
 
-// ── EDIT ITEM MODAL ──
-function openEditTest(testId, focusSlot = null) {
-  const test = db.tests.find(t => t.id === testId);
-  if (!test) return;
-  editingTestId = testId;
-  document.getElementById('test-modal-eyebrow').textContent = 'Admin · Edit Item';
-  document.getElementById('test-modal-title').textContent   = 'Edit Item';
-  document.getElementById('test-save-btn').textContent      = 'Save Changes';
-  document.getElementById('test-cat-group').style.display   = 'none';
-  document.getElementById('test-name').value    = test.name;
-  document.getElementById('test-type').value    = test.type;
-  document.getElementById('test-variant').value = test.variant || '';
-  document.getElementById('test-unit').value    = test.unit || '';
-  document.getElementById('test-notes').value   = test.notes || '';
-  document.getElementById('test-error').textContent = '';
-  buildFileSlotsUI(test.files || {}, focusSlot, test.type);
+function openEditTest(testId,focusSlot=null) {
+  const test=db.tests.find(t=>t.id===testId);
+  if(!test) return;
+  editingTestId=testId;
+  document.getElementById('test-modal-eyebrow').textContent='Admin · Edit Item';
+  document.getElementById('test-modal-title').textContent='Edit Item';
+  document.getElementById('test-save-btn').textContent='Save Changes';
+  document.getElementById('test-cat-group').style.display='none';
+  document.getElementById('test-name').value=test.name;
+  document.getElementById('test-type').value=test.type;
+  document.getElementById('test-variant').value=test.variant||'';
+  document.getElementById('test-unit').value=test.unit||'';
+  document.getElementById('test-notes').value=test.notes||'';
+  document.getElementById('test-error').textContent='';
+  buildFileSlotsUI(test.files||{},focusSlot,test.type);
   populateUnitSuggestions();
   openModal('test-overlay');
 }
 
 function clearTestForm() {
-  ['test-name','test-notes','test-unit'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('test-error').textContent = '';
-  document.getElementById('test-type').value    = 'quiz';
-  document.getElementById('test-variant').value = '';
-  pendingSlots = { pdf: null, orig: null, key: null, assign: null };
+  ['test-name','test-notes','test-unit'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('test-error').textContent='';
+  document.getElementById('test-type').value='quiz';
+  document.getElementById('test-variant').value='';
+  pendingSlots={pdf:null,orig:null,key:null,assign:null};
 }
 
 async function saveTest() {
-  const isEdit  = !!editingTestId;
-  const name    = document.getElementById('test-name').value.trim();
-  const type    = document.getElementById('test-type').value;
-  const variant = document.getElementById('test-variant').value;
-  const unit    = document.getElementById('test-unit').value.trim();
-  const notes   = document.getElementById('test-notes').value.trim();
-  const errEl   = document.getElementById('test-error');
-  const btn     = document.getElementById('test-save-btn');
-  if (!name) { errEl.textContent = 'Item name is required.'; return; }
+  const isEdit=!!editingTestId;
+  const name=document.getElementById('test-name').value.trim();
+  const type=document.getElementById('test-type').value;
+  const variant=document.getElementById('test-variant').value;
+  const unit=document.getElementById('test-unit').value.trim();
+  const notes=document.getElementById('test-notes').value.trim();
+  const errEl=document.getElementById('test-error');
+  const btn=document.getElementById('test-save-btn');
+  if(!name){errEl.textContent='Item name is required.';return;}
   let catId;
-  if (!isEdit) {
-    catId = document.getElementById('test-cat-select').value;
-    if (!catId) { errEl.textContent = 'Category is required.'; return; }
-  }
-  btn.textContent = 'Saving…'; btn.disabled = true; errEl.textContent = '';
+  if(!isEdit){catId=document.getElementById('test-cat-select').value;if(!catId){errEl.textContent='Category is required.';return;}}
+  btn.textContent='Saving…';btn.disabled=true;errEl.textContent='';
   try {
-    if (isEdit) {
-      const test = db.tests.find(t => t.id === editingTestId);
-      if (!test) throw new Error('Item not found');
-      test.name = name; test.type = type; test.variant = variant; test.unit = unit; test.notes = notes;
-      if (!test.files) test.files = {};
-      if (type !== 'assignment' && test.files.assign) delete test.files.assign;
-      for (const [slotKey, pending] of Object.entries(pendingSlots)) {
-        if (!pending) continue;
-        if (slotKey === 'assign' && type !== 'assignment') continue;
-        if (pending.clear) {
-          delete test.files[slotKey];
-        } else if (pending.file) {
-          btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
-          const fileRef  = ref(storage, `archive_files/${Date.now()}_${pending.file.name}`);
-          const snapshot = await uploadBytes(fileRef, pending.file);
-          const url      = await getDownloadURL(snapshot.ref);
-          test.files[slotKey] = { url, name: pending.file.name };
+    if(isEdit){
+      const test=db.tests.find(t=>t.id===editingTestId);
+      if(!test) throw new Error('Item not found');
+      test.name=name;test.type=type;test.variant=variant;test.unit=unit;test.notes=notes;
+      if(!test.files) test.files={};
+      if(type!=='assignment'&&test.files.assign) delete test.files.assign;
+      for(const [slotKey,pending] of Object.entries(pendingSlots)){
+        if(!pending) continue;
+        if(slotKey==='assign'&&type!=='assignment') continue;
+        if(pending.clear){delete test.files[slotKey];}
+        else if(pending.file){
+          btn.textContent=`Uploading ${SLOT_CONFIG[slotKey].label}…`;
+          const fileRef=ref(storage,`archive_files/${Date.now()}_${pending.file.name}`);
+          const snapshot=await uploadBytes(fileRef,pending.file);
+          const url=await getDownloadURL(snapshot.ref);
+          test.files[slotKey]={url,name:pending.file.name};
         }
       }
     } else {
-      const entry = {
-        id: uid(), catId, name, type, variant, unit, notes, files: {},
-        order: db.tests.filter(t => t.catId === catId && (t.unit||'') === unit).length
-      };
-      for (const [slotKey, pending] of Object.entries(pendingSlots)) {
-        if (!pending || !pending.file) continue;
-        if (slotKey === 'assign' && type !== 'assignment') continue;
-        btn.textContent = `Uploading ${SLOT_CONFIG[slotKey].label}…`;
-        const fileRef  = ref(storage, `archive_files/${Date.now()}_${pending.file.name}`);
-        const snapshot = await uploadBytes(fileRef, pending.file);
-        const url      = await getDownloadURL(snapshot.ref);
-        entry.files[slotKey] = { url, name: pending.file.name };
+      const entry={id:uid(),catId,name,type,variant,unit,notes,files:{},order:db.tests.filter(t=>t.catId===catId&&(t.unit||'')===unit).length};
+      for(const [slotKey,pending] of Object.entries(pendingSlots)){
+        if(!pending||!pending.file) continue;
+        if(slotKey==='assign'&&type!=='assignment') continue;
+        btn.textContent=`Uploading ${SLOT_CONFIG[slotKey].label}…`;
+        const fileRef=ref(storage,`archive_files/${Date.now()}_${pending.file.name}`);
+        const snapshot=await uploadBytes(fileRef,pending.file);
+        const url=await getDownloadURL(snapshot.ref);
+        entry.files[slotKey]={url,name:pending.file.name};
       }
       db.tests.push(entry);
     }
-    await saveDB();
-    closeModal('test-overlay');
-    renderAll();
-  } catch (err) {
-    console.error(err);
-    errEl.textContent = 'Save failed. Check storage rules and try again.';
-    if (!isEdit) db.tests.pop();
-  } finally {
-    btn.textContent = isEdit ? 'Save Changes' : 'Add to Archive';
-    btn.disabled = false;
-  }
+    await saveDB();closeModal('test-overlay');renderAll();
+  } catch(err){
+    console.error(err);errEl.textContent='Save failed. Check storage rules and try again.';
+    if(!isEdit) db.tests.pop();
+  } finally{btn.textContent=isEdit?'Save Changes':'Add to Archive';btn.disabled=false;}
 }
 
-// ── ADMIN CATEGORIES ──
 document.getElementById('btn-new-cat').onclick  = () => { clearCatForm(); populateSemesterYears(); openModal('cat-overlay'); };
 document.getElementById('cat-save-btn').onclick = saveCategory;
 function populateSemesterYears() {
-  const sel = document.getElementById('cat-sem-year');
-  const currentYear = new Date().getFullYear();
-  sel.innerHTML = '<option value="">— None —</option>';
-  for (let y = currentYear + 1; y >= currentYear - 6; y--) {
-    sel.appendChild(Object.assign(document.createElement('option'), { value: y, textContent: y }));
-  }
-  sel.value = currentYear;
+  const sel=document.getElementById('cat-sem-year');
+  const currentYear=new Date().getFullYear();
+  sel.innerHTML='<option value="">— None —</option>';
+  for(let y=currentYear+1;y>=currentYear-6;y--){sel.appendChild(Object.assign(document.createElement('option'),{value:y,textContent:y}));}
+  sel.value=currentYear;
 }
-function clearCatForm() {
-  ['cat-name','cat-teacher'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('cat-error').textContent   = '';
-  document.getElementById('cat-subject').value       = 'other';
-  document.getElementById('cat-sem-season').value    = '';
-  document.getElementById('cat-course-type').value   = '';
+function clearCatForm(){
+  ['cat-name','cat-teacher'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('cat-error').textContent='';
+  document.getElementById('cat-subject').value='other';
+  document.getElementById('cat-sem-season').value='';
+  document.getElementById('cat-course-type').value='';
 }
-async function saveCategory() {
-  const name       = document.getElementById('cat-name').value.trim();
-  const teacher    = document.getElementById('cat-teacher').value.trim();
-  const subject    = document.getElementById('cat-subject').value;
-  const courseType = document.getElementById('cat-course-type').value;
-  const season     = document.getElementById('cat-sem-season').value;
-  const year       = document.getElementById('cat-sem-year').value;
-  const semester   = (season && year) ? `${season} ${year}` : (season || year || '');
-  if (!name || !teacher) { document.getElementById('cat-error').textContent = 'Course name and teacher are required.'; return; }
-  const btn = document.getElementById('cat-save-btn');
-  btn.textContent = 'Saving…'; btn.disabled = true;
-  try {
-    db.cats.push({ id: uid(), name, teacher, subject, semester, courseType });
-    await saveDB(); closeModal('cat-overlay'); renderAll();
-  } catch { db.cats.pop(); }
-  finally { btn.textContent = 'Create Category'; btn.disabled = false; }
+async function saveCategory(){
+  const name=document.getElementById('cat-name').value.trim();
+  const teacher=document.getElementById('cat-teacher').value.trim();
+  const subject=document.getElementById('cat-subject').value;
+  const courseType=document.getElementById('cat-course-type').value;
+  const season=document.getElementById('cat-sem-season').value;
+  const year=document.getElementById('cat-sem-year').value;
+  const semester=(season&&year)?`${season} ${year}`:(season||year||'');
+  if(!name||!teacher){document.getElementById('cat-error').textContent='Course name and teacher are required.';return;}
+  const btn=document.getElementById('cat-save-btn');
+  btn.textContent='Saving…';btn.disabled=true;
+  try{db.cats.push({id:uid(),name,teacher,subject,semester,courseType});await saveDB();closeModal('cat-overlay');renderAll();}
+  catch{db.cats.pop();}
+  finally{btn.textContent='Create Category';btn.disabled=false;}
 }
 
-// ── DELETE ──
-function confirmDelCat(id) {
-  document.getElementById('del-msg').textContent = 'Delete this course and all its items? This cannot be undone.';
-  document.getElementById('del-confirm').onclick = async () => {
-    const prev = { cats: [...db.cats], tests: [...db.tests] };
-    db.cats  = db.cats.filter(c => c.id !== id);
-    db.tests = db.tests.filter(t => t.catId !== id);
-    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
-    catch { db.cats = prev.cats; db.tests = prev.tests; }
+function confirmDelCat(id){
+  document.getElementById('del-msg').textContent='Delete this course and all its items? This cannot be undone.';
+  document.getElementById('del-confirm').onclick=async()=>{
+    const prev={cats:[...db.cats],tests:[...db.tests]};
+    db.cats=db.cats.filter(c=>c.id!==id);db.tests=db.tests.filter(t=>t.catId!==id);
+    try{await saveDB();closeModal('del-overlay');renderAll();}catch{db.cats=prev.cats;db.tests=prev.tests;}
   };
   openModal('del-overlay');
 }
-function confirmDelTest(id) {
-  document.getElementById('del-msg').textContent = 'Delete this item? This cannot be undone.';
-  document.getElementById('del-confirm').onclick = async () => {
-    const prev = [...db.tests];
-    db.tests = db.tests.filter(t => t.id !== id);
-    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
-    catch { db.tests = prev; }
+function confirmDelTest(id){
+  document.getElementById('del-msg').textContent='Delete this item? This cannot be undone.';
+  document.getElementById('del-confirm').onclick=async()=>{
+    const prev=[...db.tests];db.tests=db.tests.filter(t=>t.id!==id);
+    try{await saveDB();closeModal('del-overlay');renderAll();}catch{db.tests=prev;}
   };
   openModal('del-overlay');
 }
-document.getElementById('btn-clear-all').onclick = () => {
-  document.getElementById('del-msg').textContent = 'Delete ALL courses and items? This cannot be undone.';
-  document.getElementById('del-confirm').onclick = async () => {
-    const prev = { ...db };
-    db = { cats: [], tests: [] };
-    try { await saveDB(); closeModal('del-overlay'); renderAll(); }
-    catch { db = prev; }
+document.getElementById('btn-clear-all').onclick=()=>{
+  document.getElementById('del-msg').textContent='Delete ALL courses and items? This cannot be undone.';
+  document.getElementById('del-confirm').onclick=async()=>{
+    const prev={...db};db={cats:[],tests:[]};
+    try{await saveDB();closeModal('del-overlay');renderAll();}catch{db=prev;}
   };
   openModal('del-overlay');
 };
 
-// ── UTILITY ──
-function uid() { return Math.random().toString(36).slice(2,9) + Date.now().toString(36); }
-function esc(s) {
-  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function uid(){return Math.random().toString(36).slice(2,9)+Date.now().toString(36);}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 </script>
 </body>
 </html>
