@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLA Style Guide | Works Cited & Formatting Hub</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #2d3748;
+            --mla-burgundy: #800020;
+            --accent-gold: #b45309;
+            --light-gray: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            user-select: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            align-items: center;
+            border-bottom: 3px solid var(--mla-burgundy);
+            background-color: #fff;
+        }
+
+        .logo { 
+            font-weight: 800; 
+            letter-spacing: 0.5px; 
+            color: var(--mla-burgundy);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #drag-book {
+            cursor: grab;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        #drag-book:active { cursor: grabbing; }
+
+        nav a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .hero {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #f8fafc 0%, #edf2f7 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .hero h1 { font-size: 2.5rem; color: var(--mla-burgundy); margin-top: 0; }
+        .hero p { font-size: 1.1rem; max-width: 650px; color: #4a5568; }
+
+        .section-container { padding: 3rem 2rem; max-width: 1000px; margin: 0 auto; }
+        h2 { color: var(--mla-burgundy); border-left: 4px solid var(--accent-gold); padding-left: 10px; }
+        .subtitle { color: #718096; margin-top: -10px; margin-bottom: 2rem; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .grid-item {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .grid-item:hover {
+            border-color: var(--mla-burgundy);
+            background-color: #fffafb;
+        }
+
+        .card-num { font-weight: bold; color: var(--accent-gold); font-family: monospace; }
+        .grid-item h3 { margin: 0.5rem 0; color: var(--mla-burgundy); }
+
+        /* Citation Block Engine Styles */
+        .citation-box {
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 6px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            color: #1a202c;
+        }
+        .hanging-indent {
+            padding-left: 2rem;
+            text-indent: -2rem;
+        }
+
+        .resources-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: #fff;
+        }
+
+        .resources-table th, .resources-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .resources-table th { background-color: var(--mla-burgundy); color: white; }
+        .secret-hint { cursor: pointer; font-weight: bold; color: #4a5568; }
+
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            color: #718096;
+            font-size: 0.85rem;
+            background-color: #f8fafc;
+        }
+
+        #drop-zone {
+            padding: 5px;
+            border: 1px dashed transparent;
+            transition: all 0.3s;
+        }
+        #drop-zone.drag-over {
+            border-color: var(--accent-gold);
+            background-color: #fef3c7;
+            color: #000;
+        }
+
+        .hidden { display: none !important; }
+
+        #vault-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0d1117;
+            color: #58a6ff;
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .vault-content {
+            text-align: center;
+            border: 1px solid #30363d;
+            background-color: #161b22;
+            padding: 3rem;
+            border-radius: 6px;
+            max-width: 400px;
+        }
+
+        .vault-content input {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            color: #58a6ff;
+            padding: 0.6rem;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            width: 80%;
+            border-radius: 4px;
+        }
+
+        .vault-content button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.4rem;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        #error-msg { color: #f85149; margin-top: 1rem; }
+        #secret-document { margin-top: 2rem; padding-top: 2rem; border-top: 1px dashed #30363d; }
+        
+        /* New Explicit Download Button Styling */
+        .download-btn {
+            background-color: #58a6ff !important;
+            color: #0d1117 !important;
+            margin-top: 1rem;
+            font-size: 1rem;
+            width: 90%;
+            padding: 0.8rem 1.4rem;
+        }
+        .download-btn:hover {
+            background-color: #79b8ff !important;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <span id="drag-book" draggable="true">📖</span> 
+            MLA STYLE CENTER
+        </div>
+        <nav>
+            <a href="#core-elements">Core Elements</a>
+            <a href="#example">Live Example</a>
+            <a href="#containers">Containers</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>MLA 9th Edition.<br>Simplified Documentation.</h1>
+            <p>Welcome to the quick reference framework for MLA formatting. This guide covers how to systematically assemble structural variables to properly document containers, print works, and online databases.</p>
+        </section>
+
+        <div class="section-container" id="core-elements">
+            <h2>The Four Template Pillars</h2>
+            <p class="subtitle">Click these components in the sequence they must appear within a finalized standard source listing entry.</p>
+            
+            <div class="grid">
+                <div class="grid-item" data-id="3">
+                    <span class="card-num">[03]</span>
+                    <h3>Author</h3>
+                    <p>Primary creator name listed as Last Name, First Name. Always conclude this initial element block with a period.</p>
+                </div>
+                <div class="grid-item" data-id="1">
+                    <span class="card-num">[01]</span>
+                    <h3>Title of Source</h3>
+                    <p>The specific name of the text. Italicize self-contained book titles, or place standalone essay titles within quotation marks.</p>
+                </div>
+                <div class="grid-item" data-id="4">
+                    <span class="card-num">[04]</span>
+                    <h3>Publisher</h3>
+                    <p>The enterprise responsible for distributing the final manuscript production. Omit standard corporate markers like LLC.</p>
+                </div>
+                <div class="grid-item" data-id="2">
+                    <span class="card-num">[02]</span>
+                    <h3>Publication Date</h3>
+                    <p>The calendar year or day variant designating release. Use international format styles for tracking specific days (e.g., 12 May 2026).</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container" id="example">
+            <h2>Works Cited Layout Reference</h2>
+            <p class="subtitle">Standard textbook referencing utilizing standard double-spaced environments and formatting requirements.</p>
+            <div class="citation-box">
+                <div class="hanging-indent">
+                    Clearview, Samantha. <em>Foundations of Digital Structural Layouts</em>. Academic Formatting Press, 2024.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-container" id="containers">
+            <h2>Container Rules & Metadata Fields</h2>
+            <p class="subtitle">Rules regarding secondary nested parameters when indexing items housed within larger structural systems.</p>
+            
+            <table class="resources-table">
+                <thead>
+                    <tr>
+                        <th>Container Variable</th>
+                        <th>Syntax Rule</th>
+                        <th>Required Length</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Volume and Issue</strong></td>
+                        <td>Precede digits with lowercase abbreviations vol. and no. lines.</td>
+                        <td>Varies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Location Tracking</strong></td>
+                        <td>Indicate precise page spans using the p. or pp. syntax prefix.</td>
+                        <td>Varies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Digital Object Identifier</strong></td>
+                        <td>Append secure metadata strings or URL destination strings.</td>
+                        <td class="secret-hint" id="hint-trigger">NaN</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>
+            <span id="drop-zone">&copy;</span> 
+            2026 MODILIX. All standard documentation examples open for educational research reference.
+        </p>
+    </footer>
+
+    <div id="vault-modal" class="hidden">
+        <div class="vault-content">
+            <h2>Password Entry:</h2>
+            <p id="vault-instructions">Input primary authentication credentials:</p>
+            <input type="password" id="vault-pass" placeholder="••••••••">
+            <button id="unlock-btn">Validate</button>
+            <p id="error-msg" class="hidden">Authentication Failed.</p>
+            
+            <div id="secret-document" class="hidden">
+                <h3>🔓 Security Gate Cleared</h3>
+                <button id="download-asset-btn" class="download-btn">Download Asset Bundle</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let hasCopiedPrefix = false;
+        let buttonSequenceComplete = false;
+        
+        const requiredSequence = ['3', '1', '4', '2'];
+        let currentSequence = [];
+
+        // Step 1: Click the NaN field to register the prefix flag
+        document.getElementById('hint-trigger').addEventListener('click', function() {
+            hasCopiedPrefix = true;
+            this.style.color = '#b45309';
+            alert("Clipboard context update: System code segment registered.");
+        });
+
+        // Step 2: Track sequential item clicks (Author -> Title -> Publisher -> Date)
+        document.querySelectorAll('.grid-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const id = this.getAttribute('data-id');
+                currentSequence.push(id);
+
+                if (currentSequence.length > requiredSequence.length) {
+                    currentSequence.shift();
+                }
+
+                const isMatch = currentSequence.length === requiredSequence.length && 
+                                currentSequence.every((val, index) => val === requiredSequence[index]);
+
+                if (isMatch) {
+                    buttonSequenceComplete = true;
+                    document.getElementById('core-elements').querySelector('h2').style.color = '#238636';
+                    alert("Sequence Check: Order sequence verified.");
+                }
+            });
+        });
+
+        // Step 3: Drag and drop validation handling mechanics
+        const book = document.getElementById('drag-book');
+        const dropZone = document.getElementById('drop-zone');
+
+        book.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', 'book-token');
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-over');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-over');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-over');
+            
+            if (!hasCopiedPrefix) {
+                alert("Action rejected: Required prerequisite data markers not loaded from table.");
+                return;
+            }
+
+            if (!buttonSequenceComplete) {
+                alert("Action rejected: Logic sequence incomplete. Pillars must be addressed sequentially.");
+                return;
+            }
+
+            document.getElementById('vault-modal').classList.remove('hidden');
+        });
+
+        // Step 4: Secret verification string matches against: "password"
+        document.getElementById('unlock-btn').addEventListener('click', () => {
+            const passwordInput = document.getElementById('vault-pass').value;
+            
+            if (passwordInput === "Geology41") { 
+                document.getElementById('error-msg').classList.add('hidden');
+                document.getElementById('secret-document').classList.remove('hidden');
+            } else {
+                document.getElementById('error-msg').classList.remove('hidden');
+            }
+        });
+
+        // Dynamic File Download Engine Hook
+        document.getElementById('download-asset-btn').addEventListener('click', () => {
+            // Generates a temporary link node to trigger file transmission quietly
+            const downloadLink = document.createElement('a');
+            downloadLink.href = 'inconspicuous.pdf';
+            downloadLink.setAttribute('download', 'inconspicuous.pdf');
+            
+            // Append and click to pass initialization variables to local filesystem
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            
+            // Cleanup the structural tree elements immediately
+            document.body.removeChild(downloadLink);
+        });
+    </script>
+</body>
+</html>
