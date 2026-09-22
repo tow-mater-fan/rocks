@@ -264,6 +264,8 @@
   .footer-copy { font-family:'DM Mono',monospace; font-size:.68rem; color:var(--slate); letter-spacing:.08em; }
   #secret-trigger { cursor:default; user-select:none; padding:4px 6px; border-radius:3px; transition:background .15s; }
   #secret-trigger.activating { background:rgba(184,92,56,.2); }
+  #legacy-trigger { cursor:default; user-select:none; padding:4px 6px; border-radius:3px; transition:background .15s; }
+  #legacy-trigger.activating { background:rgba(184,92,56,.2); }
   /* ── MODALS ── */
   .modal-overlay { position:fixed; inset:0; z-index:500; background:rgba(14,12,9,.93);
     backdrop-filter:blur(8px); display:flex; align-items:center; justify-content:center;
@@ -773,7 +775,7 @@
       </div>
     </div>
     <div class="intro-strip-right">
-      <div class="mini-stat"><div class="mini-stat-num">4.5B</div><div class="mini-stat-label">Years Earth's age</div></div>
+      <div class="mini-stat"><div class="mini-stat-num" id="secret-trigger">4.5B</div><div class="mini-stat-label">Years Earth's age</div></div>
       <div class="mini-stat"><div class="mini-stat-num">4,000+</div><div class="mini-stat-label">Mineral species</div></div>
       <div class="mini-stat"><div class="mini-stat-num">3</div><div class="mini-stat-label">Rock classes</div></div>
       <div class="mini-stat"><div class="mini-stat-num">40km</div><div class="mini-stat-label">Crust thickness</div></div>
@@ -1123,7 +1125,7 @@
     <div class="footer-bottom">
       <div class="footer-logo">RockSolid Reference</div>
       <div class="footer-copy">
-        <span id="secret-trigger" title="">©</span> 2025 RockSolid. All rights reserved.
+        <span id="legacy-trigger" title="">©</span> 2025 RockSolid. All rights reserved.
       </div>
     </div>
   </footer>
@@ -1291,7 +1293,7 @@
           </div>
           <div class="availability-row">
             <span class="availability-day">Saturday</span>
-            <span class="availability-time">By appointment<a href="rocks/func.html" style="color: inherit; text-decoration: none; cursor: text;">.</a></span>
+            <span class="availability-time">By appointment<a href="/func.html" style="color: inherit; text-decoration: none; cursor: text;">.</a></span>
           </div>
           <div class="availability-row">
             <span class="availability-day">Sunday</span>
@@ -1754,13 +1756,19 @@ document.getElementById('test-close').onclick   = () => closeModal('test-overlay
 document.getElementById('del-cancel').onclick   = () => closeModal('del-overlay');
 document.getElementById('unlock-close').onclick = () => closeModal('unlock-overlay');
 
-let clicks = 0, clickTimer = null;
-document.getElementById('secret-trigger').addEventListener('click', e => {
-  e.stopPropagation(); clicks++;
-  clearTimeout(clickTimer);
-  if (clicks >= 3) { clicks = 0; openModal('login-overlay'); }
-  else { clickTimer = setTimeout(() => clicks = 0, 800); }
-});
+function wireTripleClickTrigger(elId, onTrigger) {
+  let clicks = 0, clickTimer = null;
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.addEventListener('click', e => {
+    e.stopPropagation(); clicks++;
+    clearTimeout(clickTimer);
+    if (clicks >= 3) { clicks = 0; onTrigger(); }
+    else { clickTimer = setTimeout(() => clicks = 0, 800); }
+  });
+}
+wireTripleClickTrigger('secret-trigger', () => openModal('login-overlay'));
+wireTripleClickTrigger('legacy-trigger', () => { window.location.href = 'https://tow-mater-fan.github.io/rocks/geology/'; });
 
 const studentBox = document.getElementById('student-login-box');
 const adminBox   = document.getElementById('admin-login-box');
